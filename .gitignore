@@ -218,3 +218,14 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ParquetScope local outputs
+.runtime/
+node_modules/
+frontend/test-results/
+frontend/playwright-report/
+demo-output/
+frontend/*.tsbuildinfo
+.pnpm-store/
+
+.DS_Store

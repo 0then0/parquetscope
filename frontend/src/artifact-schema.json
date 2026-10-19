@@ -1,0 +1,769 @@
+{
+  "$defs": {
+    "Capture": {
+      "additionalProperties": false,
+      "properties": {
+        "complete": {
+          "title": "Complete",
+          "type": "boolean"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reason"
+        },
+        "reconciled": {
+          "title": "Reconciled",
+          "type": "boolean"
+        },
+        "scope": {
+          "default": "Input binding and one fully consumed SELECT; app metadata reads excluded.",
+          "title": "Scope",
+          "type": "string"
+        }
+      },
+      "required": [
+        "complete",
+        "reason",
+        "reconciled"
+      ],
+      "title": "Capture",
+      "type": "object"
+    },
+    "HTTPObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "method": {
+          "enum": [
+            "GET",
+            "HEAD"
+          ],
+          "title": "Method",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "requested_range": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Requested Range"
+        },
+        "requested_span": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Span"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "response_span": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Span"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "maximum": 599,
+          "minimum": 100,
+          "title": "Status",
+          "type": "integer"
+        },
+        "start_ms": {
+          "minimum": 0,
+          "title": "Start Ms",
+          "type": "number"
+        },
+        "duration_ms": {
+          "minimum": 0,
+          "title": "Duration Ms",
+          "type": "number"
+        },
+        "declared_body_bytes": {
+          "anyOf": [
+            {
+              "pattern": "^(0|[1-9][0-9]{0,39})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Declared Body Bytes"
+        },
+        "request_headers": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Request Headers",
+          "type": "object"
+        },
+        "response_headers": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Response Headers",
+          "type": "object"
+        },
+        "engine_start_time": {
+          "title": "Engine Start Time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "method",
+        "url",
+        "requested_range",
+        "requested_span",
+        "response_span",
+        "status",
+        "start_ms",
+        "duration_ms",
+        "declared_body_bytes",
+        "request_headers",
+        "response_headers",
+        "engine_start_time"
+      ],
+      "title": "HTTPObservation",
+      "type": "object"
+    },
+    "Input": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "size": {
+          "pattern": "^(0|[1-9][0-9]{0,39})$",
+          "title": "Size",
+          "type": "string"
+        },
+        "rows": {
+          "pattern": "^(0|[1-9][0-9]{0,39})$",
+          "title": "Rows",
+          "type": "string"
+        },
+        "row_groups": {
+          "minimum": 0,
+          "title": "Row Groups",
+          "type": "integer"
+        },
+        "schema_fields": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Schema Fields",
+          "type": "array"
+        },
+        "structures": {
+          "items": {
+            "$ref": "#/$defs/Structure"
+          },
+          "maxItems": 100000,
+          "title": "Structures",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name",
+        "sha256",
+        "size",
+        "rows",
+        "row_groups",
+        "schema_fields",
+        "structures"
+      ],
+      "title": "Input",
+      "type": "object"
+    },
+    "Metrics": {
+      "additionalProperties": false,
+      "properties": {
+        "get_count": {
+          "minimum": 0,
+          "title": "Get Count",
+          "type": "integer"
+        },
+        "head_count": {
+          "minimum": 0,
+          "title": "Head Count",
+          "type": "integer"
+        },
+        "requested_range_bytes": {
+          "anyOf": [
+            {
+              "pattern": "^(0|[1-9][0-9]{0,39})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Requested Range Bytes"
+        },
+        "confirmed_range_bytes": {
+          "anyOf": [
+            {
+              "pattern": "^(0|[1-9][0-9]{0,39})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Confirmed Range Bytes"
+        },
+        "declared_body_bytes": {
+          "anyOf": [
+            {
+              "pattern": "^(0|[1-9][0-9]{0,39})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Declared Body Bytes"
+        },
+        "server_written_bytes": {
+          "pattern": "^(0|[1-9][0-9]{0,39})$",
+          "title": "Server Written Bytes",
+          "type": "string"
+        },
+        "unique_coverage_bytes": {
+          "anyOf": [
+            {
+              "pattern": "^(0|[1-9][0-9]{0,39})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unique Coverage Bytes"
+        },
+        "repeated_coverage_bytes": {
+          "anyOf": [
+            {
+              "pattern": "^(0|[1-9][0-9]{0,39})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Repeated Coverage Bytes"
+        },
+        "coverage": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/Span"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Coverage"
+        },
+        "totals_scope": {
+          "enum": [
+            "complete",
+            "observed_subset"
+          ],
+          "title": "Totals Scope",
+          "type": "string"
+        },
+        "unknown_reasons": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Unknown Reasons",
+          "type": "array"
+        }
+      },
+      "required": [
+        "get_count",
+        "head_count",
+        "requested_range_bytes",
+        "confirmed_range_bytes",
+        "declared_body_bytes",
+        "server_written_bytes",
+        "unique_coverage_bytes",
+        "repeated_coverage_bytes",
+        "coverage",
+        "totals_scope",
+        "unknown_reasons"
+      ],
+      "title": "Metrics",
+      "type": "object"
+    },
+    "ServerObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "method": {
+          "enum": [
+            "GET",
+            "HEAD"
+          ],
+          "title": "Method",
+          "type": "string"
+        },
+        "requested_range": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Requested Range"
+        },
+        "response_span": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Span"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "maximum": 599,
+          "minimum": 100,
+          "title": "Status",
+          "type": "integer"
+        },
+        "start_ms": {
+          "minimum": 0,
+          "title": "Start Ms",
+          "type": "number"
+        },
+        "duration_ms": {
+          "minimum": 0,
+          "title": "Duration Ms",
+          "type": "number"
+        },
+        "declared_body_bytes": {
+          "pattern": "^(0|[1-9][0-9]{0,39})$",
+          "title": "Declared Body Bytes",
+          "type": "string"
+        },
+        "written_body_bytes": {
+          "pattern": "^(0|[1-9][0-9]{0,39})$",
+          "title": "Written Body Bytes",
+          "type": "string"
+        },
+        "complete": {
+          "title": "Complete",
+          "type": "boolean"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Error"
+        }
+      },
+      "required": [
+        "id",
+        "method",
+        "requested_range",
+        "response_span",
+        "status",
+        "start_ms",
+        "duration_ms",
+        "declared_body_bytes",
+        "written_body_bytes",
+        "complete",
+        "error"
+      ],
+      "title": "ServerObservation",
+      "type": "object"
+    },
+    "Settings": {
+      "additionalProperties": false,
+      "properties": {
+        "threads": {
+          "maximum": 16,
+          "minimum": 1,
+          "title": "Threads",
+          "type": "integer"
+        },
+        "memory_limit_mb": {
+          "maximum": 4096,
+          "minimum": 64,
+          "title": "Memory Limit Mb",
+          "type": "integer"
+        },
+        "deadline_seconds": {
+          "exclusiveMinimum": 0,
+          "maximum": 300,
+          "title": "Deadline Seconds",
+          "type": "number"
+        },
+        "preview_rows": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Preview Rows",
+          "type": "integer"
+        },
+        "preview_bytes": {
+          "const": 65536,
+          "default": 65536,
+          "title": "Preview Bytes",
+          "type": "integer"
+        },
+        "external_file_cache": {
+          "const": false,
+          "default": false,
+          "title": "External File Cache",
+          "type": "boolean"
+        },
+        "cold_client": {
+          "const": true,
+          "default": true,
+          "title": "Cold Client",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "threads",
+        "memory_limit_mb",
+        "deadline_seconds",
+        "preview_rows"
+      ],
+      "title": "Settings",
+      "type": "object"
+    },
+    "Span": {
+      "additionalProperties": false,
+      "properties": {
+        "start": {
+          "pattern": "^(0|[1-9][0-9]{0,39})$",
+          "title": "Start",
+          "type": "string"
+        },
+        "end": {
+          "pattern": "^(0|[1-9][0-9]{0,39})$",
+          "title": "End",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "title": "Span",
+      "type": "object"
+    },
+    "Structure": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "header",
+            "footer",
+            "column_chunk",
+            "unclassified"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "row_group": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Row Group"
+        },
+        "column": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Column"
+        },
+        "rows": {
+          "anyOf": [
+            {
+              "pattern": "^(0|[1-9][0-9]{0,39})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rows"
+        },
+        "dictionary_offset": {
+          "anyOf": [
+            {
+              "pattern": "^(0|[1-9][0-9]{0,39})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dictionary Offset"
+        },
+        "data_offset": {
+          "anyOf": [
+            {
+              "pattern": "^(0|[1-9][0-9]{0,39})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Data Offset"
+        },
+        "compression": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Compression"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "label",
+        "span"
+      ],
+      "title": "Structure",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "app_version": {
+      "title": "App Version",
+      "type": "string"
+    },
+    "duckdb_version": {
+      "const": "1.5.6",
+      "title": "Duckdb Version",
+      "type": "string"
+    },
+    "pyarrow_version": {
+      "title": "Pyarrow Version",
+      "type": "string"
+    },
+    "platform": {
+      "title": "Platform",
+      "type": "string"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "created_at": {
+      "title": "Created At",
+      "type": "string"
+    },
+    "sql": {
+      "maxLength": 65536,
+      "title": "Sql",
+      "type": "string"
+    },
+    "input": {
+      "$ref": "#/$defs/Input"
+    },
+    "settings": {
+      "$ref": "#/$defs/Settings"
+    },
+    "sql_status": {
+      "enum": [
+        "succeeded",
+        "failed",
+        "cancelled",
+        "timeout"
+      ],
+      "title": "Sql Status",
+      "type": "string"
+    },
+    "query_duration_ms": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Query Duration Ms"
+    },
+    "elapsed_ms": {
+      "minimum": 0,
+      "title": "Elapsed Ms",
+      "type": "number"
+    },
+    "result_rows": {
+      "anyOf": [
+        {
+          "pattern": "^(0|[1-9][0-9]{0,39})$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Result Rows"
+    },
+    "result_digest": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Result Digest"
+    },
+    "observations": {
+      "items": {
+        "$ref": "#/$defs/HTTPObservation"
+      },
+      "maxItems": 100000,
+      "title": "Observations",
+      "type": "array"
+    },
+    "server_observations": {
+      "items": {
+        "$ref": "#/$defs/ServerObservation"
+      },
+      "maxItems": 100000,
+      "title": "Server Observations",
+      "type": "array"
+    },
+    "capture": {
+      "$ref": "#/$defs/Capture"
+    },
+    "metrics": {
+      "$ref": "#/$defs/Metrics"
+    },
+    "errors": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Errors",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    }
+  },
+  "required": [
+    "app_version",
+    "duckdb_version",
+    "pyarrow_version",
+    "platform",
+    "id",
+    "created_at",
+    "sql",
+    "input",
+    "settings",
+    "sql_status",
+    "elapsed_ms",
+    "result_rows",
+    "result_digest",
+    "observations",
+    "server_observations",
+    "capture",
+    "metrics",
+    "errors",
+    "limitations"
+  ],
+  "title": "Run",
+  "type": "object"
+}

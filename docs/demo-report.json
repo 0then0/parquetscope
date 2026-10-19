@@ -1,0 +1,332 @@
+{
+  "seed": 20261019,
+  "rows": 262144,
+  "row_group_size": 4096,
+  "compression": "zstd",
+  "dictionary": true,
+  "sql": "SELECT count(*) AS matched_rows, sum(amount_cents) AS total_cents, sum(event_id % 97) AS checksum FROM input WHERE customer_id BETWEEN 1000 AND 1099",
+  "data_equivalence_verified": true,
+  "expected_result": [
+    [
+      "265",
+      "13418858",
+      "12042"
+    ]
+  ],
+  "result_equivalence_verified": true,
+  "conditions": "Fresh worker per run; cold client only; OS/disk caches uncontrolled",
+  "runs": [
+    {
+      "file": "original.parquet",
+      "size": "3051940",
+      "duckdb": "1.5.6",
+      "pyarrow": "26.0.0",
+      "platform": "Darwin arm64 Python 3.13.16",
+      "metrics": {
+        "get_count": 192,
+        "head_count": 2,
+        "requested_range_bytes": "3048953",
+        "confirmed_range_bytes": "3048953",
+        "declared_body_bytes": "3048953",
+        "server_written_bytes": "3048953",
+        "unique_coverage_bytes": "2985475",
+        "repeated_coverage_bytes": "63478",
+        "coverage": [
+          {
+            "start": "4",
+            "end": "47737"
+          },
+          {
+            "start": "47874",
+            "end": "94952"
+          },
+          {
+            "start": "95089",
+            "end": "142241"
+          },
+          {
+            "start": "142378",
+            "end": "188785"
+          },
+          {
+            "start": "188922",
+            "end": "236163"
+          },
+          {
+            "start": "236300",
+            "end": "282839"
+          },
+          {
+            "start": "282976",
+            "end": "330269"
+          },
+          {
+            "start": "330406",
+            "end": "377773"
+          },
+          {
+            "start": "377910",
+            "end": "425014"
+          },
+          {
+            "start": "425151",
+            "end": "472143"
+          },
+          {
+            "start": "472280",
+            "end": "519434"
+          },
+          {
+            "start": "519571",
+            "end": "566833"
+          },
+          {
+            "start": "566970",
+            "end": "614243"
+          },
+          {
+            "start": "614380",
+            "end": "661139"
+          },
+          {
+            "start": "661276",
+            "end": "708323"
+          },
+          {
+            "start": "718911",
+            "end": "737310"
+          },
+          {
+            "start": "755761",
+            "end": "803005"
+          },
+          {
+            "start": "803142",
+            "end": "849166"
+          },
+          {
+            "start": "849303",
+            "end": "896729"
+          },
+          {
+            "start": "896866",
+            "end": "944134"
+          },
+          {
+            "start": "944271",
+            "end": "991406"
+          },
+          {
+            "start": "991543",
+            "end": "1038532"
+          },
+          {
+            "start": "1038669",
+            "end": "1085690"
+          },
+          {
+            "start": "1085827",
+            "end": "1133037"
+          },
+          {
+            "start": "1133174",
+            "end": "1179692"
+          },
+          {
+            "start": "1179829",
+            "end": "1226483"
+          },
+          {
+            "start": "1226620",
+            "end": "1273804"
+          },
+          {
+            "start": "1273941",
+            "end": "1320535"
+          },
+          {
+            "start": "1320672",
+            "end": "1367782"
+          },
+          {
+            "start": "1367919",
+            "end": "1415086"
+          },
+          {
+            "start": "1415223",
+            "end": "1462216"
+          },
+          {
+            "start": "1462353",
+            "end": "1509328"
+          },
+          {
+            "start": "1509465",
+            "end": "1556401"
+          },
+          {
+            "start": "1556538",
+            "end": "1603719"
+          },
+          {
+            "start": "1603856",
+            "end": "1650695"
+          },
+          {
+            "start": "1650832",
+            "end": "1698007"
+          },
+          {
+            "start": "1698144",
+            "end": "1745270"
+          },
+          {
+            "start": "1745407",
+            "end": "1792557"
+          },
+          {
+            "start": "1792694",
+            "end": "1839766"
+          },
+          {
+            "start": "1839903",
+            "end": "1887141"
+          },
+          {
+            "start": "1887278",
+            "end": "1934443"
+          },
+          {
+            "start": "1934580",
+            "end": "1981883"
+          },
+          {
+            "start": "1982020",
+            "end": "2029216"
+          },
+          {
+            "start": "2029353",
+            "end": "2076629"
+          },
+          {
+            "start": "2076766",
+            "end": "2123912"
+          },
+          {
+            "start": "2124049",
+            "end": "2171209"
+          },
+          {
+            "start": "2171346",
+            "end": "2218316"
+          },
+          {
+            "start": "2218453",
+            "end": "2265427"
+          },
+          {
+            "start": "2265564",
+            "end": "2312360"
+          },
+          {
+            "start": "2312497",
+            "end": "2359267"
+          },
+          {
+            "start": "2359404",
+            "end": "2406371"
+          },
+          {
+            "start": "2406508",
+            "end": "2453642"
+          },
+          {
+            "start": "2453779",
+            "end": "2500647"
+          },
+          {
+            "start": "2500784",
+            "end": "2547934"
+          },
+          {
+            "start": "2558525",
+            "end": "2576959"
+          },
+          {
+            "start": "2595570",
+            "end": "2642778"
+          },
+          {
+            "start": "2642915",
+            "end": "2690036"
+          },
+          {
+            "start": "2690173",
+            "end": "2737116"
+          },
+          {
+            "start": "2737253",
+            "end": "2784630"
+          },
+          {
+            "start": "2784767",
+            "end": "2831976"
+          },
+          {
+            "start": "2832113",
+            "end": "2879168"
+          },
+          {
+            "start": "2879305",
+            "end": "2926386"
+          },
+          {
+            "start": "2926523",
+            "end": "2973669"
+          },
+          {
+            "start": "2973806",
+            "end": "3021093"
+          },
+          {
+            "start": "3021230",
+            "end": "3051940"
+          }
+        ],
+        "totals_scope": "complete",
+        "unknown_reasons": []
+      },
+      "query_duration_ms": 38.15270902123302
+    },
+    {
+      "file": "sorted.parquet",
+      "size": "2995652",
+      "duckdb": "1.5.6",
+      "pyarrow": "26.0.0",
+      "platform": "Darwin arm64 Python 3.13.16",
+      "metrics": {
+        "get_count": 6,
+        "head_count": 2,
+        "requested_range_bytes": "146149",
+        "confirmed_range_bytes": "146149",
+        "declared_body_bytes": "146149",
+        "server_written_bytes": "146149",
+        "unique_coverage_bytes": "75557",
+        "repeated_coverage_bytes": "70592",
+        "coverage": [
+          {
+            "start": "4",
+            "end": "44917"
+          },
+          {
+            "start": "2965008",
+            "end": "2995652"
+          }
+        ],
+        "totals_scope": "complete",
+        "unknown_reasons": []
+      },
+      "query_duration_ms": 9.062333003384992
+    }
+  ]
+}

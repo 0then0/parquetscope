@@ -1,0 +1,44 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="112"
+  height="112"
+  viewBox="0 0 112 112"
+  role="img"
+  aria-labelledby="title desc"
+>
+  <title id="title">ParquetScope</title><desc
+    id="desc"
+  >A selected byte range crossing column chunks in a Parquet file.</desc>
+  <rect
+    x="2"
+    y="2"
+    width="108"
+    height="108"
+    rx="25"
+    fill="#131923"
+    stroke="#263040"
+    stroke-width="2"
+  />
+  <path d="M30 23h37l15 15v49H30z" fill="#1a2934" stroke="#7ce3bd" stroke-width="2.5" />
+  <path d="M67 23v15h15" fill="none" stroke="#7ce3bd" stroke-width="2.5" />
+  <g fill="#508b91"><rect x="38" y="45" width="9" height="30" rx="1" /><rect
+      x="51"
+      y="45"
+      width="9"
+      height="30"
+      rx="1"
+    /><rect x="64" y="45" width="9" height="30" rx="1" /></g>
+  <rect
+    x="22"
+    y="57"
+    width="68"
+    height="13"
+    rx="3"
+    fill="#7ce3bd"
+    fill-opacity=".23"
+    stroke="#7ce3bd"
+    stroke-width="2"
+  />
+  <path d="M17 63.5h10m58 0h10" stroke="#7ce3bd" stroke-width="2.5" stroke-linecap="round" />
+  <path d="M38 81h35" stroke="#a79aef" stroke-width="3" stroke-linecap="round" />
+</svg>

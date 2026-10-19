@@ -1,0 +1,73 @@
+name: CI
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+env:
+  PARQUETSCOPE_HOME: ${{ github.workspace }}/.runtime
+jobs:
+  backend:
+    env:
+      UV_PYTHON: ${{ matrix.python }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.10', '3.13']
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: astral-sh/setup-uv@v10.3.0
+        with:
+          version: '0.13.1'
+      - run: uv sync --frozen --python ${{ matrix.python }}
+      - run: uv run parquetscope setup
+      - run: uv run ruff check src tests scripts
+      - run: uv run ruff format --check src tests scripts
+      - run: uv run python scripts/generate_schema.py --check
+      - run: uv run pytest -q
+  web-and-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.13'
+      - uses: astral-sh/setup-uv@v10.3.0
+        with:
+          version: '0.13.1'
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: '24'
+      - uses: pnpm/action-setup@v6.1.0
+        with:
+          version: '12.14.0'
+      - run: uv sync --frozen
+      - run: uv run parquetscope setup
+      - run: pnpm --dir frontend install --frozen-lockfile
+      - run: pnpm --dir frontend check
+      - run: pnpm --dir frontend test
+      - run: pnpm --dir frontend build
+      - run: pnpm --dir frontend exec playwright install --with-deps chromium
+      - run: pnpm --dir frontend test:browser
+      - run: uv build
+      - run: uv run python scripts/check_dist.py
+      - run: |
+          uv venv /tmp/parquetscope-wheel --python 3.13
+          uv pip install --python /tmp/parquetscope-wheel/bin/python dist/*.whl
+          cd /tmp
+          /tmp/parquetscope-wheel/bin/python "$GITHUB_WORKSPACE/scripts/smoke_wheel.py" /tmp/wheel-demo
+      - uses: actions/upload-artifact@v7.0.2
+        if: always()
+        with:
+          name: parquetscope-v0.1-evidence
+          path: |
+            dist/
+            frontend/test-results/
