@@ -1,0 +1,68 @@
+version: 2
+
+# Batch routine updates monthly; GitHub schedules security updates separately.
+updates:
+  - package-ecosystem: uv
+    directory: /
+    schedule:
+      interval: monthly
+      time: "09:00"
+      timezone: Europe/Moscow
+    cooldown:
+      default-days: 14
+    open-pull-requests-limit: 1
+    allow:
+      - dependency-name: "*"
+        update-types:
+          - version-update:semver-minor
+          - version-update:semver-patch
+    ignore:
+      # The capture/artifact contract pins DuckDB 1.5.6, including patch versions.
+      # Engine upgrades require coordinated code changes and compatibility checks.
+      - dependency-name: duckdb
+    groups:
+      python-dependencies:
+        patterns: ["*"]
+    commit-message:
+      prefix: "chore(deps)"
+
+  # Dependabot uses the npm ecosystem for pnpm manifests and lockfiles.
+  - package-ecosystem: npm
+    directory: /frontend
+    schedule:
+      interval: monthly
+      time: "09:00"
+      timezone: Europe/Moscow
+    cooldown:
+      default-days: 14
+    open-pull-requests-limit: 1
+    allow:
+      - dependency-name: "*"
+        update-types:
+          - version-update:semver-minor
+          - version-update:semver-patch
+    groups:
+      frontend-dependencies:
+        patterns: ["*"]
+    commit-message:
+      prefix: "chore(deps)"
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+      time: "09:00"
+      timezone: Europe/Moscow
+    cooldown:
+      default-days: 14
+    open-pull-requests-limit: 1
+    allow:
+      - dependency-name: "*"
+        update-types:
+          - version-update:semver-minor
+          - version-update:semver-patch
+    groups:
+      github-actions:
+        patterns: ["*"]
+    commit-message:
+      prefix: "chore(deps)"
