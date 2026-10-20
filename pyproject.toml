@@ -22,7 +22,7 @@ packages = ["src/parquetscope"]
 
 [tool.hatch.build.targets.sdist]
 skip-excluded-dirs = true
-include = ["/src", "/frontend", "/tests", "/scripts", "/docs", "/.github", "/README.md", "/LICENSE", "/pyproject.toml", "/uv.lock", "/.python-version"]
+include = ["/src", "/frontend", "/tests", "/scripts", "/docs", "/.github", "/README.md", "/CONTRIBUTING.md", "/LICENSE", "/pyproject.toml", "/uv.lock", "/.python-version"]
 exclude = ["/frontend/node_modules", "/frontend/test-results", "/frontend/playwright-report", "/frontend/*.tsbuildinfo"]
 
 [tool.pytest.ini_options]

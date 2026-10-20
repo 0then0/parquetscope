@@ -35,6 +35,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy reviewed static lab
+      - name: Deploy static lab
         id: deployment
         uses: actions/deploy-pages@v5.0.1

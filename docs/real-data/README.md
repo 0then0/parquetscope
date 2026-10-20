@@ -32,7 +32,7 @@ A result digest proves neither table equality nor equality of source rows.
 
 ## Measured evidence, 2026-10-20
 
-These are new measurements, not copied reference numbers. All repetitions are retained
+All repetitions are retained
 in [report.json](report.json) and unchanged native artifacts under `captures/`.
 The interactive lab explicitly shows repetition 1 for each layout.
 
@@ -49,7 +49,6 @@ All three repeats have the same byte totals. The denominator is B's server write
 not file size, client-received bytes or SELECT duration. B is smaller than A but
 makes more requests here; C is larger than B but needs fewer bytes and requests.
 Exact GET counts are observations, not an engine guarantee or an acceptance snapshot.
-No substantial discrepancy from the supplied reference observations was found.
 
 A/B change writer, encoding and layout as well as row-group count. These differences
 cannot be attributed to row-group size alone. B/C share the same DuckDB writer and
@@ -61,7 +60,7 @@ One earlier attempt failed runner validation after a successful A capture becaus
 its expected Decimal preview representation was wrong. It is retained under
 [failed-attempts/attempt-1](failed-attempts/attempt-1/report.json) and linked in the
 report's `previous_attempts`. It is excluded from the nine successful repetitions.
-No trace was edited to resolve it, and no product runtime fix was needed.
+The successful experiment used a corrected runner assertion; the capture itself is unchanged.
 
 ## Method and provenance
 
@@ -70,14 +69,13 @@ PyArrow **26.0.0**, Darwin/arm64. Exact OS release, dependency versions and the 
 commit are in the report. The experiment ran outside the checkout in a separate
 virtual environment installed from the published release wheel. Installed package
 files, including worker and viewer, were compared byte for byte against the wheel.
-Runner additions were local changes based on that commit; the actual measured
-runner source and its hash are preserved in `provenance/runner.py` and the report.
-A later maintenance edit to the runner does not rewrite that historical source.
+The exact experiment runner source and its hash are preserved in
+[provenance/runner.py](provenance/runner.py) and the report. The recorded commit
+identifies its base checkout; the source snapshot identifies the executed runner.
 
 [Published wheel](https://github.com/0then0/parquetscope/releases/download/v0.1.0/parquetscope-0.1.0-py3-none-any.whl)
 SHA-256: `616192b3e0b776ca1221b86d4b2c80dbd545b6884457d6df0394045a6d9169e9`.
 The hash was checked against GitHub release metadata before installation.
-This is an existing published wheel, not a locally built unpublished patch.
 
 Preparation uses a separate DuckDB connection: one thread, `memory_limit='1GB'`,
 `preserve_insertion_order=true`, spill to a working-directory subfolder, up to 10 GB
@@ -115,9 +113,10 @@ by offline tests and the static builder. `manifest.json` and `SHA256SUMS.txt` co
 portable evidence (excluding themselves). The site adds only application assets,
 a blank offline export template and `index.html` to that evidence.
 
-## Reproduce with the published wheel
+## Reproduce the experiment
 
-Prerequisites: git checkout, uv, curl, Python 3.13. Existing `.venv` is untouched.
+Prerequisites: a git checkout, uv, curl, and Python 3.13. The commands create a
+separate wheel environment and evidence directory.
 The first source download is streamed with a 30-second socket timeout and bounded
 by the pinned size into a temporary sibling, then verified before rename/use.
 A cached working source is reverified before reuse. Preparation may use several GB
@@ -181,13 +180,8 @@ The normal CI checks are offline with respect to the TLC dataset. The separate
 the pinned source and published wheel, records a full experiment, builds the static
 lab and uploads reviewable evidence. It does not deploy.
 
-`pages.yml` builds/deploys only on explicit `workflow_dispatch`; build has read-only
-repository permission, deployment alone has `pages: write` and `id-token: write`.
-No Pages setting, push or deployment was performed for this task. A maintainer must
-review the changes, push them with separate authorization, enable GitHub Pages with
-GitHub Actions as source, then dispatch the deployment workflow. Updated frontend
-assets and lab/docs do not require a runtime patch release; measurement code and
-the portable artifact format are unchanged.
+The manual `pages.yml` workflow publishes the checked-in static lab. See the
+[maintainer guide](https://github.com/0then0/parquetscope/blob/main/docs/releasing.md#publish-the-static-lab) for configuration and deployment.
 
 ## Limits of interpretation
 
@@ -206,15 +200,7 @@ report, not original trip rows. No credentials are involved.
 [validation.json](validation.json) records the locally executed checks: 89 backend tests,
 8 frontend unit tests, 8 local/offline browser scenarios and 6 static-lab browser scenarios,
 lint/type/schema checks, wheel/sdist validation and an isolated rebuilt-wheel smoke test.
-Desktop light and narrow dark screenshots were visually inspected. Browser checks
-covered hash refresh, linked selection, B/C comparison, all downloads, keyboard
-controls, 390 px width and standalone file viewers with network disabled. Static
-browsing made zero execution API requests. No remote CI run, Pages configuration
-or deployment is claimed here.
-
-Regression checks also reject a report whose SQL disagrees with the fixed workload or
-its native captures before replacing a static build. Comparison selections and
-analysis tabs survive refresh and browser Back; Explore works for the already
-selected layout. Local capture UI navigation preserves an unexecuted SQL draft.
-These changes do not modify the historical captures, measured report or runner
-source snapshot used for the original experiment.
+Browser checks cover hash refresh, linked selection, B/C comparison, downloads,
+keyboard controls, 390 px width, and standalone file viewers with networking disabled.
+Static browsing makes zero execution API requests. See [validation coverage](https://github.com/0then0/parquetscope/blob/main/docs/validation.md)
+for the distinction between package checks and experiment provenance.

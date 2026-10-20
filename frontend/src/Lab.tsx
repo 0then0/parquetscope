@@ -168,8 +168,8 @@ export function LabDetails({ lab }: { lab: LabData }) {
         Exact result in every run: n = 142826, fare = 8038349.75. DECIMAL(18,2) is part of the
         workload. Every capture has a fresh worker, 4 threads, a 512 MiB DuckDB memory limit, a
         60-second deadline and disabled external file cache. Binding plus one fully consumed SELECT
-        is captured and reconciled against independent server observations. No second execution or
-        EXPLAIN is hidden in a measured run.
+        is captured and reconciled against independent server observations. Preparation and equality
+        checks run separately from measurement.
       </p>
       <p>
         Python {lab.report.versions.python} · PyArrow {lab.report.versions.pyarrow}. Input SHA-256:
@@ -188,14 +188,20 @@ export function LabDetails({ lab }: { lab: LabData }) {
           Durations are observations, not controlled timing benchmarks.
         </p>
       </details>
-      {lab.report.previous_attempts?.map((attempt) => (
-        <p key={attempt.report}>
-          Earlier excluded attempt: {attempt.reason}{" "}
-          <a href={`./${attempt.report}`} download>
-            Download failed-attempt report
-          </a>
-        </p>
-      ))}
+      {lab.report.previous_attempts?.length ? (
+        <details>
+          <summary>Execution history</summary>
+          <p>Excluded attempts are preserved separately from the nine successful repetitions.</p>
+          {lab.report.previous_attempts.map((attempt) => (
+            <p key={attempt.report}>
+              {attempt.reason}{" "}
+              <a href={`./${attempt.report}`} download>
+                Download failed-attempt report
+              </a>
+            </p>
+          ))}
+        </details>
+      ) : null}
       <h3>All repetitions, unchanged native artifacts</h3>
       <div className="lab-downloads">
         {lab.report.layouts.map((layout) => (
@@ -240,8 +246,9 @@ PARQUETSCOPE_HOME=/tmp/tlc-runtime /tmp/tlc-env/bin/python \\
   --work-dir /tmp/tlc-work --output /tmp/tlc-evidence`}</pre>
       <p>
         <a href="https://github.com/0then0/parquetscope">ParquetScope project &amp; source</a> ·
-        Established sorting and row-group pruning, made inspectable for one real workload. SQL,
-        column names and metadata are public; artifacts omit preview rows, not every kind of data.
+        Explore sorting and row-group pruning through the reads observed for this workload.
+        Downloads include SQL, column names, headers and aggregate results; source trip rows are
+        excluded.
       </p>
     </section>
   );

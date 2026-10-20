@@ -179,6 +179,17 @@ test("standalone viewers and UI export open without network", async ({ page, bro
   }
   expect(network).toEqual([]);
   await offline.close();
+  const history = page.getByText("Execution history", { exact: true });
+  const failedReport = page.getByRole("link", { name: "Download failed-attempt report" });
+  await expect(failedReport).toBeHidden();
+  await history.focus();
+  await page.keyboard.press("Enter");
+  await expect(failedReport).toBeVisible();
+  const excludedDownload = page.waitForEvent("download");
+  await failedReport.click();
+  const excludedPath = await (await excludedDownload).path();
+  const excluded = JSON.parse(await readFile(excludedPath, "utf8"));
+  expect(excluded.status).toBe("failed");
   for (const name of ["Machine-readable report", "File manifest", "SHA-256 checksums"]) {
     const pending = page.waitForEvent("download");
     await page.getByRole("link", { name, exact: true }).click();

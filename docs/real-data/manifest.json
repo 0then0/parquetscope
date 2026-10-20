@@ -2,8 +2,8 @@
   "schema_version": "1",
   "files": {
     "README.md": {
-      "bytes": 12716,
-      "sha256": "3fc1aaa7bb639d49cbf73b7c07aa6850cb5b0e27637d03338ecfb1e58e914790"
+      "bytes": 11802,
+      "sha256": "2e9b6624376957cbef9fa34e72a1ff36162f072c8f400b8468be2082407987e2"
     },
     "captures/A-1.parquetscope.json": {
       "bytes": 90494,
@@ -58,8 +58,8 @@
       "sha256": "775fe0f33f50556b3ce2e1b91752512d408a9c12d01a225ec951ee6b7c4987d8"
     },
     "validation.json": {
-      "bytes": 3311,
-      "sha256": "2a5a73b6d378b1cf64fb5fda1435966081ea9b15e482962a91ced421e33998c6"
+      "bytes": 3088,
+      "sha256": "1974480fb0f023a772b1874c7254bf0ab997163c5d5f679f8409d8a01c150530"
     },
     "viewers/A.viewer.html": {
       "bytes": 457154,

@@ -6,7 +6,7 @@
   "pnpm": "12.14.0",
   "checks": [
     {
-      "command": "PARQUETSCOPE_HOME=.runtime .venv/bin/pytest -q",
+      "command": "PARQUETSCOPE_HOME=\"$PWD/.runtime\" .venv/bin/pytest -q",
       "result": "passed",
       "tests": 89
     },
@@ -92,14 +92,11 @@
     "screenshots_location": "frontend/test-results/ (local generated output, excluded from Git)"
   },
   "measurement_evidence": "report.json",
-  "deployment_performed": false,
   "notes": [
     "All nine real-data captures used the existing published v0.1.0 wheel, not the rebuilt wheel.",
-    "The local rebuilt wheel smoke checks packaging of the updated frontend; it is not a published release.",
-    "GitHub Actions and Pages workflows were prepared, not remotely dispatched.",
-    "Browser launching required the local macOS sandbox override; no product authorization was weakened."
+    "The local rebuilt wheel smoke checks packaging of the updated frontend; it is not a published release."
   ],
-  "review_regressions": [
+  "coverage": [
     "Report SQL must match the fixed captured workload.",
     "Static build rejects SQL disagreement with native captures, even with matching capture checksums, before replacing its output.",
     "Comparison selection, analysis tabs, refresh and browser Back preserve the selected layout/view.",

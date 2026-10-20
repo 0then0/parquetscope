@@ -1,7 +1,7 @@
-"""Opt-in NYC TLC experiment. Run with the Python of an installed release wheel.
+"""Reproduce the NYC TLC Parquet layout experiment with the published release wheel.
 
-No dataset download on import. Public output contains only validated native captures,
-three native offline viewers and a report; working Parquet files stay outside it.
+Create three layouts, verify their data equality, and record three captures per layout.
+Export portable evidence and standalone viewers, or verify an existing report offline.
 """
 
 import argparse
@@ -352,7 +352,7 @@ def write_case_study(directory, report):
         f"Input: {SOURCE_URL}",
         f"Pinned size: {SOURCE_SIZE} bytes; SHA-256: `{SOURCE_SHA256}`.",
         "",
-        "## Actual repetitions",
+        "## Measured repetitions",
         "",
     ]
     for layout in report["layouts"]:
@@ -393,7 +393,7 @@ def write_case_study(directory, report):
             f"Wheel SHA-256: `{WHEEL_SHA256}`.",
             "Installed package files verified against the published wheel outside checkout.",
             "",
-            "## Reproduce from a checkout",
+            "## Reproduce the experiment",
             "",
             "```sh",
             'REPO="$PWD"',
@@ -477,7 +477,8 @@ def run_experiment(work, output, wheel):
         "runner_sha256": sha256(Path(__file__)),
         "runner_source": "provenance/runner.py",
         "runner_commit_note": (
-            "Runner/frontend additions are local changes based on the recorded commit"
+            "The commit identifies the runner checkout; runner_source preserves its source. "
+            "wheel_acceptance identifies the installed capture runtime."
         ),
         "source": {
             "url": SOURCE_URL,
@@ -621,9 +622,15 @@ def run_experiment(work, output, wheel):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--work-dir", type=Path)
-    parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--wheel", type=Path)
+    parser.add_argument(
+        "--work-dir", type=Path, help="Directory for source and prepared Parquet files"
+    )
+    parser.add_argument(
+        "--output", type=Path, required=True, help="Evidence directory (empty for a new experiment)"
+    )
+    parser.add_argument(
+        "--wheel", type=Path, help="Published v0.1.0 wheel to verify against the installed runtime"
+    )
     parser.add_argument(
         "--verify", action="store_true", help="Verify existing public report offline"
     )

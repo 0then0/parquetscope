@@ -20,6 +20,10 @@ with tarfile.open(root / "dist/parquetscope-0.1.0.tar.gz") as source:
         "frontend/tests/browser/workflow.spec.ts",
         "scripts/smoke_wheel.py",
         "docs/icon.svg",
+        "CONTRIBUTING.md",
+        "docs/README.md",
+        "docs/usage.md",
+        "docs/releasing.md",
         ".github/workflows/ci.yml",
         "uv.lock",
     ):
