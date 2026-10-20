@@ -10,7 +10,9 @@
     "check": "biome check . && tsc -b",
     "format": "biome check --write .",
     "test": "vitest run",
-    "test:browser": "playwright test"
+    "test:browser": "playwright test",
+    "build:lab": "pnpm build && node scripts/lab.mjs",
+    "test:lab": "playwright test --config playwright.lab.config.ts"
   },
   "dependencies": {
     "react": "19.3.1",

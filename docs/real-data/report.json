@@ -1,0 +1,2960 @@
+{
+  "schema_version": "1",
+  "status": "complete",
+  "created_at": "2026-10-20T18:56:33.577163+00:00",
+  "parquetscope": {
+    "version": "0.1.0",
+    "commit": "beea48dcd845ad017b0aecfa123f4fb5346ea9fc"
+  },
+  "runner_sha256": "f7e20c10e734fa149765ea3486c45874edfd877a95447235e024181e2b33b1a1",
+  "runner_commit_note": "Runner/frontend additions are local changes based on the recorded commit",
+  "source": {
+    "url": "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2025-01.parquet",
+    "page": "https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page",
+    "size": "59158238",
+    "sha256": "9af277e4c0d3f9deb30644da822981e1e7df6af58313170fd3aa8a474485488a"
+  },
+  "versions": {
+    "python": "3.13.16",
+    "duckdb": "1.5.6",
+    "pyarrow": "26.0.0"
+  },
+  "platform": {
+    "os": "Darwin",
+    "release": "24.6.0",
+    "architecture": "arm64"
+  },
+  "preparation_settings": {
+    "threads": "1",
+    "memory_limit": "1GB",
+    "preserve_insertion_order": "true",
+    "max_temp_directory_size": "10GB",
+    "spill": true,
+    "temp_directory": "work/spill"
+  },
+  "capture_settings": {
+    "threads": 4,
+    "memory_limit_mb": 512,
+    "deadline_seconds": 60.0,
+    "preview_rows": 1,
+    "preview_bytes": 65536,
+    "external_file_cache": false,
+    "cold_client": true
+  },
+  "capture_process": {
+    "fresh_worker_per_run": true,
+    "spill": false,
+    "os_cache_eviction": false,
+    "order": "A1,A2,A3,B1,B2,B3,C1,C2,C3"
+  },
+  "writer": {
+    "engine": "DuckDB",
+    "compression": "ZSTD",
+    "compression_level": 3,
+    "row_group_size": 122880,
+    "parquet_version": "V1",
+    "other_options": "DuckDB 1.5.6 defaults, identical for B and C",
+    "version": "1.5.6"
+  },
+  "sql": "SELECT\n    count(*) AS n,\n    sum(CAST(fare_amount AS DECIMAL(18,2))) AS fare\nFROM input\nWHERE PULocationID = 132\n  AND trip_distance > 0",
+  "expected_result": [
+    [
+      "142826",
+      "8038349.75"
+    ]
+  ],
+  "layouts": [
+    {
+      "id": "A",
+      "label": "As delivered",
+      "name": "yellow_tripdata_2025-01.parquet",
+      "size": "59158238",
+      "sha256": "9af277e4c0d3f9deb30644da822981e1e7df6af58313170fd3aa8a474485488a",
+      "rows": "3475226",
+      "row_groups": 4,
+      "row_group_rows": [
+        1048576,
+        1048576,
+        1048576,
+        329498
+      ],
+      "schema": [
+        [
+          "VendorID",
+          "INTEGER"
+        ],
+        [
+          "tpep_pickup_datetime",
+          "TIMESTAMP"
+        ],
+        [
+          "tpep_dropoff_datetime",
+          "TIMESTAMP"
+        ],
+        [
+          "passenger_count",
+          "BIGINT"
+        ],
+        [
+          "trip_distance",
+          "DOUBLE"
+        ],
+        [
+          "RatecodeID",
+          "BIGINT"
+        ],
+        [
+          "store_and_fwd_flag",
+          "VARCHAR"
+        ],
+        [
+          "PULocationID",
+          "INTEGER"
+        ],
+        [
+          "DOLocationID",
+          "INTEGER"
+        ],
+        [
+          "payment_type",
+          "BIGINT"
+        ],
+        [
+          "fare_amount",
+          "DOUBLE"
+        ],
+        [
+          "extra",
+          "DOUBLE"
+        ],
+        [
+          "mta_tax",
+          "DOUBLE"
+        ],
+        [
+          "tip_amount",
+          "DOUBLE"
+        ],
+        [
+          "tolls_amount",
+          "DOUBLE"
+        ],
+        [
+          "improvement_surcharge",
+          "DOUBLE"
+        ],
+        [
+          "total_amount",
+          "DOUBLE"
+        ],
+        [
+          "congestion_surcharge",
+          "DOUBLE"
+        ],
+        [
+          "Airport_fee",
+          "DOUBLE"
+        ],
+        [
+          "cbd_congestion_fee",
+          "DOUBLE"
+        ]
+      ],
+      "arrow_schema": [
+        {
+          "name": "VendorID",
+          "type": "int32",
+          "nullable": true
+        },
+        {
+          "name": "tpep_pickup_datetime",
+          "type": "timestamp[us]",
+          "nullable": true
+        },
+        {
+          "name": "tpep_dropoff_datetime",
+          "type": "timestamp[us]",
+          "nullable": true
+        },
+        {
+          "name": "passenger_count",
+          "type": "int64",
+          "nullable": true
+        },
+        {
+          "name": "trip_distance",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "RatecodeID",
+          "type": "int64",
+          "nullable": true
+        },
+        {
+          "name": "store_and_fwd_flag",
+          "type": "large_string",
+          "nullable": true
+        },
+        {
+          "name": "PULocationID",
+          "type": "int32",
+          "nullable": true
+        },
+        {
+          "name": "DOLocationID",
+          "type": "int32",
+          "nullable": true
+        },
+        {
+          "name": "payment_type",
+          "type": "int64",
+          "nullable": true
+        },
+        {
+          "name": "fare_amount",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "extra",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "mta_tax",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "tip_amount",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "tolls_amount",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "improvement_surcharge",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "total_amount",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "congestion_surcharge",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "Airport_fee",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "cbd_congestion_fee",
+          "type": "double",
+          "nullable": true
+        }
+      ],
+      "parquet_schema": " field_id=-1 schema {\n  optional int32 field_id=-1 VendorID;\n  optional int64 field_id=-1 tpep_pickup_datetime (Timestamp(isAdjustedToUTC=false, timeUnit=microseconds, is_from_converted_type=false, force_set_converted_type=false));\n  optional int64 field_id=-1 tpep_dropoff_datetime (Timestamp(isAdjustedToUTC=false, timeUnit=microseconds, is_from_converted_type=false, force_set_converted_type=false));\n  optional int64 field_id=-1 passenger_count;\n  optional double field_id=-1 trip_distance;\n  optional int64 field_id=-1 RatecodeID;\n  optional binary field_id=-1 store_and_fwd_flag (String);\n  optional int32 field_id=-1 PULocationID;\n  optional int32 field_id=-1 DOLocationID;\n  optional int64 field_id=-1 payment_type;\n  optional double field_id=-1 fare_amount;\n  optional double field_id=-1 extra;\n  optional double field_id=-1 mta_tax;\n  optional double field_id=-1 tip_amount;\n  optional double field_id=-1 tolls_amount;\n  optional double field_id=-1 improvement_surcharge;\n  optional double field_id=-1 total_amount;\n  optional double field_id=-1 congestion_surcharge;\n  optional double field_id=-1 Airport_fee;\n  optional double field_id=-1 cbd_congestion_fee;\n}\n",
+      "created_by": "parquet-cpp-arrow version 16.1.0",
+      "compression": [
+        "ZSTD"
+      ],
+      "encodings": [
+        "PLAIN",
+        "RLE",
+        "RLE_DICTIONARY"
+      ],
+      "order_by": null,
+      "selected_repetition": 1,
+      "repetitions": [
+        {
+          "repetition": 1,
+          "id": "fd47b286cd684d33b713be407a128478",
+          "capture": "captures/A-1.parquetscope.json",
+          "sha256": "98f1e11d0ff0b87cf2fc95312496505631042437cc313f1357eebed0c64319c9",
+          "result": [
+            [
+              "142826",
+              "8038349.75"
+            ]
+          ],
+          "runtime_result": [
+            [
+              "142826",
+              "\"8038349.75\""
+            ]
+          ],
+          "result_digest": "9924e83320378f41d6df5283d9e8e42aa6e166258ba20ab88d82e1864ea709d2",
+          "metrics": {
+            "get_count": 14,
+            "head_count": 2,
+            "requested_range_bytes": "11387877",
+            "confirmed_range_bytes": "11387877",
+            "declared_body_bytes": "11387877",
+            "server_written_bytes": "11387877",
+            "unique_coverage_bytes": "11322341",
+            "repeated_coverage_bytes": "65536",
+            "coverage": [
+              {
+                "start": "9292341",
+                "end": "10721305"
+              },
+              {
+                "start": "10821584",
+                "end": "11563838"
+              },
+              {
+                "start": "12782419",
+                "end": "13872369"
+              },
+              {
+                "start": "26962828",
+                "end": "28402089"
+              },
+              {
+                "start": "28493628",
+                "end": "29230226"
+              },
+              {
+                "start": "30383278",
+                "end": "31474174"
+              },
+              {
+                "start": "44772108",
+                "end": "46203465"
+              },
+              {
+                "start": "46271273",
+                "end": "47034860"
+              },
+              {
+                "start": "48204534",
+                "end": "49504085"
+              },
+              {
+                "start": "56926398",
+                "end": "57361836"
+              },
+              {
+                "start": "57362233",
+                "end": "57628852"
+              },
+              {
+                "start": "57895933",
+                "end": "58428263"
+              },
+              {
+                "start": "59092702",
+                "end": "59158238"
+              }
+            ],
+            "totals_scope": "complete",
+            "unknown_reasons": []
+          },
+          "query_duration_ms": 30.084457976045087,
+          "elapsed_ms": 525.5611670145299
+        },
+        {
+          "repetition": 2,
+          "id": "060958466ab1447d93a29199c7a5a835",
+          "capture": "captures/A-2.parquetscope.json",
+          "sha256": "9a7c04fd45e73454a7d5b4c1ebb9e72d5abda5dc4f3e8bbeb66051f846d441ea",
+          "result": [
+            [
+              "142826",
+              "8038349.75"
+            ]
+          ],
+          "runtime_result": [
+            [
+              "142826",
+              "\"8038349.75\""
+            ]
+          ],
+          "result_digest": "9924e83320378f41d6df5283d9e8e42aa6e166258ba20ab88d82e1864ea709d2",
+          "metrics": {
+            "get_count": 14,
+            "head_count": 2,
+            "requested_range_bytes": "11387877",
+            "confirmed_range_bytes": "11387877",
+            "declared_body_bytes": "11387877",
+            "server_written_bytes": "11387877",
+            "unique_coverage_bytes": "11322341",
+            "repeated_coverage_bytes": "65536",
+            "coverage": [
+              {
+                "start": "9292341",
+                "end": "10721305"
+              },
+              {
+                "start": "10821584",
+                "end": "11563838"
+              },
+              {
+                "start": "12782419",
+                "end": "13872369"
+              },
+              {
+                "start": "26962828",
+                "end": "28402089"
+              },
+              {
+                "start": "28493628",
+                "end": "29230226"
+              },
+              {
+                "start": "30383278",
+                "end": "31474174"
+              },
+              {
+                "start": "44772108",
+                "end": "46203465"
+              },
+              {
+                "start": "46271273",
+                "end": "47034860"
+              },
+              {
+                "start": "48204534",
+                "end": "49504085"
+              },
+              {
+                "start": "56926398",
+                "end": "57361836"
+              },
+              {
+                "start": "57362233",
+                "end": "57628852"
+              },
+              {
+                "start": "57895933",
+                "end": "58428263"
+              },
+              {
+                "start": "59092702",
+                "end": "59158238"
+              }
+            ],
+            "totals_scope": "complete",
+            "unknown_reasons": []
+          },
+          "query_duration_ms": 29.988333000801504,
+          "elapsed_ms": 364.9068330123555
+        },
+        {
+          "repetition": 3,
+          "id": "026be27c909846d2a982dc078c86b7df",
+          "capture": "captures/A-3.parquetscope.json",
+          "sha256": "d9200f62b7d514b93b3889b293f2fca844acd169a17a4bae57a26704ac6b951a",
+          "result": [
+            [
+              "142826",
+              "8038349.75"
+            ]
+          ],
+          "runtime_result": [
+            [
+              "142826",
+              "\"8038349.75\""
+            ]
+          ],
+          "result_digest": "9924e83320378f41d6df5283d9e8e42aa6e166258ba20ab88d82e1864ea709d2",
+          "metrics": {
+            "get_count": 14,
+            "head_count": 2,
+            "requested_range_bytes": "11387877",
+            "confirmed_range_bytes": "11387877",
+            "declared_body_bytes": "11387877",
+            "server_written_bytes": "11387877",
+            "unique_coverage_bytes": "11322341",
+            "repeated_coverage_bytes": "65536",
+            "coverage": [
+              {
+                "start": "9292341",
+                "end": "10721305"
+              },
+              {
+                "start": "10821584",
+                "end": "11563838"
+              },
+              {
+                "start": "12782419",
+                "end": "13872369"
+              },
+              {
+                "start": "26962828",
+                "end": "28402089"
+              },
+              {
+                "start": "28493628",
+                "end": "29230226"
+              },
+              {
+                "start": "30383278",
+                "end": "31474174"
+              },
+              {
+                "start": "44772108",
+                "end": "46203465"
+              },
+              {
+                "start": "46271273",
+                "end": "47034860"
+              },
+              {
+                "start": "48204534",
+                "end": "49504085"
+              },
+              {
+                "start": "56926398",
+                "end": "57361836"
+              },
+              {
+                "start": "57362233",
+                "end": "57628852"
+              },
+              {
+                "start": "57895933",
+                "end": "58428263"
+              },
+              {
+                "start": "59092702",
+                "end": "59158238"
+              }
+            ],
+            "totals_scope": "complete",
+            "unknown_reasons": []
+          },
+          "query_duration_ms": 36.22275000088848,
+          "elapsed_ms": 400.9327920211945
+        }
+      ],
+      "preparation_result": [
+        [
+          "142826",
+          "8038349.75"
+        ]
+      ],
+      "viewer": "viewers/A.viewer.html"
+    },
+    {
+      "id": "B",
+      "label": "Repacked, original order",
+      "name": "repacked.parquet",
+      "size": "53370794",
+      "sha256": "8c5ae22c21aa615b82afa1136644c642bc0d5529958b6ae6580815a6247e2893",
+      "rows": "3475226",
+      "row_groups": 29,
+      "row_group_rows": [
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        34586
+      ],
+      "schema": [
+        [
+          "VendorID",
+          "INTEGER"
+        ],
+        [
+          "tpep_pickup_datetime",
+          "TIMESTAMP"
+        ],
+        [
+          "tpep_dropoff_datetime",
+          "TIMESTAMP"
+        ],
+        [
+          "passenger_count",
+          "BIGINT"
+        ],
+        [
+          "trip_distance",
+          "DOUBLE"
+        ],
+        [
+          "RatecodeID",
+          "BIGINT"
+        ],
+        [
+          "store_and_fwd_flag",
+          "VARCHAR"
+        ],
+        [
+          "PULocationID",
+          "INTEGER"
+        ],
+        [
+          "DOLocationID",
+          "INTEGER"
+        ],
+        [
+          "payment_type",
+          "BIGINT"
+        ],
+        [
+          "fare_amount",
+          "DOUBLE"
+        ],
+        [
+          "extra",
+          "DOUBLE"
+        ],
+        [
+          "mta_tax",
+          "DOUBLE"
+        ],
+        [
+          "tip_amount",
+          "DOUBLE"
+        ],
+        [
+          "tolls_amount",
+          "DOUBLE"
+        ],
+        [
+          "improvement_surcharge",
+          "DOUBLE"
+        ],
+        [
+          "total_amount",
+          "DOUBLE"
+        ],
+        [
+          "congestion_surcharge",
+          "DOUBLE"
+        ],
+        [
+          "Airport_fee",
+          "DOUBLE"
+        ],
+        [
+          "cbd_congestion_fee",
+          "DOUBLE"
+        ]
+      ],
+      "arrow_schema": [
+        {
+          "name": "VendorID",
+          "type": "int32",
+          "nullable": true
+        },
+        {
+          "name": "tpep_pickup_datetime",
+          "type": "timestamp[us]",
+          "nullable": true
+        },
+        {
+          "name": "tpep_dropoff_datetime",
+          "type": "timestamp[us]",
+          "nullable": true
+        },
+        {
+          "name": "passenger_count",
+          "type": "int64",
+          "nullable": true
+        },
+        {
+          "name": "trip_distance",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "RatecodeID",
+          "type": "int64",
+          "nullable": true
+        },
+        {
+          "name": "store_and_fwd_flag",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "PULocationID",
+          "type": "int32",
+          "nullable": true
+        },
+        {
+          "name": "DOLocationID",
+          "type": "int32",
+          "nullable": true
+        },
+        {
+          "name": "payment_type",
+          "type": "int64",
+          "nullable": true
+        },
+        {
+          "name": "fare_amount",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "extra",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "mta_tax",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "tip_amount",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "tolls_amount",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "improvement_surcharge",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "total_amount",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "congestion_surcharge",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "Airport_fee",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "cbd_congestion_fee",
+          "type": "double",
+          "nullable": true
+        }
+      ],
+      "parquet_schema": " field_id=-1 duckdb_schema {\n  optional int32 field_id=-1 VendorID (Int(bitWidth=32, isSigned=true));\n  optional int64 field_id=-1 tpep_pickup_datetime (Timestamp(isAdjustedToUTC=false, timeUnit=microseconds, is_from_converted_type=false, force_set_converted_type=false));\n  optional int64 field_id=-1 tpep_dropoff_datetime (Timestamp(isAdjustedToUTC=false, timeUnit=microseconds, is_from_converted_type=false, force_set_converted_type=false));\n  optional int64 field_id=-1 passenger_count (Int(bitWidth=64, isSigned=true));\n  optional double field_id=-1 trip_distance;\n  optional int64 field_id=-1 RatecodeID (Int(bitWidth=64, isSigned=true));\n  optional binary field_id=-1 store_and_fwd_flag (String);\n  optional int32 field_id=-1 PULocationID (Int(bitWidth=32, isSigned=true));\n  optional int32 field_id=-1 DOLocationID (Int(bitWidth=32, isSigned=true));\n  optional int64 field_id=-1 payment_type (Int(bitWidth=64, isSigned=true));\n  optional double field_id=-1 fare_amount;\n  optional double field_id=-1 extra;\n  optional double field_id=-1 mta_tax;\n  optional double field_id=-1 tip_amount;\n  optional double field_id=-1 tolls_amount;\n  optional double field_id=-1 improvement_surcharge;\n  optional double field_id=-1 total_amount;\n  optional double field_id=-1 congestion_surcharge;\n  optional double field_id=-1 Airport_fee;\n  optional double field_id=-1 cbd_congestion_fee;\n}\n",
+      "created_by": "DuckDB version v1.5.6 (build 069cc9f9b5)",
+      "compression": [
+        "ZSTD"
+      ],
+      "encodings": [
+        "PLAIN",
+        "PLAIN_DICTIONARY"
+      ],
+      "order_by": null,
+      "selected_repetition": 1,
+      "repetitions": [
+        {
+          "repetition": 1,
+          "id": "dc3d0958dece4dde84c4fe46fdff9a72",
+          "capture": "captures/B-1.parquetscope.json",
+          "sha256": "df40acaa7a187d4990615ff282edcb4d7ab1ad079804132fe4227fda8cdc0abd",
+          "result": [
+            [
+              "142826",
+              "8038349.75"
+            ]
+          ],
+          "runtime_result": [
+            [
+              "142826",
+              "\"8038349.75\""
+            ]
+          ],
+          "result_digest": "9924e83320378f41d6df5283d9e8e42aa6e166258ba20ab88d82e1864ea709d2",
+          "metrics": {
+            "get_count": 118,
+            "head_count": 2,
+            "requested_range_bytes": "11446545",
+            "confirmed_range_bytes": "11446545",
+            "declared_body_bytes": "11446545",
+            "server_written_bytes": "11446545",
+            "unique_coverage_bytes": "11381009",
+            "repeated_coverage_bytes": "65536",
+            "coverage": [
+              {
+                "start": "925312",
+                "end": "1101645"
+              },
+              {
+                "start": "1116498",
+                "end": "1205443"
+              },
+              {
+                "start": "1352247",
+                "end": "1477175"
+              },
+              {
+                "start": "2826089",
+                "end": "3003442"
+              },
+              {
+                "start": "3016763",
+                "end": "3104557"
+              },
+              {
+                "start": "3221355",
+                "end": "3346684"
+              },
+              {
+                "start": "4698919",
+                "end": "4879050"
+              },
+              {
+                "start": "4891262",
+                "end": "4979414"
+              },
+              {
+                "start": "5095813",
+                "end": "5222356"
+              },
+              {
+                "start": "6585192",
+                "end": "6762208"
+              },
+              {
+                "start": "6776228",
+                "end": "6862880"
+              },
+              {
+                "start": "6977524",
+                "end": "7098072"
+              },
+              {
+                "start": "8464917",
+                "end": "8638671"
+              },
+              {
+                "start": "8650969",
+                "end": "8737710"
+              },
+              {
+                "start": "8847962",
+                "end": "8968377"
+              },
+              {
+                "start": "10305300",
+                "end": "10477029"
+              },
+              {
+                "start": "10488386",
+                "end": "10574743"
+              },
+              {
+                "start": "10685359",
+                "end": "10805440"
+              },
+              {
+                "start": "12148421",
+                "end": "12322986"
+              },
+              {
+                "start": "12334599",
+                "end": "12421403"
+              },
+              {
+                "start": "12533147",
+                "end": "12653928"
+              },
+              {
+                "start": "14011881",
+                "end": "14187931"
+              },
+              {
+                "start": "14198240",
+                "end": "14286028"
+              },
+              {
+                "start": "14398013",
+                "end": "14519650"
+              },
+              {
+                "start": "15894190",
+                "end": "16071335"
+              },
+              {
+                "start": "16084452",
+                "end": "16172967"
+              },
+              {
+                "start": "16286803",
+                "end": "16408398"
+              },
+              {
+                "start": "17755319",
+                "end": "17930903"
+              },
+              {
+                "start": "17943404",
+                "end": "18029876"
+              },
+              {
+                "start": "18140315",
+                "end": "18262239"
+              },
+              {
+                "start": "19599813",
+                "end": "19772405"
+              },
+              {
+                "start": "19783530",
+                "end": "19870005"
+              },
+              {
+                "start": "19980042",
+                "end": "20099881"
+              },
+              {
+                "start": "21427204",
+                "end": "21600946"
+              },
+              {
+                "start": "21611672",
+                "end": "21698646"
+              },
+              {
+                "start": "21809633",
+                "end": "21927442"
+              },
+              {
+                "start": "23295377",
+                "end": "23471319"
+              },
+              {
+                "start": "23482315",
+                "end": "23570824"
+              },
+              {
+                "start": "23683888",
+                "end": "23806639"
+              },
+              {
+                "start": "25176258",
+                "end": "25349891"
+              },
+              {
+                "start": "25361535",
+                "end": "25450281"
+              },
+              {
+                "start": "25564037",
+                "end": "25684424"
+              },
+              {
+                "start": "27048109",
+                "end": "27224743"
+              },
+              {
+                "start": "27238435",
+                "end": "27324934"
+              },
+              {
+                "start": "27439155",
+                "end": "27566450"
+              },
+              {
+                "start": "28915334",
+                "end": "29087845"
+              },
+              {
+                "start": "29099456",
+                "end": "29185459"
+              },
+              {
+                "start": "29295480",
+                "end": "29412337"
+              },
+              {
+                "start": "30745836",
+                "end": "30918492"
+              },
+              {
+                "start": "30929434",
+                "end": "31015879"
+              },
+              {
+                "start": "31125779",
+                "end": "31245525"
+              },
+              {
+                "start": "32583401",
+                "end": "32758504"
+              },
+              {
+                "start": "32769411",
+                "end": "32856059"
+              },
+              {
+                "start": "32966395",
+                "end": "33089916"
+              },
+              {
+                "start": "34443680",
+                "end": "34616940"
+              },
+              {
+                "start": "34626558",
+                "end": "34714322"
+              },
+              {
+                "start": "34825805",
+                "end": "34944079"
+              },
+              {
+                "start": "36314209",
+                "end": "36489854"
+              },
+              {
+                "start": "36501491",
+                "end": "36590025"
+              },
+              {
+                "start": "36703916",
+                "end": "36828168"
+              },
+              {
+                "start": "38183716",
+                "end": "38356056"
+              },
+              {
+                "start": "38367891",
+                "end": "38454662"
+              },
+              {
+                "start": "38565455",
+                "end": "38684772"
+              },
+              {
+                "start": "40024963",
+                "end": "40199334"
+              },
+              {
+                "start": "40209787",
+                "end": "40296399"
+              },
+              {
+                "start": "40406486",
+                "end": "40524754"
+              },
+              {
+                "start": "41861995",
+                "end": "42036872"
+              },
+              {
+                "start": "42047715",
+                "end": "42134675"
+              },
+              {
+                "start": "42245790",
+                "end": "42367204"
+              },
+              {
+                "start": "43735507",
+                "end": "43911485"
+              },
+              {
+                "start": "43921681",
+                "end": "44013950"
+              },
+              {
+                "start": "44126410",
+                "end": "44287630"
+              },
+              {
+                "start": "45748523",
+                "end": "45919042"
+              },
+              {
+                "start": "45919114",
+                "end": "46018950"
+              },
+              {
+                "start": "46118593",
+                "end": "46340321"
+              },
+              {
+                "start": "47619496",
+                "end": "47783743"
+              },
+              {
+                "start": "47783815",
+                "end": "47882818"
+              },
+              {
+                "start": "47981588",
+                "end": "48187701"
+              },
+              {
+                "start": "49431294",
+                "end": "49600547"
+              },
+              {
+                "start": "49600619",
+                "end": "49701475"
+              },
+              {
+                "start": "49802050",
+                "end": "50011632"
+              },
+              {
+                "start": "51266620",
+                "end": "51429436"
+              },
+              {
+                "start": "51429508",
+                "end": "51528599"
+              },
+              {
+                "start": "51628250",
+                "end": "51832754"
+              },
+              {
+                "start": "52383525",
+                "end": "52431880"
+              },
+              {
+                "start": "52431952",
+                "end": "52460324"
+              },
+              {
+                "start": "52488763",
+                "end": "52551545"
+              },
+              {
+                "start": "52645332",
+                "end": "52645860"
+              },
+              {
+                "start": "52674155",
+                "end": "52674683"
+              },
+              {
+                "start": "52694530",
+                "end": "52695058"
+              },
+              {
+                "start": "52714905",
+                "end": "52715433"
+              },
+              {
+                "start": "52743728",
+                "end": "52744256"
+              },
+              {
+                "start": "52763079",
+                "end": "52763607"
+              },
+              {
+                "start": "52782430",
+                "end": "52782958"
+              },
+              {
+                "start": "52809973",
+                "end": "52810501"
+              },
+              {
+                "start": "52829324",
+                "end": "52829852"
+              },
+              {
+                "start": "52849699",
+                "end": "52850227"
+              },
+              {
+                "start": "52869050",
+                "end": "52869578"
+              },
+              {
+                "start": "52888401",
+                "end": "52888929"
+              },
+              {
+                "start": "52907752",
+                "end": "52908280"
+              },
+              {
+                "start": "52936319",
+                "end": "52936847"
+              },
+              {
+                "start": "52955670",
+                "end": "52956198"
+              },
+              {
+                "start": "52984493",
+                "end": "52985021"
+              },
+              {
+                "start": "53003844",
+                "end": "53004372"
+              },
+              {
+                "start": "53023195",
+                "end": "53023723"
+              },
+              {
+                "start": "53042546",
+                "end": "53043074"
+              },
+              {
+                "start": "53061897",
+                "end": "53062425"
+              },
+              {
+                "start": "53082272",
+                "end": "53082800"
+              },
+              {
+                "start": "53101623",
+                "end": "53102151"
+              },
+              {
+                "start": "53120974",
+                "end": "53121502"
+              },
+              {
+                "start": "53140325",
+                "end": "53140853"
+              },
+              {
+                "start": "53174896",
+                "end": "53175424"
+              },
+              {
+                "start": "53215356",
+                "end": "53215884"
+              },
+              {
+                "start": "53239432",
+                "end": "53239960"
+              },
+              {
+                "start": "53271636",
+                "end": "53272164"
+              },
+              {
+                "start": "53293600",
+                "end": "53294128"
+              },
+              {
+                "start": "53305258",
+                "end": "53370794"
+              }
+            ],
+            "totals_scope": "complete",
+            "unknown_reasons": []
+          },
+          "query_duration_ms": 71.92520899116062,
+          "elapsed_ms": 495.60370802646503
+        },
+        {
+          "repetition": 2,
+          "id": "e9cffb02c7254970a4aa99725a69aaf4",
+          "capture": "captures/B-2.parquetscope.json",
+          "sha256": "5d42c12c939e500a83302ff78736f59d205f0f9cdd6c00e9ffbcfa4e983736b7",
+          "result": [
+            [
+              "142826",
+              "8038349.75"
+            ]
+          ],
+          "runtime_result": [
+            [
+              "142826",
+              "\"8038349.75\""
+            ]
+          ],
+          "result_digest": "9924e83320378f41d6df5283d9e8e42aa6e166258ba20ab88d82e1864ea709d2",
+          "metrics": {
+            "get_count": 118,
+            "head_count": 2,
+            "requested_range_bytes": "11446545",
+            "confirmed_range_bytes": "11446545",
+            "declared_body_bytes": "11446545",
+            "server_written_bytes": "11446545",
+            "unique_coverage_bytes": "11381009",
+            "repeated_coverage_bytes": "65536",
+            "coverage": [
+              {
+                "start": "925312",
+                "end": "1101645"
+              },
+              {
+                "start": "1116498",
+                "end": "1205443"
+              },
+              {
+                "start": "1352247",
+                "end": "1477175"
+              },
+              {
+                "start": "2826089",
+                "end": "3003442"
+              },
+              {
+                "start": "3016763",
+                "end": "3104557"
+              },
+              {
+                "start": "3221355",
+                "end": "3346684"
+              },
+              {
+                "start": "4698919",
+                "end": "4879050"
+              },
+              {
+                "start": "4891262",
+                "end": "4979414"
+              },
+              {
+                "start": "5095813",
+                "end": "5222356"
+              },
+              {
+                "start": "6585192",
+                "end": "6762208"
+              },
+              {
+                "start": "6776228",
+                "end": "6862880"
+              },
+              {
+                "start": "6977524",
+                "end": "7098072"
+              },
+              {
+                "start": "8464917",
+                "end": "8638671"
+              },
+              {
+                "start": "8650969",
+                "end": "8737710"
+              },
+              {
+                "start": "8847962",
+                "end": "8968377"
+              },
+              {
+                "start": "10305300",
+                "end": "10477029"
+              },
+              {
+                "start": "10488386",
+                "end": "10574743"
+              },
+              {
+                "start": "10685359",
+                "end": "10805440"
+              },
+              {
+                "start": "12148421",
+                "end": "12322986"
+              },
+              {
+                "start": "12334599",
+                "end": "12421403"
+              },
+              {
+                "start": "12533147",
+                "end": "12653928"
+              },
+              {
+                "start": "14011881",
+                "end": "14187931"
+              },
+              {
+                "start": "14198240",
+                "end": "14286028"
+              },
+              {
+                "start": "14398013",
+                "end": "14519650"
+              },
+              {
+                "start": "15894190",
+                "end": "16071335"
+              },
+              {
+                "start": "16084452",
+                "end": "16172967"
+              },
+              {
+                "start": "16286803",
+                "end": "16408398"
+              },
+              {
+                "start": "17755319",
+                "end": "17930903"
+              },
+              {
+                "start": "17943404",
+                "end": "18029876"
+              },
+              {
+                "start": "18140315",
+                "end": "18262239"
+              },
+              {
+                "start": "19599813",
+                "end": "19772405"
+              },
+              {
+                "start": "19783530",
+                "end": "19870005"
+              },
+              {
+                "start": "19980042",
+                "end": "20099881"
+              },
+              {
+                "start": "21427204",
+                "end": "21600946"
+              },
+              {
+                "start": "21611672",
+                "end": "21698646"
+              },
+              {
+                "start": "21809633",
+                "end": "21927442"
+              },
+              {
+                "start": "23295377",
+                "end": "23471319"
+              },
+              {
+                "start": "23482315",
+                "end": "23570824"
+              },
+              {
+                "start": "23683888",
+                "end": "23806639"
+              },
+              {
+                "start": "25176258",
+                "end": "25349891"
+              },
+              {
+                "start": "25361535",
+                "end": "25450281"
+              },
+              {
+                "start": "25564037",
+                "end": "25684424"
+              },
+              {
+                "start": "27048109",
+                "end": "27224743"
+              },
+              {
+                "start": "27238435",
+                "end": "27324934"
+              },
+              {
+                "start": "27439155",
+                "end": "27566450"
+              },
+              {
+                "start": "28915334",
+                "end": "29087845"
+              },
+              {
+                "start": "29099456",
+                "end": "29185459"
+              },
+              {
+                "start": "29295480",
+                "end": "29412337"
+              },
+              {
+                "start": "30745836",
+                "end": "30918492"
+              },
+              {
+                "start": "30929434",
+                "end": "31015879"
+              },
+              {
+                "start": "31125779",
+                "end": "31245525"
+              },
+              {
+                "start": "32583401",
+                "end": "32758504"
+              },
+              {
+                "start": "32769411",
+                "end": "32856059"
+              },
+              {
+                "start": "32966395",
+                "end": "33089916"
+              },
+              {
+                "start": "34443680",
+                "end": "34616940"
+              },
+              {
+                "start": "34626558",
+                "end": "34714322"
+              },
+              {
+                "start": "34825805",
+                "end": "34944079"
+              },
+              {
+                "start": "36314209",
+                "end": "36489854"
+              },
+              {
+                "start": "36501491",
+                "end": "36590025"
+              },
+              {
+                "start": "36703916",
+                "end": "36828168"
+              },
+              {
+                "start": "38183716",
+                "end": "38356056"
+              },
+              {
+                "start": "38367891",
+                "end": "38454662"
+              },
+              {
+                "start": "38565455",
+                "end": "38684772"
+              },
+              {
+                "start": "40024963",
+                "end": "40199334"
+              },
+              {
+                "start": "40209787",
+                "end": "40296399"
+              },
+              {
+                "start": "40406486",
+                "end": "40524754"
+              },
+              {
+                "start": "41861995",
+                "end": "42036872"
+              },
+              {
+                "start": "42047715",
+                "end": "42134675"
+              },
+              {
+                "start": "42245790",
+                "end": "42367204"
+              },
+              {
+                "start": "43735507",
+                "end": "43911485"
+              },
+              {
+                "start": "43921681",
+                "end": "44013950"
+              },
+              {
+                "start": "44126410",
+                "end": "44287630"
+              },
+              {
+                "start": "45748523",
+                "end": "45919042"
+              },
+              {
+                "start": "45919114",
+                "end": "46018950"
+              },
+              {
+                "start": "46118593",
+                "end": "46340321"
+              },
+              {
+                "start": "47619496",
+                "end": "47783743"
+              },
+              {
+                "start": "47783815",
+                "end": "47882818"
+              },
+              {
+                "start": "47981588",
+                "end": "48187701"
+              },
+              {
+                "start": "49431294",
+                "end": "49600547"
+              },
+              {
+                "start": "49600619",
+                "end": "49701475"
+              },
+              {
+                "start": "49802050",
+                "end": "50011632"
+              },
+              {
+                "start": "51266620",
+                "end": "51429436"
+              },
+              {
+                "start": "51429508",
+                "end": "51528599"
+              },
+              {
+                "start": "51628250",
+                "end": "51832754"
+              },
+              {
+                "start": "52383525",
+                "end": "52431880"
+              },
+              {
+                "start": "52431952",
+                "end": "52460324"
+              },
+              {
+                "start": "52488763",
+                "end": "52551545"
+              },
+              {
+                "start": "52645332",
+                "end": "52645860"
+              },
+              {
+                "start": "52674155",
+                "end": "52674683"
+              },
+              {
+                "start": "52694530",
+                "end": "52695058"
+              },
+              {
+                "start": "52714905",
+                "end": "52715433"
+              },
+              {
+                "start": "52743728",
+                "end": "52744256"
+              },
+              {
+                "start": "52763079",
+                "end": "52763607"
+              },
+              {
+                "start": "52782430",
+                "end": "52782958"
+              },
+              {
+                "start": "52809973",
+                "end": "52810501"
+              },
+              {
+                "start": "52829324",
+                "end": "52829852"
+              },
+              {
+                "start": "52849699",
+                "end": "52850227"
+              },
+              {
+                "start": "52869050",
+                "end": "52869578"
+              },
+              {
+                "start": "52888401",
+                "end": "52888929"
+              },
+              {
+                "start": "52907752",
+                "end": "52908280"
+              },
+              {
+                "start": "52936319",
+                "end": "52936847"
+              },
+              {
+                "start": "52955670",
+                "end": "52956198"
+              },
+              {
+                "start": "52984493",
+                "end": "52985021"
+              },
+              {
+                "start": "53003844",
+                "end": "53004372"
+              },
+              {
+                "start": "53023195",
+                "end": "53023723"
+              },
+              {
+                "start": "53042546",
+                "end": "53043074"
+              },
+              {
+                "start": "53061897",
+                "end": "53062425"
+              },
+              {
+                "start": "53082272",
+                "end": "53082800"
+              },
+              {
+                "start": "53101623",
+                "end": "53102151"
+              },
+              {
+                "start": "53120974",
+                "end": "53121502"
+              },
+              {
+                "start": "53140325",
+                "end": "53140853"
+              },
+              {
+                "start": "53174896",
+                "end": "53175424"
+              },
+              {
+                "start": "53215356",
+                "end": "53215884"
+              },
+              {
+                "start": "53239432",
+                "end": "53239960"
+              },
+              {
+                "start": "53271636",
+                "end": "53272164"
+              },
+              {
+                "start": "53293600",
+                "end": "53294128"
+              },
+              {
+                "start": "53305258",
+                "end": "53370794"
+              }
+            ],
+            "totals_scope": "complete",
+            "unknown_reasons": []
+          },
+          "query_duration_ms": 49.79954200098291,
+          "elapsed_ms": 654.642707988387
+        },
+        {
+          "repetition": 3,
+          "id": "3892b61eadf14ff590c17ef7229c4024",
+          "capture": "captures/B-3.parquetscope.json",
+          "sha256": "1fcaceef96ad131d2a5706f4a92de9d583c17cc74f6a6ebe7f05894220b8afa9",
+          "result": [
+            [
+              "142826",
+              "8038349.75"
+            ]
+          ],
+          "runtime_result": [
+            [
+              "142826",
+              "\"8038349.75\""
+            ]
+          ],
+          "result_digest": "9924e83320378f41d6df5283d9e8e42aa6e166258ba20ab88d82e1864ea709d2",
+          "metrics": {
+            "get_count": 118,
+            "head_count": 2,
+            "requested_range_bytes": "11446545",
+            "confirmed_range_bytes": "11446545",
+            "declared_body_bytes": "11446545",
+            "server_written_bytes": "11446545",
+            "unique_coverage_bytes": "11381009",
+            "repeated_coverage_bytes": "65536",
+            "coverage": [
+              {
+                "start": "925312",
+                "end": "1101645"
+              },
+              {
+                "start": "1116498",
+                "end": "1205443"
+              },
+              {
+                "start": "1352247",
+                "end": "1477175"
+              },
+              {
+                "start": "2826089",
+                "end": "3003442"
+              },
+              {
+                "start": "3016763",
+                "end": "3104557"
+              },
+              {
+                "start": "3221355",
+                "end": "3346684"
+              },
+              {
+                "start": "4698919",
+                "end": "4879050"
+              },
+              {
+                "start": "4891262",
+                "end": "4979414"
+              },
+              {
+                "start": "5095813",
+                "end": "5222356"
+              },
+              {
+                "start": "6585192",
+                "end": "6762208"
+              },
+              {
+                "start": "6776228",
+                "end": "6862880"
+              },
+              {
+                "start": "6977524",
+                "end": "7098072"
+              },
+              {
+                "start": "8464917",
+                "end": "8638671"
+              },
+              {
+                "start": "8650969",
+                "end": "8737710"
+              },
+              {
+                "start": "8847962",
+                "end": "8968377"
+              },
+              {
+                "start": "10305300",
+                "end": "10477029"
+              },
+              {
+                "start": "10488386",
+                "end": "10574743"
+              },
+              {
+                "start": "10685359",
+                "end": "10805440"
+              },
+              {
+                "start": "12148421",
+                "end": "12322986"
+              },
+              {
+                "start": "12334599",
+                "end": "12421403"
+              },
+              {
+                "start": "12533147",
+                "end": "12653928"
+              },
+              {
+                "start": "14011881",
+                "end": "14187931"
+              },
+              {
+                "start": "14198240",
+                "end": "14286028"
+              },
+              {
+                "start": "14398013",
+                "end": "14519650"
+              },
+              {
+                "start": "15894190",
+                "end": "16071335"
+              },
+              {
+                "start": "16084452",
+                "end": "16172967"
+              },
+              {
+                "start": "16286803",
+                "end": "16408398"
+              },
+              {
+                "start": "17755319",
+                "end": "17930903"
+              },
+              {
+                "start": "17943404",
+                "end": "18029876"
+              },
+              {
+                "start": "18140315",
+                "end": "18262239"
+              },
+              {
+                "start": "19599813",
+                "end": "19772405"
+              },
+              {
+                "start": "19783530",
+                "end": "19870005"
+              },
+              {
+                "start": "19980042",
+                "end": "20099881"
+              },
+              {
+                "start": "21427204",
+                "end": "21600946"
+              },
+              {
+                "start": "21611672",
+                "end": "21698646"
+              },
+              {
+                "start": "21809633",
+                "end": "21927442"
+              },
+              {
+                "start": "23295377",
+                "end": "23471319"
+              },
+              {
+                "start": "23482315",
+                "end": "23570824"
+              },
+              {
+                "start": "23683888",
+                "end": "23806639"
+              },
+              {
+                "start": "25176258",
+                "end": "25349891"
+              },
+              {
+                "start": "25361535",
+                "end": "25450281"
+              },
+              {
+                "start": "25564037",
+                "end": "25684424"
+              },
+              {
+                "start": "27048109",
+                "end": "27224743"
+              },
+              {
+                "start": "27238435",
+                "end": "27324934"
+              },
+              {
+                "start": "27439155",
+                "end": "27566450"
+              },
+              {
+                "start": "28915334",
+                "end": "29087845"
+              },
+              {
+                "start": "29099456",
+                "end": "29185459"
+              },
+              {
+                "start": "29295480",
+                "end": "29412337"
+              },
+              {
+                "start": "30745836",
+                "end": "30918492"
+              },
+              {
+                "start": "30929434",
+                "end": "31015879"
+              },
+              {
+                "start": "31125779",
+                "end": "31245525"
+              },
+              {
+                "start": "32583401",
+                "end": "32758504"
+              },
+              {
+                "start": "32769411",
+                "end": "32856059"
+              },
+              {
+                "start": "32966395",
+                "end": "33089916"
+              },
+              {
+                "start": "34443680",
+                "end": "34616940"
+              },
+              {
+                "start": "34626558",
+                "end": "34714322"
+              },
+              {
+                "start": "34825805",
+                "end": "34944079"
+              },
+              {
+                "start": "36314209",
+                "end": "36489854"
+              },
+              {
+                "start": "36501491",
+                "end": "36590025"
+              },
+              {
+                "start": "36703916",
+                "end": "36828168"
+              },
+              {
+                "start": "38183716",
+                "end": "38356056"
+              },
+              {
+                "start": "38367891",
+                "end": "38454662"
+              },
+              {
+                "start": "38565455",
+                "end": "38684772"
+              },
+              {
+                "start": "40024963",
+                "end": "40199334"
+              },
+              {
+                "start": "40209787",
+                "end": "40296399"
+              },
+              {
+                "start": "40406486",
+                "end": "40524754"
+              },
+              {
+                "start": "41861995",
+                "end": "42036872"
+              },
+              {
+                "start": "42047715",
+                "end": "42134675"
+              },
+              {
+                "start": "42245790",
+                "end": "42367204"
+              },
+              {
+                "start": "43735507",
+                "end": "43911485"
+              },
+              {
+                "start": "43921681",
+                "end": "44013950"
+              },
+              {
+                "start": "44126410",
+                "end": "44287630"
+              },
+              {
+                "start": "45748523",
+                "end": "45919042"
+              },
+              {
+                "start": "45919114",
+                "end": "46018950"
+              },
+              {
+                "start": "46118593",
+                "end": "46340321"
+              },
+              {
+                "start": "47619496",
+                "end": "47783743"
+              },
+              {
+                "start": "47783815",
+                "end": "47882818"
+              },
+              {
+                "start": "47981588",
+                "end": "48187701"
+              },
+              {
+                "start": "49431294",
+                "end": "49600547"
+              },
+              {
+                "start": "49600619",
+                "end": "49701475"
+              },
+              {
+                "start": "49802050",
+                "end": "50011632"
+              },
+              {
+                "start": "51266620",
+                "end": "51429436"
+              },
+              {
+                "start": "51429508",
+                "end": "51528599"
+              },
+              {
+                "start": "51628250",
+                "end": "51832754"
+              },
+              {
+                "start": "52383525",
+                "end": "52431880"
+              },
+              {
+                "start": "52431952",
+                "end": "52460324"
+              },
+              {
+                "start": "52488763",
+                "end": "52551545"
+              },
+              {
+                "start": "52645332",
+                "end": "52645860"
+              },
+              {
+                "start": "52674155",
+                "end": "52674683"
+              },
+              {
+                "start": "52694530",
+                "end": "52695058"
+              },
+              {
+                "start": "52714905",
+                "end": "52715433"
+              },
+              {
+                "start": "52743728",
+                "end": "52744256"
+              },
+              {
+                "start": "52763079",
+                "end": "52763607"
+              },
+              {
+                "start": "52782430",
+                "end": "52782958"
+              },
+              {
+                "start": "52809973",
+                "end": "52810501"
+              },
+              {
+                "start": "52829324",
+                "end": "52829852"
+              },
+              {
+                "start": "52849699",
+                "end": "52850227"
+              },
+              {
+                "start": "52869050",
+                "end": "52869578"
+              },
+              {
+                "start": "52888401",
+                "end": "52888929"
+              },
+              {
+                "start": "52907752",
+                "end": "52908280"
+              },
+              {
+                "start": "52936319",
+                "end": "52936847"
+              },
+              {
+                "start": "52955670",
+                "end": "52956198"
+              },
+              {
+                "start": "52984493",
+                "end": "52985021"
+              },
+              {
+                "start": "53003844",
+                "end": "53004372"
+              },
+              {
+                "start": "53023195",
+                "end": "53023723"
+              },
+              {
+                "start": "53042546",
+                "end": "53043074"
+              },
+              {
+                "start": "53061897",
+                "end": "53062425"
+              },
+              {
+                "start": "53082272",
+                "end": "53082800"
+              },
+              {
+                "start": "53101623",
+                "end": "53102151"
+              },
+              {
+                "start": "53120974",
+                "end": "53121502"
+              },
+              {
+                "start": "53140325",
+                "end": "53140853"
+              },
+              {
+                "start": "53174896",
+                "end": "53175424"
+              },
+              {
+                "start": "53215356",
+                "end": "53215884"
+              },
+              {
+                "start": "53239432",
+                "end": "53239960"
+              },
+              {
+                "start": "53271636",
+                "end": "53272164"
+              },
+              {
+                "start": "53293600",
+                "end": "53294128"
+              },
+              {
+                "start": "53305258",
+                "end": "53370794"
+              }
+            ],
+            "totals_scope": "complete",
+            "unknown_reasons": []
+          },
+          "query_duration_ms": 59.72491699503735,
+          "elapsed_ms": 418.79979200894013
+        }
+      ],
+      "preparation_result": [
+        [
+          "142826",
+          "8038349.75"
+        ]
+      ],
+      "viewer": "viewers/B.viewer.html"
+    },
+    {
+      "id": "C",
+      "label": "Sorted by pickup location",
+      "name": "sorted.parquet",
+      "size": "59417539",
+      "sha256": "15c9e1d09f0b88067e6dc9c152927e9fe618552fdea2f962dc0fd26a88780ddd",
+      "rows": "3475226",
+      "row_groups": 29,
+      "row_group_rows": [
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        34586
+      ],
+      "schema": [
+        [
+          "VendorID",
+          "INTEGER"
+        ],
+        [
+          "tpep_pickup_datetime",
+          "TIMESTAMP"
+        ],
+        [
+          "tpep_dropoff_datetime",
+          "TIMESTAMP"
+        ],
+        [
+          "passenger_count",
+          "BIGINT"
+        ],
+        [
+          "trip_distance",
+          "DOUBLE"
+        ],
+        [
+          "RatecodeID",
+          "BIGINT"
+        ],
+        [
+          "store_and_fwd_flag",
+          "VARCHAR"
+        ],
+        [
+          "PULocationID",
+          "INTEGER"
+        ],
+        [
+          "DOLocationID",
+          "INTEGER"
+        ],
+        [
+          "payment_type",
+          "BIGINT"
+        ],
+        [
+          "fare_amount",
+          "DOUBLE"
+        ],
+        [
+          "extra",
+          "DOUBLE"
+        ],
+        [
+          "mta_tax",
+          "DOUBLE"
+        ],
+        [
+          "tip_amount",
+          "DOUBLE"
+        ],
+        [
+          "tolls_amount",
+          "DOUBLE"
+        ],
+        [
+          "improvement_surcharge",
+          "DOUBLE"
+        ],
+        [
+          "total_amount",
+          "DOUBLE"
+        ],
+        [
+          "congestion_surcharge",
+          "DOUBLE"
+        ],
+        [
+          "Airport_fee",
+          "DOUBLE"
+        ],
+        [
+          "cbd_congestion_fee",
+          "DOUBLE"
+        ]
+      ],
+      "arrow_schema": [
+        {
+          "name": "VendorID",
+          "type": "int32",
+          "nullable": true
+        },
+        {
+          "name": "tpep_pickup_datetime",
+          "type": "timestamp[us]",
+          "nullable": true
+        },
+        {
+          "name": "tpep_dropoff_datetime",
+          "type": "timestamp[us]",
+          "nullable": true
+        },
+        {
+          "name": "passenger_count",
+          "type": "int64",
+          "nullable": true
+        },
+        {
+          "name": "trip_distance",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "RatecodeID",
+          "type": "int64",
+          "nullable": true
+        },
+        {
+          "name": "store_and_fwd_flag",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "PULocationID",
+          "type": "int32",
+          "nullable": true
+        },
+        {
+          "name": "DOLocationID",
+          "type": "int32",
+          "nullable": true
+        },
+        {
+          "name": "payment_type",
+          "type": "int64",
+          "nullable": true
+        },
+        {
+          "name": "fare_amount",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "extra",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "mta_tax",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "tip_amount",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "tolls_amount",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "improvement_surcharge",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "total_amount",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "congestion_surcharge",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "Airport_fee",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "cbd_congestion_fee",
+          "type": "double",
+          "nullable": true
+        }
+      ],
+      "parquet_schema": " field_id=-1 duckdb_schema {\n  optional int32 field_id=-1 VendorID (Int(bitWidth=32, isSigned=true));\n  optional int64 field_id=-1 tpep_pickup_datetime (Timestamp(isAdjustedToUTC=false, timeUnit=microseconds, is_from_converted_type=false, force_set_converted_type=false));\n  optional int64 field_id=-1 tpep_dropoff_datetime (Timestamp(isAdjustedToUTC=false, timeUnit=microseconds, is_from_converted_type=false, force_set_converted_type=false));\n  optional int64 field_id=-1 passenger_count (Int(bitWidth=64, isSigned=true));\n  optional double field_id=-1 trip_distance;\n  optional int64 field_id=-1 RatecodeID (Int(bitWidth=64, isSigned=true));\n  optional binary field_id=-1 store_and_fwd_flag (String);\n  optional int32 field_id=-1 PULocationID (Int(bitWidth=32, isSigned=true));\n  optional int32 field_id=-1 DOLocationID (Int(bitWidth=32, isSigned=true));\n  optional int64 field_id=-1 payment_type (Int(bitWidth=64, isSigned=true));\n  optional double field_id=-1 fare_amount;\n  optional double field_id=-1 extra;\n  optional double field_id=-1 mta_tax;\n  optional double field_id=-1 tip_amount;\n  optional double field_id=-1 tolls_amount;\n  optional double field_id=-1 improvement_surcharge;\n  optional double field_id=-1 total_amount;\n  optional double field_id=-1 congestion_surcharge;\n  optional double field_id=-1 Airport_fee;\n  optional double field_id=-1 cbd_congestion_fee;\n}\n",
+      "created_by": "DuckDB version v1.5.6 (build 069cc9f9b5)",
+      "compression": [
+        "ZSTD"
+      ],
+      "encodings": [
+        "PLAIN",
+        "PLAIN_DICTIONARY"
+      ],
+      "order_by": "PULocationID",
+      "selected_repetition": 1,
+      "repetitions": [
+        {
+          "repetition": 1,
+          "id": "0433b71cf0ed4d2b8fd6b983c94dc289",
+          "capture": "captures/C-1.parquetscope.json",
+          "sha256": "45fcddafdac1542b03086b9664097a5a5288890e568c2add8f7aa35cfcc69c5c",
+          "result": [
+            [
+              "142826",
+              "8038349.75"
+            ]
+          ],
+          "runtime_result": [
+            [
+              "142826",
+              "\"8038349.75\""
+            ]
+          ],
+          "result_digest": "9924e83320378f41d6df5283d9e8e42aa6e166258ba20ab88d82e1864ea709d2",
+          "metrics": {
+            "get_count": 10,
+            "head_count": 2,
+            "requested_range_bytes": "795241",
+            "confirmed_range_bytes": "795241",
+            "declared_body_bytes": "795241",
+            "server_written_bytes": "795241",
+            "unique_coverage_bytes": "729705",
+            "repeated_coverage_bytes": "65536",
+            "coverage": [
+              {
+                "start": "13879140",
+                "end": "14059504"
+              },
+              {
+                "start": "14083483",
+                "end": "14083648"
+              },
+              {
+                "start": "14231811",
+                "end": "14400717"
+              },
+              {
+                "start": "16011113",
+                "end": "16204940"
+              },
+              {
+                "start": "16234912",
+                "end": "16235015"
+              },
+              {
+                "start": "16391711",
+                "end": "16512421"
+              },
+              {
+                "start": "58748443",
+                "end": "58748490"
+              },
+              {
+                "start": "58787027",
+                "end": "58787074"
+              },
+              {
+                "start": "59352003",
+                "end": "59417539"
+              }
+            ],
+            "totals_scope": "complete",
+            "unknown_reasons": []
+          },
+          "query_duration_ms": 9.418166009709239,
+          "elapsed_ms": 361.0412499983795
+        },
+        {
+          "repetition": 2,
+          "id": "8a39a4da1de541a3b4e8e5a8969ed6af",
+          "capture": "captures/C-2.parquetscope.json",
+          "sha256": "57aeaee20046c4e9146185d6ba2e449b92ec36d42c20996e2280d14d1135350d",
+          "result": [
+            [
+              "142826",
+              "8038349.75"
+            ]
+          ],
+          "runtime_result": [
+            [
+              "142826",
+              "\"8038349.75\""
+            ]
+          ],
+          "result_digest": "9924e83320378f41d6df5283d9e8e42aa6e166258ba20ab88d82e1864ea709d2",
+          "metrics": {
+            "get_count": 10,
+            "head_count": 2,
+            "requested_range_bytes": "795241",
+            "confirmed_range_bytes": "795241",
+            "declared_body_bytes": "795241",
+            "server_written_bytes": "795241",
+            "unique_coverage_bytes": "729705",
+            "repeated_coverage_bytes": "65536",
+            "coverage": [
+              {
+                "start": "13879140",
+                "end": "14059504"
+              },
+              {
+                "start": "14083483",
+                "end": "14083648"
+              },
+              {
+                "start": "14231811",
+                "end": "14400717"
+              },
+              {
+                "start": "16011113",
+                "end": "16204940"
+              },
+              {
+                "start": "16234912",
+                "end": "16235015"
+              },
+              {
+                "start": "16391711",
+                "end": "16512421"
+              },
+              {
+                "start": "58748443",
+                "end": "58748490"
+              },
+              {
+                "start": "58787027",
+                "end": "58787074"
+              },
+              {
+                "start": "59352003",
+                "end": "59417539"
+              }
+            ],
+            "totals_scope": "complete",
+            "unknown_reasons": []
+          },
+          "query_duration_ms": 7.79062500805594,
+          "elapsed_ms": 349.7452499868814
+        },
+        {
+          "repetition": 3,
+          "id": "8581bf4c6b62493090cb3ec8973d66a9",
+          "capture": "captures/C-3.parquetscope.json",
+          "sha256": "4ba573bb7f1ffb5fcd856b1f7d7c37ec8d989267b4c6d874b4779a5a85593ef3",
+          "result": [
+            [
+              "142826",
+              "8038349.75"
+            ]
+          ],
+          "runtime_result": [
+            [
+              "142826",
+              "\"8038349.75\""
+            ]
+          ],
+          "result_digest": "9924e83320378f41d6df5283d9e8e42aa6e166258ba20ab88d82e1864ea709d2",
+          "metrics": {
+            "get_count": 10,
+            "head_count": 2,
+            "requested_range_bytes": "795241",
+            "confirmed_range_bytes": "795241",
+            "declared_body_bytes": "795241",
+            "server_written_bytes": "795241",
+            "unique_coverage_bytes": "729705",
+            "repeated_coverage_bytes": "65536",
+            "coverage": [
+              {
+                "start": "13879140",
+                "end": "14059504"
+              },
+              {
+                "start": "14083483",
+                "end": "14083648"
+              },
+              {
+                "start": "14231811",
+                "end": "14400717"
+              },
+              {
+                "start": "16011113",
+                "end": "16204940"
+              },
+              {
+                "start": "16234912",
+                "end": "16235015"
+              },
+              {
+                "start": "16391711",
+                "end": "16512421"
+              },
+              {
+                "start": "58748443",
+                "end": "58748490"
+              },
+              {
+                "start": "58787027",
+                "end": "58787074"
+              },
+              {
+                "start": "59352003",
+                "end": "59417539"
+              }
+            ],
+            "totals_scope": "complete",
+            "unknown_reasons": []
+          },
+          "query_duration_ms": 8.622916997410357,
+          "elapsed_ms": 358.62379102036357
+        }
+      ],
+      "preparation_result": [
+        [
+          "142826",
+          "8038349.75"
+        ]
+      ],
+      "viewer": "viewers/C.viewer.html"
+    }
+  ],
+  "equality": {
+    "A_B": {
+      "method": "bidirectional EXCEPT ALL over all columns",
+      "difference_rows": [
+        0,
+        0
+      ],
+      "equal": true
+    },
+    "A_C": {
+      "method": "bidirectional EXCEPT ALL over all columns",
+      "difference_rows": [
+        0,
+        0
+      ],
+      "equal": true
+    },
+    "B_preserves_original_order": true
+  },
+  "attempts": [
+    {
+      "layout": "A",
+      "repetition": 1,
+      "status": "succeeded",
+      "capture": "captures/A-1.parquetscope.json",
+      "runtime_result": [
+        [
+          "142826",
+          "\"8038349.75\""
+        ]
+      ]
+    },
+    {
+      "layout": "A",
+      "repetition": 2,
+      "status": "succeeded",
+      "capture": "captures/A-2.parquetscope.json",
+      "runtime_result": [
+        [
+          "142826",
+          "\"8038349.75\""
+        ]
+      ]
+    },
+    {
+      "layout": "A",
+      "repetition": 3,
+      "status": "succeeded",
+      "capture": "captures/A-3.parquetscope.json",
+      "runtime_result": [
+        [
+          "142826",
+          "\"8038349.75\""
+        ]
+      ]
+    },
+    {
+      "layout": "B",
+      "repetition": 1,
+      "status": "succeeded",
+      "capture": "captures/B-1.parquetscope.json",
+      "runtime_result": [
+        [
+          "142826",
+          "\"8038349.75\""
+        ]
+      ]
+    },
+    {
+      "layout": "B",
+      "repetition": 2,
+      "status": "succeeded",
+      "capture": "captures/B-2.parquetscope.json",
+      "runtime_result": [
+        [
+          "142826",
+          "\"8038349.75\""
+        ]
+      ]
+    },
+    {
+      "layout": "B",
+      "repetition": 3,
+      "status": "succeeded",
+      "capture": "captures/B-3.parquetscope.json",
+      "runtime_result": [
+        [
+          "142826",
+          "\"8038349.75\""
+        ]
+      ]
+    },
+    {
+      "layout": "C",
+      "repetition": 1,
+      "status": "succeeded",
+      "capture": "captures/C-1.parquetscope.json",
+      "runtime_result": [
+        [
+          "142826",
+          "\"8038349.75\""
+        ]
+      ]
+    },
+    {
+      "layout": "C",
+      "repetition": 2,
+      "status": "succeeded",
+      "capture": "captures/C-2.parquetscope.json",
+      "runtime_result": [
+        [
+          "142826",
+          "\"8038349.75\""
+        ]
+      ]
+    },
+    {
+      "layout": "C",
+      "repetition": 3,
+      "status": "succeeded",
+      "capture": "captures/C-3.parquetscope.json",
+      "runtime_result": [
+        [
+          "142826",
+          "\"8038349.75\""
+        ]
+      ]
+    }
+  ],
+  "metric_definitions": {
+    "get_count": "GET observations in DuckDB HTTP logs, reconciled with the independent server",
+    "head_count": "HEAD observations; HEAD contributes zero body bytes",
+    "server_written_bytes": "Sum of bytes successfully written by the independent server to streams",
+    "requested_range_bytes": "Sum of resolved GET request Range lengths",
+    "confirmed_range_bytes": "Sum of GET response interval lengths confirmed by response headers",
+    "declared_body_bytes": "Sum of GET Content-Length; HEAD contributes zero",
+    "unique_coverage_bytes": "Length of union of confirmed GET response intervals",
+    "repeated_coverage_bytes": "Sum of confirmed interval lengths minus their union, not assumed waste",
+    "coverage": "Union of confirmed GET response intervals, half-open byte offsets",
+    "totals_scope": "Complete or observed subset; only complete reconciled runs enter successful runs",
+    "unknown_reasons": "Reasons unavailable metrics are null",
+    "query_duration_ms": "SELECT execution through full result consumption; excludes input binding",
+    "elapsed_ms": "Worker startup, binding, execution and cleanup; excludes metadata preparation"
+  },
+  "limitations": [
+    "Premeasured loopback HTTP captures; static browsing executes no SQL.",
+    "Fresh worker and disabled external file cache; OS/disk caches are uncontrolled, not cold S3.",
+    "Server writes do not prove client receipt, chunk decoding or use. Overlap is not automatic waste.",
+    "Read bytes do not imply proportional speedup, S3 performance or a cloud bill.",
+    "One workload on one month does not establish a universally better layout.",
+    "A/B change writer, encoding and layout as well as row groups; no single-factor attribution.",
+    "B/C use identical writer settings; row order is the intended difference. Ties have no extra key.",
+    "Pruning and sorting are established mechanisms; ParquetScope exposes this workload's observations.",
+    "Captures retain SQL, column names and metadata; they omit preview rows, not all possible data.",
+    "Versions, scheduling and platform can affect sizes, timing and request sequences.",
+    "Runs are sequential A1..A3, B1..B3, C1..C3, without cache eviction or randomized timing trials."
+  ],
+  "wheel_acceptance": {
+    "url": "https://github.com/0then0/parquetscope/releases/download/v0.1.0/parquetscope-0.1.0-py3-none-any.whl",
+    "sha256": "616192b3e0b776ca1221b86d4b2c80dbd545b6884457d6df0394045a6d9169e9",
+    "version": "0.1.0",
+    "installed_non_editable": true,
+    "installed_files_verified_against_wheel": true,
+    "environment": "Separate virtual environment; execution package in site-packages",
+    "cwd_outside_checkout": true,
+    "dependencies": {
+      "uvicorn": "0.54.0",
+      "click": "8.5.0",
+      "starlette": "1.9.0",
+      "pyarrow": "26.0.0",
+      "duckdb": "1.5.6",
+      "opentelemetry-api": "1.45.1",
+      "h11": "0.16.0",
+      "pydantic_core": "2.50.1",
+      "parquetscope": "0.1.0",
+      "annotated-types": "0.8.0",
+      "annotated-doc": "0.0.5",
+      "typing-inspection": "0.4.4",
+      "fastapi": "0.156.1",
+      "typing_extensions": "4.16.0",
+      "pydantic": "2.14.1",
+      "anyio": "4.15.1",
+      "idna": "3.20"
+    },
+    "result": "All preparation checks and nine captures passed"
+  },
+  "preparation_effective_settings": {
+    "threads": 1,
+    "memory_limit": "953.6 MiB",
+    "preserve_insertion_order": true,
+    "max_temp_directory_size": "9.3 GiB"
+  },
+  "runner_source": "provenance/runner.py",
+  "previous_attempts": [
+    {
+      "report": "failed-attempts/attempt-1/report.json",
+      "status": "failed",
+      "stage": "capture-A-1 validation",
+      "reason": "Runner expected an unquoted DECIMAL preview; release v0.1.0 retains JSON quotes for Decimal. SQL and native capture succeeded, but the runner rejected its preview representation. Corrected runner decodes the representation exactly; no runtime or trace changes. Excluded from the nine successful repetitions."
+    }
+  ]
+}

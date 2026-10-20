@@ -1,0 +1,110 @@
+{
+  "schema_version": "1",
+  "date": "2026-10-20",
+  "platform": "macOS Darwin 24.6.0 arm64",
+  "node": "24.22.0",
+  "pnpm": "12.14.0",
+  "checks": [
+    {
+      "command": "PARQUETSCOPE_HOME=.runtime .venv/bin/pytest -q",
+      "result": "passed",
+      "tests": 89
+    },
+    {
+      "command": ".venv/bin/ruff check src tests scripts",
+      "result": "passed"
+    },
+    {
+      "command": ".venv/bin/ruff format --check src tests scripts",
+      "result": "passed"
+    },
+    {
+      "command": ".venv/bin/python scripts/generate_schema.py --check",
+      "result": "passed"
+    },
+    {
+      "command": "pnpm --dir frontend check",
+      "result": "passed"
+    },
+    {
+      "command": "pnpm --dir frontend test",
+      "result": "passed",
+      "tests": 8
+    },
+    {
+      "command": "pnpm --dir frontend build:lab",
+      "result": "passed"
+    },
+    {
+      "command": "pnpm --dir frontend test:browser",
+      "result": "passed",
+      "tests": 8
+    },
+    {
+      "command": "pnpm --dir frontend test:lab",
+      "result": "passed",
+      "tests": 6
+    },
+    {
+      "command": "uv build",
+      "result": "passed"
+    },
+    {
+      "command": ".venv/bin/python scripts/check_dist.py",
+      "result": "passed"
+    },
+    {
+      "command": "python scripts/smoke_wheel.py in a separate newly built wheel environment, outside checkout",
+      "result": "passed"
+    },
+    {
+      "command": ".venv/bin/python scripts/real_data_lab.py --output docs/real-data --verify",
+      "result": "passed"
+    }
+  ],
+  "browser_evidence": {
+    "engine": "Chromium",
+    "project_subpath": "/parquetscope/",
+    "hash_refresh": true,
+    "layouts": [
+      "A",
+      "B",
+      "C"
+    ],
+    "comparison": "B-C",
+    "linked_selection": true,
+    "keyboard_navigation": true,
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "narrow_width_px": 390,
+    "native_capture_downloads": 9,
+    "native_viewer_downloads": 3,
+    "ui_viewer_export": true,
+    "standalone_file_viewers_network_disabled": true,
+    "standalone_http_requests": 0,
+    "static_execution_backend_requests": 0,
+    "screenshots_visually_inspected": [
+      "desktop light",
+      "narrow dark"
+    ],
+    "screenshots_location": "frontend/test-results/ (local generated output, excluded from Git)"
+  },
+  "measurement_evidence": "report.json",
+  "deployment_performed": false,
+  "notes": [
+    "All nine real-data captures used the existing published v0.1.0 wheel, not the rebuilt wheel.",
+    "The local rebuilt wheel smoke checks packaging of the updated frontend; it is not a published release.",
+    "GitHub Actions and Pages workflows were prepared, not remotely dispatched.",
+    "Browser launching required the local macOS sandbox override; no product authorization was weakened."
+  ],
+  "review_regressions": [
+    "Report SQL must match the fixed captured workload.",
+    "Static build rejects SQL disagreement with native captures, even with matching capture checksums, before replacing its output.",
+    "Comparison selection, analysis tabs, refresh and browser Back preserve the selected layout/view.",
+    "Explore works for the selected layout when its hash is unchanged.",
+    "Method/download focus preserves the selected layout URL.",
+    "Local capture UI navigation preserves unexecuted SQL drafts."
+  ]
+}

@@ -57,6 +57,8 @@ jobs:
       - run: pnpm --dir frontend build
       - run: pnpm --dir frontend exec playwright install --with-deps chromium
       - run: pnpm --dir frontend test:browser
+      - run: pnpm --dir frontend build:lab
+      - run: pnpm --dir frontend test:lab
       - run: uv build
       - run: uv run python scripts/check_dist.py
       - run: |

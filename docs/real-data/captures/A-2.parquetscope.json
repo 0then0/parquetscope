@@ -1,0 +1,3347 @@
+{
+  "schema_version": "1",
+  "app_version": "0.1.0",
+  "duckdb_version": "1.5.6",
+  "pyarrow_version": "26.0.0",
+  "platform": "Darwin arm64 Python 3.13.16",
+  "id": "060958466ab1447d93a29199c7a5a835",
+  "created_at": "2026-10-20T18:57:06.741880+00:00",
+  "sql": "SELECT\n    count(*) AS n,\n    sum(CAST(fare_amount AS DECIMAL(18,2))) AS fare\nFROM input\nWHERE PULocationID = 132\n  AND trip_distance > 0",
+  "input": {
+    "name": "yellow_tripdata_2025-01.parquet",
+    "sha256": "9af277e4c0d3f9deb30644da822981e1e7df6af58313170fd3aa8a474485488a",
+    "size": "59158238",
+    "rows": "3475226",
+    "row_groups": 4,
+    "schema_fields": [
+      "VendorID",
+      "tpep_pickup_datetime",
+      "tpep_dropoff_datetime",
+      "passenger_count",
+      "trip_distance",
+      "RatecodeID",
+      "store_and_fwd_flag",
+      "PULocationID",
+      "DOLocationID",
+      "payment_type",
+      "fare_amount",
+      "extra",
+      "mta_tax",
+      "tip_amount",
+      "tolls_amount",
+      "improvement_surcharge",
+      "total_amount",
+      "congestion_surcharge",
+      "Airport_fee",
+      "cbd_congestion_fee"
+    ],
+    "structures": [
+      {
+        "id": "header",
+        "kind": "header",
+        "label": "PAR1 header",
+        "span": {
+          "start": "0",
+          "end": "4"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "footer",
+        "kind": "footer",
+        "label": "Footer + length + magic",
+        "span": {
+          "start": "59147018",
+          "end": "59158238"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "rg0-c0",
+        "kind": "column_chunk",
+        "label": "RG 0 · VendorID",
+        "span": {
+          "start": "4",
+          "end": "127744"
+        },
+        "row_group": 0,
+        "column": "VendorID",
+        "rows": "1048576",
+        "dictionary_offset": "4",
+        "data_offset": "39",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg0-c1",
+        "kind": "column_chunk",
+        "label": "RG 0 · tpep_pickup_datetime",
+        "span": {
+          "start": "127832",
+          "end": "4571049"
+        },
+        "row_group": 0,
+        "column": "tpep_pickup_datetime",
+        "rows": "1048576",
+        "dictionary_offset": "127832",
+        "data_offset": "863442",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg0-c2",
+        "kind": "column_chunk",
+        "label": "RG 0 · tpep_dropoff_datetime",
+        "span": {
+          "start": "4571179",
+          "end": "9096163"
+        },
+        "row_group": 0,
+        "column": "tpep_dropoff_datetime",
+        "rows": "1048576",
+        "dictionary_offset": "4571179",
+        "data_offset": "5305071",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg0-c3",
+        "kind": "column_chunk",
+        "label": "RG 0 · passenger_count",
+        "span": {
+          "start": "9096296",
+          "end": "9292223"
+        },
+        "row_group": 0,
+        "column": "passenger_count",
+        "rows": "1048576",
+        "dictionary_offset": "9096296",
+        "data_offset": "9096355",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg0-c4",
+        "kind": "column_chunk",
+        "label": "RG 0 · trip_distance",
+        "span": {
+          "start": "9292341",
+          "end": "10721305"
+        },
+        "row_group": 0,
+        "column": "trip_distance",
+        "rows": "1048576",
+        "dictionary_offset": "9292341",
+        "data_offset": "9303223",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg0-c5",
+        "kind": "column_chunk",
+        "label": "RG 0 · RatecodeID",
+        "span": {
+          "start": "10721423",
+          "end": "10816146"
+        },
+        "row_group": 0,
+        "column": "RatecodeID",
+        "rows": "1048576",
+        "dictionary_offset": "10721423",
+        "data_offset": "10721473",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg0-c6",
+        "kind": "column_chunk",
+        "label": "RG 0 · store_and_fwd_flag",
+        "span": {
+          "start": "10816259",
+          "end": "10821498"
+        },
+        "row_group": 0,
+        "column": "store_and_fwd_flag",
+        "rows": "1048576",
+        "dictionary_offset": "10816259",
+        "data_offset": "10816292",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg0-c7",
+        "kind": "column_chunk",
+        "label": "RG 0 · PULocationID",
+        "span": {
+          "start": "10821584",
+          "end": "11563838"
+        },
+        "row_group": 0,
+        "column": "PULocationID",
+        "rows": "1048576",
+        "dictionary_offset": "10821584",
+        "data_offset": "10822029",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg0-c8",
+        "kind": "column_chunk",
+        "label": "RG 0 · DOLocationID",
+        "span": {
+          "start": "11563938",
+          "end": "12620206"
+        },
+        "row_group": 0,
+        "column": "DOLocationID",
+        "rows": "1048576",
+        "dictionary_offset": "11563938",
+        "data_offset": "11564392",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg0-c9",
+        "kind": "column_chunk",
+        "label": "RG 0 · payment_type",
+        "span": {
+          "start": "12620307",
+          "end": "12782304"
+        },
+        "row_group": 0,
+        "column": "payment_type",
+        "rows": "1048576",
+        "dictionary_offset": "12620307",
+        "data_offset": "12620353",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg0-c10",
+        "kind": "column_chunk",
+        "label": "RG 0 · fare_amount",
+        "span": {
+          "start": "12782419",
+          "end": "13872369"
+        },
+        "row_group": 0,
+        "column": "fare_amount",
+        "rows": "1048576",
+        "dictionary_offset": "12782419",
+        "data_offset": "12789632",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg0-c11",
+        "kind": "column_chunk",
+        "label": "RG 0 · extra",
+        "span": {
+          "start": "13872485",
+          "end": "14192405"
+        },
+        "row_group": 0,
+        "column": "extra",
+        "rows": "1048576",
+        "dictionary_offset": "13872485",
+        "data_offset": "13872745",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg0-c12",
+        "kind": "column_chunk",
+        "label": "RG 0 · mta_tax",
+        "span": {
+          "start": "14192513",
+          "end": "14250118"
+        },
+        "row_group": 0,
+        "column": "mta_tax",
+        "rows": "1048576",
+        "dictionary_offset": "14192513",
+        "data_offset": "14192565",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg0-c13",
+        "kind": "column_chunk",
+        "label": "RG 0 · tip_amount",
+        "span": {
+          "start": "14250228",
+          "end": "15529945"
+        },
+        "row_group": 0,
+        "column": "tip_amount",
+        "rows": "1048576",
+        "dictionary_offset": "14250228",
+        "data_offset": "14260531",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg0-c14",
+        "kind": "column_chunk",
+        "label": "RG 0 · tolls_amount",
+        "span": {
+          "start": "15530060",
+          "end": "15674411"
+        },
+        "row_group": 0,
+        "column": "tolls_amount",
+        "rows": "1048576",
+        "dictionary_offset": "15530060",
+        "data_offset": "15532597",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg0-c15",
+        "kind": "column_chunk",
+        "label": "RG 0 · improvement_surcharge",
+        "span": {
+          "start": "15674526",
+          "end": "15722178"
+        },
+        "row_group": 0,
+        "column": "improvement_surcharge",
+        "rows": "1048576",
+        "dictionary_offset": "15674526",
+        "data_offset": "15674573",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg0-c16",
+        "kind": "column_chunk",
+        "label": "RG 0 · total_amount",
+        "span": {
+          "start": "15722302",
+          "end": "17539169"
+        },
+        "row_group": 0,
+        "column": "total_amount",
+        "rows": "1048576",
+        "dictionary_offset": "15722302",
+        "data_offset": "15772785",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg0-c17",
+        "kind": "column_chunk",
+        "label": "RG 0 · congestion_surcharge",
+        "span": {
+          "start": "17539286",
+          "end": "17639605"
+        },
+        "row_group": 0,
+        "column": "congestion_surcharge",
+        "rows": "1048576",
+        "dictionary_offset": "17539286",
+        "data_offset": "17539326",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg0-c18",
+        "kind": "column_chunk",
+        "label": "RG 0 · Airport_fee",
+        "span": {
+          "start": "17639728",
+          "end": "17732523"
+        },
+        "row_group": 0,
+        "column": "Airport_fee",
+        "rows": "1048576",
+        "dictionary_offset": "17639728",
+        "data_offset": "17639778",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg0-c19",
+        "kind": "column_chunk",
+        "label": "RG 0 · cbd_congestion_fee",
+        "span": {
+          "start": "17732637",
+          "end": "17827363"
+        },
+        "row_group": 0,
+        "column": "cbd_congestion_fee",
+        "rows": "1048576",
+        "dictionary_offset": "17732637",
+        "data_offset": "17732678",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg1-c0",
+        "kind": "column_chunk",
+        "label": "RG 1 · VendorID",
+        "span": {
+          "start": "17827484",
+          "end": "17953227"
+        },
+        "row_group": 1,
+        "column": "VendorID",
+        "rows": "1048576",
+        "dictionary_offset": "17827484",
+        "data_offset": "17827519",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg1-c1",
+        "kind": "column_chunk",
+        "label": "RG 1 · tpep_pickup_datetime",
+        "span": {
+          "start": "17953322",
+          "end": "22329058"
+        },
+        "row_group": 1,
+        "column": "tpep_pickup_datetime",
+        "rows": "1048576",
+        "dictionary_offset": "17953322",
+        "data_offset": "18674689",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg1-c2",
+        "kind": "column_chunk",
+        "label": "RG 1 · tpep_dropoff_datetime",
+        "span": {
+          "start": "22329190",
+          "end": "26785397"
+        },
+        "row_group": 1,
+        "column": "tpep_dropoff_datetime",
+        "rows": "1048576",
+        "dictionary_offset": "22329190",
+        "data_offset": "23049856",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg1-c3",
+        "kind": "column_chunk",
+        "label": "RG 1 · passenger_count",
+        "span": {
+          "start": "26785530",
+          "end": "26962710"
+        },
+        "row_group": 1,
+        "column": "passenger_count",
+        "rows": "1048576",
+        "dictionary_offset": "26785530",
+        "data_offset": "26785589",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg1-c4",
+        "kind": "column_chunk",
+        "label": "RG 1 · trip_distance",
+        "span": {
+          "start": "26962828",
+          "end": "28402089"
+        },
+        "row_group": 1,
+        "column": "trip_distance",
+        "rows": "1048576",
+        "dictionary_offset": "26962828",
+        "data_offset": "26973570",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg1-c5",
+        "kind": "column_chunk",
+        "label": "RG 1 · RatecodeID",
+        "span": {
+          "start": "28402207",
+          "end": "28487943"
+        },
+        "row_group": 1,
+        "column": "RatecodeID",
+        "rows": "1048576",
+        "dictionary_offset": "28402207",
+        "data_offset": "28402255",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg1-c6",
+        "kind": "column_chunk",
+        "label": "RG 1 · store_and_fwd_flag",
+        "span": {
+          "start": "28488056",
+          "end": "28493542"
+        },
+        "row_group": 1,
+        "column": "store_and_fwd_flag",
+        "rows": "1048576",
+        "dictionary_offset": "28488056",
+        "data_offset": "28488089",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg1-c7",
+        "kind": "column_chunk",
+        "label": "RG 1 · PULocationID",
+        "span": {
+          "start": "28493628",
+          "end": "29230226"
+        },
+        "row_group": 1,
+        "column": "PULocationID",
+        "rows": "1048576",
+        "dictionary_offset": "28493628",
+        "data_offset": "28494063",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg1-c8",
+        "kind": "column_chunk",
+        "label": "RG 1 · DOLocationID",
+        "span": {
+          "start": "29230326",
+          "end": "30251972"
+        },
+        "row_group": 1,
+        "column": "DOLocationID",
+        "rows": "1048576",
+        "dictionary_offset": "29230326",
+        "data_offset": "29230783",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg1-c9",
+        "kind": "column_chunk",
+        "label": "RG 1 · payment_type",
+        "span": {
+          "start": "30252072",
+          "end": "30383163"
+        },
+        "row_group": 1,
+        "column": "payment_type",
+        "rows": "1048576",
+        "dictionary_offset": "30252072",
+        "data_offset": "30252116",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg1-c10",
+        "kind": "column_chunk",
+        "label": "RG 1 · fare_amount",
+        "span": {
+          "start": "30383278",
+          "end": "31474174"
+        },
+        "row_group": 1,
+        "column": "fare_amount",
+        "rows": "1048576",
+        "dictionary_offset": "30383278",
+        "data_offset": "30390886",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg1-c11",
+        "kind": "column_chunk",
+        "label": "RG 1 · extra",
+        "span": {
+          "start": "31474290",
+          "end": "31795253"
+        },
+        "row_group": 1,
+        "column": "extra",
+        "rows": "1048576",
+        "dictionary_offset": "31474290",
+        "data_offset": "31474553",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg1-c12",
+        "kind": "column_chunk",
+        "label": "RG 1 · mta_tax",
+        "span": {
+          "start": "31795361",
+          "end": "31847338"
+        },
+        "row_group": 1,
+        "column": "mta_tax",
+        "rows": "1048576",
+        "dictionary_offset": "31795361",
+        "data_offset": "31795418",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg1-c13",
+        "kind": "column_chunk",
+        "label": "RG 1 · tip_amount",
+        "span": {
+          "start": "31847448",
+          "end": "33107354"
+        },
+        "row_group": 1,
+        "column": "tip_amount",
+        "rows": "1048576",
+        "dictionary_offset": "31847448",
+        "data_offset": "31857477",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg1-c14",
+        "kind": "column_chunk",
+        "label": "RG 1 · tolls_amount",
+        "span": {
+          "start": "33107469",
+          "end": "33244339"
+        },
+        "row_group": 1,
+        "column": "tolls_amount",
+        "rows": "1048576",
+        "dictionary_offset": "33107469",
+        "data_offset": "33109397",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg1-c15",
+        "kind": "column_chunk",
+        "label": "RG 1 · improvement_surcharge",
+        "span": {
+          "start": "33244454",
+          "end": "33291391"
+        },
+        "row_group": 1,
+        "column": "improvement_surcharge",
+        "rows": "1048576",
+        "dictionary_offset": "33244454",
+        "data_offset": "33244501",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg1-c16",
+        "kind": "column_chunk",
+        "label": "RG 1 · total_amount",
+        "span": {
+          "start": "33291515",
+          "end": "35033829"
+        },
+        "row_group": 1,
+        "column": "total_amount",
+        "rows": "1048576",
+        "dictionary_offset": "33291515",
+        "data_offset": "33338434",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg1-c17",
+        "kind": "column_chunk",
+        "label": "RG 1 · congestion_surcharge",
+        "span": {
+          "start": "35033946",
+          "end": "35129763"
+        },
+        "row_group": 1,
+        "column": "congestion_surcharge",
+        "rows": "1048576",
+        "dictionary_offset": "35033946",
+        "data_offset": "35033986",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg1-c18",
+        "kind": "column_chunk",
+        "label": "RG 1 · Airport_fee",
+        "span": {
+          "start": "35129886",
+          "end": "35210917"
+        },
+        "row_group": 1,
+        "column": "Airport_fee",
+        "rows": "1048576",
+        "dictionary_offset": "35129886",
+        "data_offset": "35129932",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg1-c19",
+        "kind": "column_chunk",
+        "label": "RG 1 · cbd_congestion_fee",
+        "span": {
+          "start": "35211031",
+          "end": "35345052"
+        },
+        "row_group": 1,
+        "column": "cbd_congestion_fee",
+        "rows": "1048576",
+        "dictionary_offset": "35211031",
+        "data_offset": "35211071",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg2-c0",
+        "kind": "column_chunk",
+        "label": "RG 2 · VendorID",
+        "span": {
+          "start": "35345173",
+          "end": "35470152"
+        },
+        "row_group": 2,
+        "column": "VendorID",
+        "rows": "1048576",
+        "dictionary_offset": "35345173",
+        "data_offset": "35345212",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg2-c1",
+        "kind": "column_chunk",
+        "label": "RG 2 · tpep_pickup_datetime",
+        "span": {
+          "start": "35470247",
+          "end": "40008599"
+        },
+        "row_group": 2,
+        "column": "tpep_pickup_datetime",
+        "rows": "1048576",
+        "dictionary_offset": "35470247",
+        "data_offset": "36191250",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg2-c2",
+        "kind": "column_chunk",
+        "label": "RG 2 · tpep_dropoff_datetime",
+        "span": {
+          "start": "40008731",
+          "end": "44630001"
+        },
+        "row_group": 2,
+        "column": "tpep_dropoff_datetime",
+        "rows": "1048576",
+        "dictionary_offset": "40008731",
+        "data_offset": "40743267",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg2-c3",
+        "kind": "column_chunk",
+        "label": "RG 2 · passenger_count",
+        "span": {
+          "start": "44630134",
+          "end": "44771988"
+        },
+        "row_group": 2,
+        "column": "passenger_count",
+        "rows": "1048576",
+        "dictionary_offset": "44630134",
+        "data_offset": "44630190",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg2-c4",
+        "kind": "column_chunk",
+        "label": "RG 2 · trip_distance",
+        "span": {
+          "start": "44772108",
+          "end": "46203465"
+        },
+        "row_group": 2,
+        "column": "trip_distance",
+        "rows": "1048576",
+        "dictionary_offset": "44772108",
+        "data_offset": "44782544",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg2-c5",
+        "kind": "column_chunk",
+        "label": "RG 2 · RatecodeID",
+        "span": {
+          "start": "46203583",
+          "end": "46266873"
+        },
+        "row_group": 2,
+        "column": "RatecodeID",
+        "rows": "1048576",
+        "dictionary_offset": "46203583",
+        "data_offset": "46203633",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg2-c6",
+        "kind": "column_chunk",
+        "label": "RG 2 · store_and_fwd_flag",
+        "span": {
+          "start": "46266988",
+          "end": "46271185"
+        },
+        "row_group": 2,
+        "column": "store_and_fwd_flag",
+        "rows": "1048576",
+        "dictionary_offset": "46266988",
+        "data_offset": "46267021",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg2-c7",
+        "kind": "column_chunk",
+        "label": "RG 2 · PULocationID",
+        "span": {
+          "start": "46271273",
+          "end": "47034860"
+        },
+        "row_group": 2,
+        "column": "PULocationID",
+        "rows": "1048576",
+        "dictionary_offset": "46271273",
+        "data_offset": "46271720",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg2-c8",
+        "kind": "column_chunk",
+        "label": "RG 2 · DOLocationID",
+        "span": {
+          "start": "47034960",
+          "end": "48086121"
+        },
+        "row_group": 2,
+        "column": "DOLocationID",
+        "rows": "1048576",
+        "dictionary_offset": "47034960",
+        "data_offset": "47035417",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg2-c9",
+        "kind": "column_chunk",
+        "label": "RG 2 · payment_type",
+        "span": {
+          "start": "48086222",
+          "end": "48204419"
+        },
+        "row_group": 2,
+        "column": "payment_type",
+        "rows": "1048576",
+        "dictionary_offset": "48086222",
+        "data_offset": "48086261",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg2-c10",
+        "kind": "column_chunk",
+        "label": "RG 2 · fare_amount",
+        "span": {
+          "start": "48204534",
+          "end": "49504085"
+        },
+        "row_group": 2,
+        "column": "fare_amount",
+        "rows": "1048576",
+        "dictionary_offset": "48204534",
+        "data_offset": "48236043",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg2-c11",
+        "kind": "column_chunk",
+        "label": "RG 2 · extra",
+        "span": {
+          "start": "49504201",
+          "end": "49787835"
+        },
+        "row_group": 2,
+        "column": "extra",
+        "rows": "1048576",
+        "dictionary_offset": "49504201",
+        "data_offset": "49504441",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg2-c12",
+        "kind": "column_chunk",
+        "label": "RG 2 · mta_tax",
+        "span": {
+          "start": "49787943",
+          "end": "49829625"
+        },
+        "row_group": 2,
+        "column": "mta_tax",
+        "rows": "1048576",
+        "dictionary_offset": "49787943",
+        "data_offset": "49788004",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg2-c13",
+        "kind": "column_chunk",
+        "label": "RG 2 · tip_amount",
+        "span": {
+          "start": "49829735",
+          "end": "50958851"
+        },
+        "row_group": 2,
+        "column": "tip_amount",
+        "rows": "1048576",
+        "dictionary_offset": "49829735",
+        "data_offset": "49839113",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg2-c14",
+        "kind": "column_chunk",
+        "label": "RG 2 · tolls_amount",
+        "span": {
+          "start": "50958966",
+          "end": "51071259"
+        },
+        "row_group": 2,
+        "column": "tolls_amount",
+        "rows": "1048576",
+        "dictionary_offset": "50958966",
+        "data_offset": "50960595",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg2-c15",
+        "kind": "column_chunk",
+        "label": "RG 2 · improvement_surcharge",
+        "span": {
+          "start": "51071374",
+          "end": "51109867"
+        },
+        "row_group": 2,
+        "column": "improvement_surcharge",
+        "rows": "1048576",
+        "dictionary_offset": "51071374",
+        "data_offset": "51071424",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg2-c16",
+        "kind": "column_chunk",
+        "label": "RG 2 · total_amount",
+        "span": {
+          "start": "51109991",
+          "end": "52902456"
+        },
+        "row_group": 2,
+        "column": "total_amount",
+        "rows": "1048576",
+        "dictionary_offset": "51109991",
+        "data_offset": "51162111",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg2-c17",
+        "kind": "column_chunk",
+        "label": "RG 2 · congestion_surcharge",
+        "span": {
+          "start": "52902573",
+          "end": "52977797"
+        },
+        "row_group": 2,
+        "column": "congestion_surcharge",
+        "rows": "1048576",
+        "dictionary_offset": "52902573",
+        "data_offset": "52902620",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg2-c18",
+        "kind": "column_chunk",
+        "label": "RG 2 · Airport_fee",
+        "span": {
+          "start": "52977922",
+          "end": "53046947"
+        },
+        "row_group": 2,
+        "column": "Airport_fee",
+        "rows": "1048576",
+        "dictionary_offset": "52977922",
+        "data_offset": "52977976",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg2-c19",
+        "kind": "column_chunk",
+        "label": "RG 2 · cbd_congestion_fee",
+        "span": {
+          "start": "53047063",
+          "end": "53180054"
+        },
+        "row_group": 2,
+        "column": "cbd_congestion_fee",
+        "rows": "1048576",
+        "dictionary_offset": "53047063",
+        "data_offset": "53047103",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg3-c0",
+        "kind": "column_chunk",
+        "label": "RG 3 · VendorID",
+        "span": {
+          "start": "53180175",
+          "end": "53215972"
+        },
+        "row_group": 3,
+        "column": "VendorID",
+        "rows": "329498",
+        "dictionary_offset": "53180175",
+        "data_offset": "53180210",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg3-c1",
+        "kind": "column_chunk",
+        "label": "RG 3 · tpep_pickup_datetime",
+        "span": {
+          "start": "53216066",
+          "end": "55067189"
+        },
+        "row_group": 3,
+        "column": "tpep_pickup_datetime",
+        "rows": "329498",
+        "dictionary_offset": "53216066",
+        "data_offset": "53963556",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg3-c2",
+        "kind": "column_chunk",
+        "label": "RG 3 · tpep_dropoff_datetime",
+        "span": {
+          "start": "55067320",
+          "end": "56926124"
+        },
+        "row_group": 3,
+        "column": "tpep_dropoff_datetime",
+        "rows": "329498",
+        "dictionary_offset": "55067320",
+        "data_offset": "55815502",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg3-c3",
+        "kind": "column_chunk",
+        "label": "RG 3 · passenger_count",
+        "span": {
+          "start": "56926256",
+          "end": "56926322"
+        },
+        "row_group": 3,
+        "column": "passenger_count",
+        "rows": "329498",
+        "dictionary_offset": "56926256",
+        "data_offset": "56926279",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg3-c4",
+        "kind": "column_chunk",
+        "label": "RG 3 · trip_distance",
+        "span": {
+          "start": "56926398",
+          "end": "57361836"
+        },
+        "row_group": 3,
+        "column": "trip_distance",
+        "rows": "329498",
+        "dictionary_offset": "56926398",
+        "data_offset": "56933348",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg3-c5",
+        "kind": "column_chunk",
+        "label": "RG 3 · RatecodeID",
+        "span": {
+          "start": "57361951",
+          "end": "57362017"
+        },
+        "row_group": 3,
+        "column": "RatecodeID",
+        "rows": "329498",
+        "dictionary_offset": "57361951",
+        "data_offset": "57361974",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg3-c6",
+        "kind": "column_chunk",
+        "label": "RG 3 · store_and_fwd_flag",
+        "span": {
+          "start": "57362088",
+          "end": "57362154"
+        },
+        "row_group": 3,
+        "column": "store_and_fwd_flag",
+        "rows": "329498",
+        "dictionary_offset": "57362088",
+        "data_offset": "57362111",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg3-c7",
+        "kind": "column_chunk",
+        "label": "RG 3 · PULocationID",
+        "span": {
+          "start": "57362233",
+          "end": "57628852"
+        },
+        "row_group": 3,
+        "column": "PULocationID",
+        "rows": "329498",
+        "dictionary_offset": "57362233",
+        "data_offset": "57362676",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg3-c8",
+        "kind": "column_chunk",
+        "label": "RG 3 · DOLocationID",
+        "span": {
+          "start": "57628950",
+          "end": "57895607"
+        },
+        "row_group": 3,
+        "column": "DOLocationID",
+        "rows": "329498",
+        "dictionary_offset": "57628950",
+        "data_offset": "57629398",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg3-c9",
+        "kind": "column_chunk",
+        "label": "RG 3 · payment_type",
+        "span": {
+          "start": "57895705",
+          "end": "57895821"
+        },
+        "row_group": 3,
+        "column": "payment_type",
+        "rows": "329498",
+        "dictionary_offset": "57895705",
+        "data_offset": "57895736",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg3-c10",
+        "kind": "column_chunk",
+        "label": "RG 3 · fare_amount",
+        "span": {
+          "start": "57895933",
+          "end": "58428263"
+        },
+        "row_group": 3,
+        "column": "fare_amount",
+        "rows": "329498",
+        "dictionary_offset": "57895933",
+        "data_offset": "57916000",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg3-c11",
+        "kind": "column_chunk",
+        "label": "RG 3 · extra",
+        "span": {
+          "start": "58428376",
+          "end": "58439298"
+        },
+        "row_group": 3,
+        "column": "extra",
+        "rows": "329498",
+        "dictionary_offset": "58428376",
+        "data_offset": "58428480",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg3-c12",
+        "kind": "column_chunk",
+        "label": "RG 3 · mta_tax",
+        "span": {
+          "start": "58439405",
+          "end": "58440577"
+        },
+        "row_group": 3,
+        "column": "mta_tax",
+        "rows": "329498",
+        "dictionary_offset": "58439405",
+        "data_offset": "58439460",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg3-c13",
+        "kind": "column_chunk",
+        "label": "RG 3 · tip_amount",
+        "span": {
+          "start": "58440684",
+          "end": "58529096"
+        },
+        "row_group": 3,
+        "column": "tip_amount",
+        "rows": "329498",
+        "dictionary_offset": "58440684",
+        "data_offset": "58445381",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg3-c14",
+        "kind": "column_chunk",
+        "label": "RG 3 · tolls_amount",
+        "span": {
+          "start": "58529208",
+          "end": "58543960"
+        },
+        "row_group": 3,
+        "column": "tolls_amount",
+        "rows": "329498",
+        "dictionary_offset": "58529208",
+        "data_offset": "58529594",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg3-c15",
+        "kind": "column_chunk",
+        "label": "RG 3 · improvement_surcharge",
+        "span": {
+          "start": "58544074",
+          "end": "58545407"
+        },
+        "row_group": 3,
+        "column": "improvement_surcharge",
+        "rows": "329498",
+        "dictionary_offset": "58544074",
+        "data_offset": "58544125",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg3-c16",
+        "kind": "column_chunk",
+        "label": "RG 3 · total_amount",
+        "span": {
+          "start": "58545528",
+          "end": "59106359"
+        },
+        "row_group": 3,
+        "column": "total_amount",
+        "rows": "329498",
+        "dictionary_offset": "58545528",
+        "data_offset": "58570160",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg3-c17",
+        "kind": "column_chunk",
+        "label": "RG 3 · congestion_surcharge",
+        "span": {
+          "start": "59106473",
+          "end": "59106539"
+        },
+        "row_group": 3,
+        "column": "congestion_surcharge",
+        "rows": "329498",
+        "dictionary_offset": "59106473",
+        "data_offset": "59106496",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg3-c18",
+        "kind": "column_chunk",
+        "label": "RG 3 · Airport_fee",
+        "span": {
+          "start": "59106620",
+          "end": "59106686"
+        },
+        "row_group": 3,
+        "column": "Airport_fee",
+        "rows": "329498",
+        "dictionary_offset": "59106620",
+        "data_offset": "59106643",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "rg3-c19",
+        "kind": "column_chunk",
+        "label": "RG 3 · cbd_congestion_fee",
+        "span": {
+          "start": "59106758",
+          "end": "59146898"
+        },
+        "row_group": 3,
+        "column": "cbd_congestion_fee",
+        "rows": "329498",
+        "dictionary_offset": "59106758",
+        "data_offset": "59106798",
+        "compression": "ZSTD"
+      },
+      {
+        "id": "unknown-0",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "127744",
+          "end": "127832"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-1",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "4571049",
+          "end": "4571179"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-2",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "9096163",
+          "end": "9096296"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-3",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "9292223",
+          "end": "9292341"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-4",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "10721305",
+          "end": "10721423"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-5",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "10816146",
+          "end": "10816259"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-6",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "10821498",
+          "end": "10821584"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-7",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "11563838",
+          "end": "11563938"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-8",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "12620206",
+          "end": "12620307"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-9",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "12782304",
+          "end": "12782419"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-10",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "13872369",
+          "end": "13872485"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-11",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "14192405",
+          "end": "14192513"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-12",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "14250118",
+          "end": "14250228"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-13",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "15529945",
+          "end": "15530060"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-14",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "15674411",
+          "end": "15674526"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-15",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "15722178",
+          "end": "15722302"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-16",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "17539169",
+          "end": "17539286"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-17",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "17639605",
+          "end": "17639728"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-18",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "17732523",
+          "end": "17732637"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-19",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "17827363",
+          "end": "17827484"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-20",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "17953227",
+          "end": "17953322"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-21",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "22329058",
+          "end": "22329190"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-22",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "26785397",
+          "end": "26785530"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-23",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "26962710",
+          "end": "26962828"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-24",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "28402089",
+          "end": "28402207"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-25",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "28487943",
+          "end": "28488056"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-26",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "28493542",
+          "end": "28493628"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-27",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "29230226",
+          "end": "29230326"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-28",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "30251972",
+          "end": "30252072"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-29",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "30383163",
+          "end": "30383278"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-30",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "31474174",
+          "end": "31474290"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-31",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "31795253",
+          "end": "31795361"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-32",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "31847338",
+          "end": "31847448"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-33",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "33107354",
+          "end": "33107469"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-34",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "33244339",
+          "end": "33244454"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-35",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "33291391",
+          "end": "33291515"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-36",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "35033829",
+          "end": "35033946"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-37",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "35129763",
+          "end": "35129886"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-38",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "35210917",
+          "end": "35211031"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-39",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "35345052",
+          "end": "35345173"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-40",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "35470152",
+          "end": "35470247"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-41",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "40008599",
+          "end": "40008731"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-42",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "44630001",
+          "end": "44630134"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-43",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "44771988",
+          "end": "44772108"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-44",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "46203465",
+          "end": "46203583"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-45",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "46266873",
+          "end": "46266988"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-46",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "46271185",
+          "end": "46271273"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-47",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "47034860",
+          "end": "47034960"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-48",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "48086121",
+          "end": "48086222"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-49",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "48204419",
+          "end": "48204534"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-50",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "49504085",
+          "end": "49504201"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-51",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "49787835",
+          "end": "49787943"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-52",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "49829625",
+          "end": "49829735"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-53",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "50958851",
+          "end": "50958966"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-54",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "51071259",
+          "end": "51071374"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-55",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "51109867",
+          "end": "51109991"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-56",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "52902456",
+          "end": "52902573"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-57",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "52977797",
+          "end": "52977922"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-58",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "53046947",
+          "end": "53047063"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-59",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "53180054",
+          "end": "53180175"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-60",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "53215972",
+          "end": "53216066"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-61",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "55067189",
+          "end": "55067320"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-62",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "56926124",
+          "end": "56926256"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-63",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "56926322",
+          "end": "56926398"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-64",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "57361836",
+          "end": "57361951"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-65",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "57362017",
+          "end": "57362088"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-66",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "57362154",
+          "end": "57362233"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-67",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "57628852",
+          "end": "57628950"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-68",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "57895607",
+          "end": "57895705"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-69",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "57895821",
+          "end": "57895933"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-70",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "58428263",
+          "end": "58428376"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-71",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "58439298",
+          "end": "58439405"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-72",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "58440577",
+          "end": "58440684"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-73",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "58529096",
+          "end": "58529208"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-74",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "58543960",
+          "end": "58544074"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-75",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "58545407",
+          "end": "58545528"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-76",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "59106359",
+          "end": "59106473"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-77",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "59106539",
+          "end": "59106620"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-78",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "59106686",
+          "end": "59106758"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      },
+      {
+        "id": "unknown-79",
+        "kind": "unclassified",
+        "label": "Unclassified",
+        "span": {
+          "start": "59146898",
+          "end": "59147018"
+        },
+        "row_group": null,
+        "column": null,
+        "rows": null,
+        "dictionary_offset": null,
+        "data_offset": null,
+        "compression": null
+      }
+    ]
+  },
+  "settings": {
+    "threads": 4,
+    "memory_limit_mb": 512,
+    "deadline_seconds": 60.0,
+    "preview_rows": 1,
+    "preview_bytes": 65536,
+    "external_file_cache": false,
+    "cold_client": true
+  },
+  "sql_status": "succeeded",
+  "query_duration_ms": 29.988333000801504,
+  "elapsed_ms": 364.9068330123555,
+  "result_rows": "1",
+  "result_digest": "9924e83320378f41d6df5283d9e8e42aa6e166258ba20ab88d82e1864ea709d2",
+  "observations": [
+    {
+      "id": "06368befe5264a918493862b89b9c974",
+      "method": "HEAD",
+      "url": "http://127.0.0.1:54321/4d8f7ab0a7a147ae9fce2f13d45f58ca/input.parquet",
+      "requested_range": null,
+      "requested_span": null,
+      "response_span": null,
+      "status": 200,
+      "start_ms": 0.0,
+      "duration_ms": 1.0,
+      "declared_body_bytes": "0",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5"
+      },
+      "response_headers": {
+        "Content-Length": "59158238",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "X-ParquetScope-Request-ID": "06368befe5264a918493862b89b9c974",
+        "Date": "Tue, 20 Oct 2026 18:57:06 GMT",
+        "Server": "BaseHTTP/0.6 Python/3.13.16",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1792522491885075367\""
+      },
+      "engine_start_time": "2026-10-20 21:57:06.671431+03"
+    },
+    {
+      "id": "72e62cdc579f42c9b16a807636a40963",
+      "method": "GET",
+      "url": "http://127.0.0.1:54321/4d8f7ab0a7a147ae9fce2f13d45f58ca/input.parquet",
+      "requested_range": "bytes=59092702-59158237",
+      "requested_span": {
+        "start": "59092702",
+        "end": "59158238"
+      },
+      "response_span": {
+        "start": "59092702",
+        "end": "59158238"
+      },
+      "status": 206,
+      "start_ms": 1.208984375,
+      "duration_ms": 1.0,
+      "declared_body_bytes": "65536",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=59092702-59158237"
+      },
+      "response_headers": {
+        "Content-Length": "65536",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Tue, 20 Oct 2026 18:57:06 GMT",
+        "X-ParquetScope-Request-ID": "72e62cdc579f42c9b16a807636a40963",
+        "Server": "BaseHTTP/0.6 Python/3.13.16",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1792522491885075367\"",
+        "Content-Range": "bytes 59092702-59158237/59158238"
+      },
+      "engine_start_time": "2026-10-20 21:57:06.67264+03"
+    },
+    {
+      "id": "b1059d8fabcb4b1e84f6267d1eb67064",
+      "method": "HEAD",
+      "url": "http://127.0.0.1:54321/4d8f7ab0a7a147ae9fce2f13d45f58ca/input.parquet",
+      "requested_range": null,
+      "requested_span": null,
+      "response_span": null,
+      "status": 200,
+      "start_ms": 2.290771484375,
+      "duration_ms": 1.0,
+      "declared_body_bytes": "0",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5"
+      },
+      "response_headers": {
+        "Content-Length": "59158238",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "X-ParquetScope-Request-ID": "b1059d8fabcb4b1e84f6267d1eb67064",
+        "Date": "Tue, 20 Oct 2026 18:57:06 GMT",
+        "Server": "BaseHTTP/0.6 Python/3.13.16",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1792522491885075367\""
+      },
+      "engine_start_time": "2026-10-20 21:57:06.673722+03"
+    },
+    {
+      "id": "ee6a909348ed4a5b87b42c562710e2e0",
+      "method": "GET",
+      "url": "http://127.0.0.1:54321/4d8f7ab0a7a147ae9fce2f13d45f58ca/input.parquet",
+      "requested_range": "bytes=59092702-59158237",
+      "requested_span": {
+        "start": "59092702",
+        "end": "59158238"
+      },
+      "response_span": {
+        "start": "59092702",
+        "end": "59158238"
+      },
+      "status": 206,
+      "start_ms": 2.755859375,
+      "duration_ms": 0.0,
+      "declared_body_bytes": "65536",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=59092702-59158237"
+      },
+      "response_headers": {
+        "Content-Length": "65536",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Tue, 20 Oct 2026 18:57:06 GMT",
+        "X-ParquetScope-Request-ID": "ee6a909348ed4a5b87b42c562710e2e0",
+        "Server": "BaseHTTP/0.6 Python/3.13.16",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1792522491885075367\"",
+        "Content-Range": "bytes 59092702-59158237/59158238"
+      },
+      "engine_start_time": "2026-10-20 21:57:06.674187+03"
+    },
+    {
+      "id": "843dbf52cef14d51a6cdb25500cf5226",
+      "method": "GET",
+      "url": "http://127.0.0.1:54321/4d8f7ab0a7a147ae9fce2f13d45f58ca/input.parquet",
+      "requested_range": "bytes=57362233-57628851",
+      "requested_span": {
+        "start": "57362233",
+        "end": "57628852"
+      },
+      "response_span": {
+        "start": "57362233",
+        "end": "57628852"
+      },
+      "status": 206,
+      "start_ms": 3.954833984375,
+      "duration_ms": 5.0,
+      "declared_body_bytes": "266619",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=57362233-57628851"
+      },
+      "response_headers": {
+        "Content-Length": "266619",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Tue, 20 Oct 2026 18:57:06 GMT",
+        "X-ParquetScope-Request-ID": "843dbf52cef14d51a6cdb25500cf5226",
+        "Server": "BaseHTTP/0.6 Python/3.13.16",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1792522491885075367\"",
+        "Content-Range": "bytes 57362233-57628851/59158238"
+      },
+      "engine_start_time": "2026-10-20 21:57:06.675386+03"
+    },
+    {
+      "id": "d6ccbe54e01d4773b683b820ee1e16d5",
+      "method": "GET",
+      "url": "http://127.0.0.1:54321/4d8f7ab0a7a147ae9fce2f13d45f58ca/input.parquet",
+      "requested_range": "bytes=28493628-29230225",
+      "requested_span": {
+        "start": "28493628",
+        "end": "29230226"
+      },
+      "response_span": {
+        "start": "28493628",
+        "end": "29230226"
+      },
+      "status": 206,
+      "start_ms": 3.9248046875,
+      "duration_ms": 6.0,
+      "declared_body_bytes": "736598",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=28493628-29230225"
+      },
+      "response_headers": {
+        "Content-Length": "736598",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Tue, 20 Oct 2026 18:57:06 GMT",
+        "X-ParquetScope-Request-ID": "d6ccbe54e01d4773b683b820ee1e16d5",
+        "Server": "BaseHTTP/0.6 Python/3.13.16",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1792522491885075367\"",
+        "Content-Range": "bytes 28493628-29230225/59158238"
+      },
+      "engine_start_time": "2026-10-20 21:57:06.675356+03"
+    },
+    {
+      "id": "b32bb96e00da49938627d6f939c31850",
+      "method": "GET",
+      "url": "http://127.0.0.1:54321/4d8f7ab0a7a147ae9fce2f13d45f58ca/input.parquet",
+      "requested_range": "bytes=10821584-11563837",
+      "requested_span": {
+        "start": "10821584",
+        "end": "11563838"
+      },
+      "response_span": {
+        "start": "10821584",
+        "end": "11563838"
+      },
+      "status": 206,
+      "start_ms": 3.927978515625,
+      "duration_ms": 6.0,
+      "declared_body_bytes": "742254",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=10821584-11563837"
+      },
+      "response_headers": {
+        "Content-Length": "742254",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Tue, 20 Oct 2026 18:57:06 GMT",
+        "X-ParquetScope-Request-ID": "b32bb96e00da49938627d6f939c31850",
+        "Server": "BaseHTTP/0.6 Python/3.13.16",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1792522491885075367\"",
+        "Content-Range": "bytes 10821584-11563837/59158238"
+      },
+      "engine_start_time": "2026-10-20 21:57:06.675359+03"
+    },
+    {
+      "id": "8349e70cc50b4b5a9532067f21cb0532",
+      "method": "GET",
+      "url": "http://127.0.0.1:54321/4d8f7ab0a7a147ae9fce2f13d45f58ca/input.parquet",
+      "requested_range": "bytes=46271273-47034859",
+      "requested_span": {
+        "start": "46271273",
+        "end": "47034860"
+      },
+      "response_span": {
+        "start": "46271273",
+        "end": "47034860"
+      },
+      "status": 206,
+      "start_ms": 3.952880859375,
+      "duration_ms": 6.0,
+      "declared_body_bytes": "763587",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=46271273-47034859"
+      },
+      "response_headers": {
+        "Content-Length": "763587",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Tue, 20 Oct 2026 18:57:06 GMT",
+        "X-ParquetScope-Request-ID": "8349e70cc50b4b5a9532067f21cb0532",
+        "Server": "BaseHTTP/0.6 Python/3.13.16",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1792522491885075367\"",
+        "Content-Range": "bytes 46271273-47034859/59158238"
+      },
+      "engine_start_time": "2026-10-20 21:57:06.675384+03"
+    },
+    {
+      "id": "9fa96fb5afe340b4ab6f7ca8368f68c9",
+      "method": "GET",
+      "url": "http://127.0.0.1:54321/4d8f7ab0a7a147ae9fce2f13d45f58ca/input.parquet",
+      "requested_range": "bytes=56926398-57361835",
+      "requested_span": {
+        "start": "56926398",
+        "end": "57361836"
+      },
+      "response_span": {
+        "start": "56926398",
+        "end": "57361836"
+      },
+      "status": 206,
+      "start_ms": 9.26171875,
+      "duration_ms": 4.0,
+      "declared_body_bytes": "435438",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=56926398-57361835"
+      },
+      "response_headers": {
+        "Content-Length": "435438",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Tue, 20 Oct 2026 18:57:06 GMT",
+        "X-ParquetScope-Request-ID": "9fa96fb5afe340b4ab6f7ca8368f68c9",
+        "Server": "BaseHTTP/0.6 Python/3.13.16",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1792522491885075367\"",
+        "Content-Range": "bytes 56926398-57361835/59158238"
+      },
+      "engine_start_time": "2026-10-20 21:57:06.680693+03"
+    },
+    {
+      "id": "67f16d5df97941168fdbb6d671c9aa47",
+      "method": "GET",
+      "url": "http://127.0.0.1:54321/4d8f7ab0a7a147ae9fce2f13d45f58ca/input.parquet",
+      "requested_range": "bytes=44772108-46203464",
+      "requested_span": {
+        "start": "44772108",
+        "end": "46203465"
+      },
+      "response_span": {
+        "start": "44772108",
+        "end": "46203465"
+      },
+      "status": 206,
+      "start_ms": 11.184814453125,
+      "duration_ms": 5.0,
+      "declared_body_bytes": "1431357",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=44772108-46203464"
+      },
+      "response_headers": {
+        "Content-Length": "1431357",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Tue, 20 Oct 2026 18:57:06 GMT",
+        "X-ParquetScope-Request-ID": "67f16d5df97941168fdbb6d671c9aa47",
+        "Server": "BaseHTTP/0.6 Python/3.13.16",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1792522491885075367\"",
+        "Content-Range": "bytes 44772108-46203464/59158238"
+      },
+      "engine_start_time": "2026-10-20 21:57:06.682616+03"
+    },
+    {
+      "id": "cde7a47e3d714d5499e7d98dd01902cd",
+      "method": "GET",
+      "url": "http://127.0.0.1:54321/4d8f7ab0a7a147ae9fce2f13d45f58ca/input.parquet",
+      "requested_range": "bytes=9292341-10721304",
+      "requested_span": {
+        "start": "9292341",
+        "end": "10721305"
+      },
+      "response_span": {
+        "start": "9292341",
+        "end": "10721305"
+      },
+      "status": 206,
+      "start_ms": 10.975830078125,
+      "duration_ms": 6.0,
+      "declared_body_bytes": "1428964",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=9292341-10721304"
+      },
+      "response_headers": {
+        "Content-Length": "1428964",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Tue, 20 Oct 2026 18:57:06 GMT",
+        "X-ParquetScope-Request-ID": "cde7a47e3d714d5499e7d98dd01902cd",
+        "Server": "BaseHTTP/0.6 Python/3.13.16",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1792522491885075367\"",
+        "Content-Range": "bytes 9292341-10721304/59158238"
+      },
+      "engine_start_time": "2026-10-20 21:57:06.682407+03"
+    },
+    {
+      "id": "4c0df64cbf5841b185b53d1f86f2cb11",
+      "method": "GET",
+      "url": "http://127.0.0.1:54321/4d8f7ab0a7a147ae9fce2f13d45f58ca/input.parquet",
+      "requested_range": "bytes=26962828-28402088",
+      "requested_span": {
+        "start": "26962828",
+        "end": "28402089"
+      },
+      "response_span": {
+        "start": "26962828",
+        "end": "28402089"
+      },
+      "status": 206,
+      "start_ms": 10.48583984375,
+      "duration_ms": 7.0,
+      "declared_body_bytes": "1439261",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=26962828-28402088"
+      },
+      "response_headers": {
+        "Content-Length": "1439261",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Tue, 20 Oct 2026 18:57:06 GMT",
+        "X-ParquetScope-Request-ID": "4c0df64cbf5841b185b53d1f86f2cb11",
+        "Server": "BaseHTTP/0.6 Python/3.13.16",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1792522491885075367\"",
+        "Content-Range": "bytes 26962828-28402088/59158238"
+      },
+      "engine_start_time": "2026-10-20 21:57:06.681917+03"
+    },
+    {
+      "id": "2817ef7cc33548fc99eb80310c95ee2b",
+      "method": "GET",
+      "url": "http://127.0.0.1:54321/4d8f7ab0a7a147ae9fce2f13d45f58ca/input.parquet",
+      "requested_range": "bytes=57895933-58428262",
+      "requested_span": {
+        "start": "57895933",
+        "end": "58428263"
+      },
+      "response_span": {
+        "start": "57895933",
+        "end": "58428263"
+      },
+      "status": 206,
+      "start_ms": 13.29296875,
+      "duration_ms": 5.0,
+      "declared_body_bytes": "532330",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=57895933-58428262"
+      },
+      "response_headers": {
+        "Content-Length": "532330",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Tue, 20 Oct 2026 18:57:06 GMT",
+        "X-ParquetScope-Request-ID": "2817ef7cc33548fc99eb80310c95ee2b",
+        "Server": "BaseHTTP/0.6 Python/3.13.16",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1792522491885075367\"",
+        "Content-Range": "bytes 57895933-58428262/59158238"
+      },
+      "engine_start_time": "2026-10-20 21:57:06.684724+03"
+    },
+    {
+      "id": "17568795d3294199b5f8273c8b5316f1",
+      "method": "GET",
+      "url": "http://127.0.0.1:54321/4d8f7ab0a7a147ae9fce2f13d45f58ca/input.parquet",
+      "requested_range": "bytes=30383278-31474173",
+      "requested_span": {
+        "start": "30383278",
+        "end": "31474174"
+      },
+      "response_span": {
+        "start": "30383278",
+        "end": "31474174"
+      },
+      "status": 206,
+      "start_ms": 17.916748046875,
+      "duration_ms": 3.0,
+      "declared_body_bytes": "1090896",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=30383278-31474173"
+      },
+      "response_headers": {
+        "Content-Length": "1090896",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Tue, 20 Oct 2026 18:57:06 GMT",
+        "X-ParquetScope-Request-ID": "17568795d3294199b5f8273c8b5316f1",
+        "Server": "BaseHTTP/0.6 Python/3.13.16",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1792522491885075367\"",
+        "Content-Range": "bytes 30383278-31474173/59158238"
+      },
+      "engine_start_time": "2026-10-20 21:57:06.689348+03"
+    },
+    {
+      "id": "55e699fafa4f45e0a637adcbd97bf753",
+      "method": "GET",
+      "url": "http://127.0.0.1:54321/4d8f7ab0a7a147ae9fce2f13d45f58ca/input.parquet",
+      "requested_range": "bytes=12782419-13872368",
+      "requested_span": {
+        "start": "12782419",
+        "end": "13872369"
+      },
+      "response_span": {
+        "start": "12782419",
+        "end": "13872369"
+      },
+      "status": 206,
+      "start_ms": 17.720947265625,
+      "duration_ms": 3.0,
+      "declared_body_bytes": "1089950",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=12782419-13872368"
+      },
+      "response_headers": {
+        "Content-Length": "1089950",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Tue, 20 Oct 2026 18:57:06 GMT",
+        "X-ParquetScope-Request-ID": "55e699fafa4f45e0a637adcbd97bf753",
+        "Server": "BaseHTTP/0.6 Python/3.13.16",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1792522491885075367\"",
+        "Content-Range": "bytes 12782419-13872368/59158238"
+      },
+      "engine_start_time": "2026-10-20 21:57:06.689152+03"
+    },
+    {
+      "id": "b37b024c57a54dc19ae02d522fc5fb75",
+      "method": "GET",
+      "url": "http://127.0.0.1:54321/4d8f7ab0a7a147ae9fce2f13d45f58ca/input.parquet",
+      "requested_range": "bytes=48204534-49504084",
+      "requested_span": {
+        "start": "48204534",
+        "end": "49504085"
+      },
+      "response_span": {
+        "start": "48204534",
+        "end": "49504085"
+      },
+      "status": 206,
+      "start_ms": 16.9697265625,
+      "duration_ms": 6.0,
+      "declared_body_bytes": "1299551",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=48204534-49504084"
+      },
+      "response_headers": {
+        "Content-Length": "1299551",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Tue, 20 Oct 2026 18:57:06 GMT",
+        "X-ParquetScope-Request-ID": "b37b024c57a54dc19ae02d522fc5fb75",
+        "Server": "BaseHTTP/0.6 Python/3.13.16",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1792522491885075367\"",
+        "Content-Range": "bytes 48204534-49504084/59158238"
+      },
+      "engine_start_time": "2026-10-20 21:57:06.688401+03"
+    }
+  ],
+  "server_observations": [
+    {
+      "id": "06368befe5264a918493862b89b9c974",
+      "method": "HEAD",
+      "requested_range": null,
+      "response_span": null,
+      "status": 200,
+      "start_ms": 294.72350000287406,
+      "duration_ms": 0.14775001909583807,
+      "declared_body_bytes": "0",
+      "written_body_bytes": "0",
+      "complete": true,
+      "error": null
+    },
+    {
+      "id": "72e62cdc579f42c9b16a807636a40963",
+      "method": "GET",
+      "requested_range": "bytes=59092702-59158237",
+      "response_span": {
+        "start": "59092702",
+        "end": "59158238"
+      },
+      "status": 206,
+      "start_ms": 295.3856250096578,
+      "duration_ms": 0.17337501049041748,
+      "declared_body_bytes": "65536",
+      "written_body_bytes": "65536",
+      "complete": true,
+      "error": null
+    },
+    {
+      "id": "b1059d8fabcb4b1e84f6267d1eb67064",
+      "method": "HEAD",
+      "requested_range": null,
+      "response_span": null,
+      "status": 200,
+      "start_ms": 296.4602500142064,
+      "duration_ms": 0.04616699879989028,
+      "declared_body_bytes": "0",
+      "written_body_bytes": "0",
+      "complete": true,
+      "error": null
+    },
+    {
+      "id": "ee6a909348ed4a5b87b42c562710e2e0",
+      "method": "GET",
+      "requested_range": "bytes=59092702-59158237",
+      "response_span": {
+        "start": "59092702",
+        "end": "59158238"
+      },
+      "status": 206,
+      "start_ms": 296.95958402589895,
+      "duration_ms": 0.10912498692050576,
+      "declared_body_bytes": "65536",
+      "written_body_bytes": "65536",
+      "complete": true,
+      "error": null
+    },
+    {
+      "id": "843dbf52cef14d51a6cdb25500cf5226",
+      "method": "GET",
+      "requested_range": "bytes=57362233-57628851",
+      "response_span": {
+        "start": "57362233",
+        "end": "57628852"
+      },
+      "status": 206,
+      "start_ms": 300.0948340049945,
+      "duration_ms": 2.4247080145869404,
+      "declared_body_bytes": "266619",
+      "written_body_bytes": "266619",
+      "complete": true,
+      "error": null
+    },
+    {
+      "id": "d6ccbe54e01d4773b683b820ee1e16d5",
+      "method": "GET",
+      "requested_range": "bytes=28493628-29230225",
+      "response_span": {
+        "start": "28493628",
+        "end": "29230226"
+      },
+      "status": 206,
+      "start_ms": 298.3766670222394,
+      "duration_ms": 4.91595797939226,
+      "declared_body_bytes": "736598",
+      "written_body_bytes": "736598",
+      "complete": true,
+      "error": null
+    },
+    {
+      "id": "b32bb96e00da49938627d6f939c31850",
+      "method": "GET",
+      "requested_range": "bytes=10821584-11563837",
+      "response_span": {
+        "start": "10821584",
+        "end": "11563838"
+      },
+      "status": 206,
+      "start_ms": 298.20254200603813,
+      "duration_ms": 5.5785000149626285,
+      "declared_body_bytes": "742254",
+      "written_body_bytes": "742254",
+      "complete": true,
+      "error": null
+    },
+    {
+      "id": "8349e70cc50b4b5a9532067f21cb0532",
+      "method": "GET",
+      "requested_range": "bytes=46271273-47034859",
+      "response_span": {
+        "start": "46271273",
+        "end": "47034860"
+      },
+      "status": 206,
+      "start_ms": 299.9040840077214,
+      "duration_ms": 4.04791600885801,
+      "declared_body_bytes": "763587",
+      "written_body_bytes": "763587",
+      "complete": true,
+      "error": null
+    },
+    {
+      "id": "9fa96fb5afe340b4ab6f7ca8368f68c9",
+      "method": "GET",
+      "requested_range": "bytes=56926398-57361835",
+      "response_span": {
+        "start": "56926398",
+        "end": "57361836"
+      },
+      "status": 206,
+      "start_ms": 303.62404201878235,
+      "duration_ms": 2.7034170052502304,
+      "declared_body_bytes": "435438",
+      "written_body_bytes": "435438",
+      "complete": true,
+      "error": null
+    },
+    {
+      "id": "67f16d5df97941168fdbb6d671c9aa47",
+      "method": "GET",
+      "requested_range": "bytes=44772108-46203464",
+      "response_span": {
+        "start": "44772108",
+        "end": "46203465"
+      },
+      "status": 206,
+      "start_ms": 305.8540839992929,
+      "duration_ms": 3.5844160011038184,
+      "declared_body_bytes": "1431357",
+      "written_body_bytes": "1431357",
+      "complete": true,
+      "error": null
+    },
+    {
+      "id": "cde7a47e3d714d5499e7d98dd01902cd",
+      "method": "GET",
+      "requested_range": "bytes=9292341-10721304",
+      "response_span": {
+        "start": "9292341",
+        "end": "10721305"
+      },
+      "status": 206,
+      "start_ms": 305.58766701142304,
+      "duration_ms": 4.542500013485551,
+      "declared_body_bytes": "1428964",
+      "written_body_bytes": "1428964",
+      "complete": true,
+      "error": null
+    },
+    {
+      "id": "4c0df64cbf5841b185b53d1f86f2cb11",
+      "method": "GET",
+      "requested_range": "bytes=26962828-28402088",
+      "response_span": {
+        "start": "26962828",
+        "end": "28402089"
+      },
+      "status": 206,
+      "start_ms": 305.3393340087496,
+      "duration_ms": 4.886290989816189,
+      "declared_body_bytes": "1439261",
+      "written_body_bytes": "1439261",
+      "complete": true,
+      "error": null
+    },
+    {
+      "id": "2817ef7cc33548fc99eb80310c95ee2b",
+      "method": "GET",
+      "requested_range": "bytes=57895933-58428262",
+      "response_span": {
+        "start": "57895933",
+        "end": "58428263"
+      },
+      "status": 206,
+      "start_ms": 307.7013340080157,
+      "duration_ms": 3.880708012729883,
+      "declared_body_bytes": "532330",
+      "written_body_bytes": "532330",
+      "complete": true,
+      "error": null
+    },
+    {
+      "id": "17568795d3294199b5f8273c8b5316f1",
+      "method": "GET",
+      "requested_range": "bytes=30383278-31474173",
+      "response_span": {
+        "start": "30383278",
+        "end": "31474174"
+      },
+      "status": 206,
+      "start_ms": 312.22525000339374,
+      "duration_ms": 2.333625016035512,
+      "declared_body_bytes": "1090896",
+      "written_body_bytes": "1090896",
+      "complete": true,
+      "error": null
+    },
+    {
+      "id": "55e699fafa4f45e0a637adcbd97bf753",
+      "method": "GET",
+      "requested_range": "bytes=12782419-13872368",
+      "response_span": {
+        "start": "12782419",
+        "end": "13872369"
+      },
+      "status": 206,
+      "start_ms": 311.90900001092814,
+      "duration_ms": 2.8779589920304716,
+      "declared_body_bytes": "1089950",
+      "written_body_bytes": "1089950",
+      "complete": true,
+      "error": null
+    },
+    {
+      "id": "b37b024c57a54dc19ae02d522fc5fb75",
+      "method": "GET",
+      "requested_range": "bytes=48204534-49504084",
+      "response_span": {
+        "start": "48204534",
+        "end": "49504085"
+      },
+      "status": 206,
+      "start_ms": 312.06066702725366,
+      "duration_ms": 4.189291998045519,
+      "declared_body_bytes": "1299551",
+      "written_body_bytes": "1299551",
+      "complete": true,
+      "error": null
+    }
+  ],
+  "capture": {
+    "complete": true,
+    "reason": null,
+    "reconciled": true,
+    "scope": "Input binding and one fully consumed SELECT; app metadata reads excluded."
+  },
+  "metrics": {
+    "get_count": 14,
+    "head_count": 2,
+    "requested_range_bytes": "11387877",
+    "confirmed_range_bytes": "11387877",
+    "declared_body_bytes": "11387877",
+    "server_written_bytes": "11387877",
+    "unique_coverage_bytes": "11322341",
+    "repeated_coverage_bytes": "65536",
+    "coverage": [
+      {
+        "start": "9292341",
+        "end": "10721305"
+      },
+      {
+        "start": "10821584",
+        "end": "11563838"
+      },
+      {
+        "start": "12782419",
+        "end": "13872369"
+      },
+      {
+        "start": "26962828",
+        "end": "28402089"
+      },
+      {
+        "start": "28493628",
+        "end": "29230226"
+      },
+      {
+        "start": "30383278",
+        "end": "31474174"
+      },
+      {
+        "start": "44772108",
+        "end": "46203465"
+      },
+      {
+        "start": "46271273",
+        "end": "47034860"
+      },
+      {
+        "start": "48204534",
+        "end": "49504085"
+      },
+      {
+        "start": "56926398",
+        "end": "57361836"
+      },
+      {
+        "start": "57362233",
+        "end": "57628852"
+      },
+      {
+        "start": "57895933",
+        "end": "58428263"
+      },
+      {
+        "start": "59092702",
+        "end": "59158238"
+      }
+    ],
+    "totals_scope": "complete",
+    "unknown_reasons": []
+  },
+  "errors": [],
+  "limitations": [
+    "Loopback HTTP measurement; not S3, physical disk or client-received bytes.",
+    "Response intersections do not prove decoding, use or wasted work.",
+    "Fresh worker means cold client only; OS and disk caches are uncontrolled.",
+    "Query duration excludes input binding; elapsed includes worker setup and cleanup.",
+    "Preview is runtime-only and omitted from exported artifacts."
+  ]
+}

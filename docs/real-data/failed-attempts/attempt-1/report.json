@@ -1,0 +1,863 @@
+{
+  "schema_version": "1",
+  "status": "failed",
+  "created_at": "2026-10-20T18:54:49.823754+00:00",
+  "parquetscope": {
+    "version": "0.1.0",
+    "commit": "beea48dcd845ad017b0aecfa123f4fb5346ea9fc"
+  },
+  "runner_sha256": "045168c8b0548e3b221629ec5bb570b6804912961edf39fdc05fcf09797b04be",
+  "source": {
+    "url": "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2025-01.parquet",
+    "page": "https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page",
+    "size": "59158238",
+    "sha256": "9af277e4c0d3f9deb30644da822981e1e7df6af58313170fd3aa8a474485488a"
+  },
+  "versions": {
+    "python": "3.13.16",
+    "duckdb": "1.5.6",
+    "pyarrow": "26.0.0"
+  },
+  "platform": {
+    "os": "Darwin",
+    "release": "24.6.0",
+    "architecture": "arm64"
+  },
+  "preparation_settings": {
+    "threads": "1",
+    "memory_limit": "1GB",
+    "preserve_insertion_order": "true",
+    "max_temp_directory_size": "10GB",
+    "spill": true,
+    "temp_directory": "work/spill"
+  },
+  "capture_settings": {
+    "threads": 4,
+    "memory_limit_mb": 512,
+    "deadline_seconds": 60.0,
+    "preview_rows": 1,
+    "preview_bytes": 65536,
+    "external_file_cache": false,
+    "cold_client": true
+  },
+  "capture_process": {
+    "fresh_worker_per_run": true,
+    "spill": false,
+    "os_cache_eviction": false,
+    "order": "A1,A2,A3,B1,B2,B3,C1,C2,C3"
+  },
+  "writer": {
+    "engine": "DuckDB",
+    "compression": "ZSTD",
+    "compression_level": 3,
+    "row_group_size": 122880,
+    "parquet_version": "V1",
+    "other_options": "DuckDB 1.5.6 defaults, identical for B and C",
+    "version": "1.5.6"
+  },
+  "sql": "SELECT\n    count(*) AS n,\n    sum(CAST(fare_amount AS DECIMAL(18,2))) AS fare\nFROM input\nWHERE PULocationID = 132\n  AND trip_distance > 0",
+  "expected_result": [
+    [
+      "142826",
+      "8038349.75"
+    ]
+  ],
+  "layouts": [
+    {
+      "id": "A",
+      "label": "As delivered",
+      "name": "yellow_tripdata_2025-01.parquet",
+      "size": "59158238",
+      "sha256": "9af277e4c0d3f9deb30644da822981e1e7df6af58313170fd3aa8a474485488a",
+      "rows": "3475226",
+      "row_groups": 4,
+      "row_group_rows": [
+        1048576,
+        1048576,
+        1048576,
+        329498
+      ],
+      "schema": [
+        [
+          "VendorID",
+          "INTEGER"
+        ],
+        [
+          "tpep_pickup_datetime",
+          "TIMESTAMP"
+        ],
+        [
+          "tpep_dropoff_datetime",
+          "TIMESTAMP"
+        ],
+        [
+          "passenger_count",
+          "BIGINT"
+        ],
+        [
+          "trip_distance",
+          "DOUBLE"
+        ],
+        [
+          "RatecodeID",
+          "BIGINT"
+        ],
+        [
+          "store_and_fwd_flag",
+          "VARCHAR"
+        ],
+        [
+          "PULocationID",
+          "INTEGER"
+        ],
+        [
+          "DOLocationID",
+          "INTEGER"
+        ],
+        [
+          "payment_type",
+          "BIGINT"
+        ],
+        [
+          "fare_amount",
+          "DOUBLE"
+        ],
+        [
+          "extra",
+          "DOUBLE"
+        ],
+        [
+          "mta_tax",
+          "DOUBLE"
+        ],
+        [
+          "tip_amount",
+          "DOUBLE"
+        ],
+        [
+          "tolls_amount",
+          "DOUBLE"
+        ],
+        [
+          "improvement_surcharge",
+          "DOUBLE"
+        ],
+        [
+          "total_amount",
+          "DOUBLE"
+        ],
+        [
+          "congestion_surcharge",
+          "DOUBLE"
+        ],
+        [
+          "Airport_fee",
+          "DOUBLE"
+        ],
+        [
+          "cbd_congestion_fee",
+          "DOUBLE"
+        ]
+      ],
+      "arrow_schema": [
+        {
+          "name": "VendorID",
+          "type": "int32",
+          "nullable": true
+        },
+        {
+          "name": "tpep_pickup_datetime",
+          "type": "timestamp[us]",
+          "nullable": true
+        },
+        {
+          "name": "tpep_dropoff_datetime",
+          "type": "timestamp[us]",
+          "nullable": true
+        },
+        {
+          "name": "passenger_count",
+          "type": "int64",
+          "nullable": true
+        },
+        {
+          "name": "trip_distance",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "RatecodeID",
+          "type": "int64",
+          "nullable": true
+        },
+        {
+          "name": "store_and_fwd_flag",
+          "type": "large_string",
+          "nullable": true
+        },
+        {
+          "name": "PULocationID",
+          "type": "int32",
+          "nullable": true
+        },
+        {
+          "name": "DOLocationID",
+          "type": "int32",
+          "nullable": true
+        },
+        {
+          "name": "payment_type",
+          "type": "int64",
+          "nullable": true
+        },
+        {
+          "name": "fare_amount",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "extra",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "mta_tax",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "tip_amount",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "tolls_amount",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "improvement_surcharge",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "total_amount",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "congestion_surcharge",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "Airport_fee",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "cbd_congestion_fee",
+          "type": "double",
+          "nullable": true
+        }
+      ],
+      "parquet_schema": " field_id=-1 schema {\n  optional int32 field_id=-1 VendorID;\n  optional int64 field_id=-1 tpep_pickup_datetime (Timestamp(isAdjustedToUTC=false, timeUnit=microseconds, is_from_converted_type=false, force_set_converted_type=false));\n  optional int64 field_id=-1 tpep_dropoff_datetime (Timestamp(isAdjustedToUTC=false, timeUnit=microseconds, is_from_converted_type=false, force_set_converted_type=false));\n  optional int64 field_id=-1 passenger_count;\n  optional double field_id=-1 trip_distance;\n  optional int64 field_id=-1 RatecodeID;\n  optional binary field_id=-1 store_and_fwd_flag (String);\n  optional int32 field_id=-1 PULocationID;\n  optional int32 field_id=-1 DOLocationID;\n  optional int64 field_id=-1 payment_type;\n  optional double field_id=-1 fare_amount;\n  optional double field_id=-1 extra;\n  optional double field_id=-1 mta_tax;\n  optional double field_id=-1 tip_amount;\n  optional double field_id=-1 tolls_amount;\n  optional double field_id=-1 improvement_surcharge;\n  optional double field_id=-1 total_amount;\n  optional double field_id=-1 congestion_surcharge;\n  optional double field_id=-1 Airport_fee;\n  optional double field_id=-1 cbd_congestion_fee;\n}\n",
+      "created_by": "parquet-cpp-arrow version 16.1.0",
+      "compression": [
+        "ZSTD"
+      ],
+      "encodings": [
+        "PLAIN",
+        "RLE",
+        "RLE_DICTIONARY"
+      ],
+      "order_by": null,
+      "selected_repetition": 1,
+      "repetitions": [],
+      "preparation_result": [
+        [
+          "142826",
+          "8038349.75"
+        ]
+      ]
+    },
+    {
+      "id": "B",
+      "label": "Repacked, original order",
+      "name": "repacked.parquet",
+      "size": "53370794",
+      "sha256": "8c5ae22c21aa615b82afa1136644c642bc0d5529958b6ae6580815a6247e2893",
+      "rows": "3475226",
+      "row_groups": 29,
+      "row_group_rows": [
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        34586
+      ],
+      "schema": [
+        [
+          "VendorID",
+          "INTEGER"
+        ],
+        [
+          "tpep_pickup_datetime",
+          "TIMESTAMP"
+        ],
+        [
+          "tpep_dropoff_datetime",
+          "TIMESTAMP"
+        ],
+        [
+          "passenger_count",
+          "BIGINT"
+        ],
+        [
+          "trip_distance",
+          "DOUBLE"
+        ],
+        [
+          "RatecodeID",
+          "BIGINT"
+        ],
+        [
+          "store_and_fwd_flag",
+          "VARCHAR"
+        ],
+        [
+          "PULocationID",
+          "INTEGER"
+        ],
+        [
+          "DOLocationID",
+          "INTEGER"
+        ],
+        [
+          "payment_type",
+          "BIGINT"
+        ],
+        [
+          "fare_amount",
+          "DOUBLE"
+        ],
+        [
+          "extra",
+          "DOUBLE"
+        ],
+        [
+          "mta_tax",
+          "DOUBLE"
+        ],
+        [
+          "tip_amount",
+          "DOUBLE"
+        ],
+        [
+          "tolls_amount",
+          "DOUBLE"
+        ],
+        [
+          "improvement_surcharge",
+          "DOUBLE"
+        ],
+        [
+          "total_amount",
+          "DOUBLE"
+        ],
+        [
+          "congestion_surcharge",
+          "DOUBLE"
+        ],
+        [
+          "Airport_fee",
+          "DOUBLE"
+        ],
+        [
+          "cbd_congestion_fee",
+          "DOUBLE"
+        ]
+      ],
+      "arrow_schema": [
+        {
+          "name": "VendorID",
+          "type": "int32",
+          "nullable": true
+        },
+        {
+          "name": "tpep_pickup_datetime",
+          "type": "timestamp[us]",
+          "nullable": true
+        },
+        {
+          "name": "tpep_dropoff_datetime",
+          "type": "timestamp[us]",
+          "nullable": true
+        },
+        {
+          "name": "passenger_count",
+          "type": "int64",
+          "nullable": true
+        },
+        {
+          "name": "trip_distance",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "RatecodeID",
+          "type": "int64",
+          "nullable": true
+        },
+        {
+          "name": "store_and_fwd_flag",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "PULocationID",
+          "type": "int32",
+          "nullable": true
+        },
+        {
+          "name": "DOLocationID",
+          "type": "int32",
+          "nullable": true
+        },
+        {
+          "name": "payment_type",
+          "type": "int64",
+          "nullable": true
+        },
+        {
+          "name": "fare_amount",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "extra",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "mta_tax",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "tip_amount",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "tolls_amount",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "improvement_surcharge",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "total_amount",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "congestion_surcharge",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "Airport_fee",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "cbd_congestion_fee",
+          "type": "double",
+          "nullable": true
+        }
+      ],
+      "parquet_schema": " field_id=-1 duckdb_schema {\n  optional int32 field_id=-1 VendorID (Int(bitWidth=32, isSigned=true));\n  optional int64 field_id=-1 tpep_pickup_datetime (Timestamp(isAdjustedToUTC=false, timeUnit=microseconds, is_from_converted_type=false, force_set_converted_type=false));\n  optional int64 field_id=-1 tpep_dropoff_datetime (Timestamp(isAdjustedToUTC=false, timeUnit=microseconds, is_from_converted_type=false, force_set_converted_type=false));\n  optional int64 field_id=-1 passenger_count (Int(bitWidth=64, isSigned=true));\n  optional double field_id=-1 trip_distance;\n  optional int64 field_id=-1 RatecodeID (Int(bitWidth=64, isSigned=true));\n  optional binary field_id=-1 store_and_fwd_flag (String);\n  optional int32 field_id=-1 PULocationID (Int(bitWidth=32, isSigned=true));\n  optional int32 field_id=-1 DOLocationID (Int(bitWidth=32, isSigned=true));\n  optional int64 field_id=-1 payment_type (Int(bitWidth=64, isSigned=true));\n  optional double field_id=-1 fare_amount;\n  optional double field_id=-1 extra;\n  optional double field_id=-1 mta_tax;\n  optional double field_id=-1 tip_amount;\n  optional double field_id=-1 tolls_amount;\n  optional double field_id=-1 improvement_surcharge;\n  optional double field_id=-1 total_amount;\n  optional double field_id=-1 congestion_surcharge;\n  optional double field_id=-1 Airport_fee;\n  optional double field_id=-1 cbd_congestion_fee;\n}\n",
+      "created_by": "DuckDB version v1.5.6 (build 069cc9f9b5)",
+      "compression": [
+        "ZSTD"
+      ],
+      "encodings": [
+        "PLAIN",
+        "PLAIN_DICTIONARY"
+      ],
+      "order_by": null,
+      "selected_repetition": 1,
+      "repetitions": [],
+      "preparation_result": [
+        [
+          "142826",
+          "8038349.75"
+        ]
+      ]
+    },
+    {
+      "id": "C",
+      "label": "Sorted by pickup location",
+      "name": "sorted.parquet",
+      "size": "59417539",
+      "sha256": "15c9e1d09f0b88067e6dc9c152927e9fe618552fdea2f962dc0fd26a88780ddd",
+      "rows": "3475226",
+      "row_groups": 29,
+      "row_group_rows": [
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        122880,
+        34586
+      ],
+      "schema": [
+        [
+          "VendorID",
+          "INTEGER"
+        ],
+        [
+          "tpep_pickup_datetime",
+          "TIMESTAMP"
+        ],
+        [
+          "tpep_dropoff_datetime",
+          "TIMESTAMP"
+        ],
+        [
+          "passenger_count",
+          "BIGINT"
+        ],
+        [
+          "trip_distance",
+          "DOUBLE"
+        ],
+        [
+          "RatecodeID",
+          "BIGINT"
+        ],
+        [
+          "store_and_fwd_flag",
+          "VARCHAR"
+        ],
+        [
+          "PULocationID",
+          "INTEGER"
+        ],
+        [
+          "DOLocationID",
+          "INTEGER"
+        ],
+        [
+          "payment_type",
+          "BIGINT"
+        ],
+        [
+          "fare_amount",
+          "DOUBLE"
+        ],
+        [
+          "extra",
+          "DOUBLE"
+        ],
+        [
+          "mta_tax",
+          "DOUBLE"
+        ],
+        [
+          "tip_amount",
+          "DOUBLE"
+        ],
+        [
+          "tolls_amount",
+          "DOUBLE"
+        ],
+        [
+          "improvement_surcharge",
+          "DOUBLE"
+        ],
+        [
+          "total_amount",
+          "DOUBLE"
+        ],
+        [
+          "congestion_surcharge",
+          "DOUBLE"
+        ],
+        [
+          "Airport_fee",
+          "DOUBLE"
+        ],
+        [
+          "cbd_congestion_fee",
+          "DOUBLE"
+        ]
+      ],
+      "arrow_schema": [
+        {
+          "name": "VendorID",
+          "type": "int32",
+          "nullable": true
+        },
+        {
+          "name": "tpep_pickup_datetime",
+          "type": "timestamp[us]",
+          "nullable": true
+        },
+        {
+          "name": "tpep_dropoff_datetime",
+          "type": "timestamp[us]",
+          "nullable": true
+        },
+        {
+          "name": "passenger_count",
+          "type": "int64",
+          "nullable": true
+        },
+        {
+          "name": "trip_distance",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "RatecodeID",
+          "type": "int64",
+          "nullable": true
+        },
+        {
+          "name": "store_and_fwd_flag",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "PULocationID",
+          "type": "int32",
+          "nullable": true
+        },
+        {
+          "name": "DOLocationID",
+          "type": "int32",
+          "nullable": true
+        },
+        {
+          "name": "payment_type",
+          "type": "int64",
+          "nullable": true
+        },
+        {
+          "name": "fare_amount",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "extra",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "mta_tax",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "tip_amount",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "tolls_amount",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "improvement_surcharge",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "total_amount",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "congestion_surcharge",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "Airport_fee",
+          "type": "double",
+          "nullable": true
+        },
+        {
+          "name": "cbd_congestion_fee",
+          "type": "double",
+          "nullable": true
+        }
+      ],
+      "parquet_schema": " field_id=-1 duckdb_schema {\n  optional int32 field_id=-1 VendorID (Int(bitWidth=32, isSigned=true));\n  optional int64 field_id=-1 tpep_pickup_datetime (Timestamp(isAdjustedToUTC=false, timeUnit=microseconds, is_from_converted_type=false, force_set_converted_type=false));\n  optional int64 field_id=-1 tpep_dropoff_datetime (Timestamp(isAdjustedToUTC=false, timeUnit=microseconds, is_from_converted_type=false, force_set_converted_type=false));\n  optional int64 field_id=-1 passenger_count (Int(bitWidth=64, isSigned=true));\n  optional double field_id=-1 trip_distance;\n  optional int64 field_id=-1 RatecodeID (Int(bitWidth=64, isSigned=true));\n  optional binary field_id=-1 store_and_fwd_flag (String);\n  optional int32 field_id=-1 PULocationID (Int(bitWidth=32, isSigned=true));\n  optional int32 field_id=-1 DOLocationID (Int(bitWidth=32, isSigned=true));\n  optional int64 field_id=-1 payment_type (Int(bitWidth=64, isSigned=true));\n  optional double field_id=-1 fare_amount;\n  optional double field_id=-1 extra;\n  optional double field_id=-1 mta_tax;\n  optional double field_id=-1 tip_amount;\n  optional double field_id=-1 tolls_amount;\n  optional double field_id=-1 improvement_surcharge;\n  optional double field_id=-1 total_amount;\n  optional double field_id=-1 congestion_surcharge;\n  optional double field_id=-1 Airport_fee;\n  optional double field_id=-1 cbd_congestion_fee;\n}\n",
+      "created_by": "DuckDB version v1.5.6 (build 069cc9f9b5)",
+      "compression": [
+        "ZSTD"
+      ],
+      "encodings": [
+        "PLAIN",
+        "PLAIN_DICTIONARY"
+      ],
+      "order_by": "PULocationID",
+      "selected_repetition": 1,
+      "repetitions": [],
+      "preparation_result": [
+        [
+          "142826",
+          "8038349.75"
+        ]
+      ]
+    }
+  ],
+  "equality": {
+    "A_B": {
+      "method": "bidirectional EXCEPT ALL over all columns",
+      "difference_rows": [
+        0,
+        0
+      ],
+      "equal": true
+    },
+    "A_C": {
+      "method": "bidirectional EXCEPT ALL over all columns",
+      "difference_rows": [
+        0,
+        0
+      ],
+      "equal": true
+    },
+    "B_preserves_original_order": true
+  },
+  "attempts": [
+    {
+      "layout": "A",
+      "repetition": 1,
+      "status": "failed",
+      "capture": "captures/A-1.parquetscope.json",
+      "error": "Exact SQL result mismatch: {'columns': ['n', 'fare'], 'rows': [['142826', '\"8038349.75\"']]}"
+    }
+  ],
+  "metric_definitions": {
+    "get_count": "GET observations in DuckDB HTTP logs, reconciled with the independent server",
+    "head_count": "HEAD observations; HEAD contributes zero body bytes",
+    "server_written_bytes": "Sum of bytes successfully written by the independent server to streams",
+    "requested_range_bytes": "Sum of resolved GET request Range lengths",
+    "confirmed_range_bytes": "Sum of GET response interval lengths confirmed by response headers",
+    "declared_body_bytes": "Sum of GET Content-Length; HEAD contributes zero",
+    "unique_coverage_bytes": "Length of union of confirmed GET response intervals",
+    "repeated_coverage_bytes": "Sum of confirmed interval lengths minus their union, not assumed waste",
+    "coverage": "Union of confirmed GET response intervals, half-open byte offsets",
+    "totals_scope": "Complete or observed subset; only complete reconciled runs enter successful runs",
+    "unknown_reasons": "Reasons unavailable metrics are null",
+    "query_duration_ms": "SELECT execution through full result consumption; excludes input binding",
+    "elapsed_ms": "Worker startup, binding, execution and cleanup; excludes metadata preparation"
+  },
+  "limitations": [
+    "Premeasured loopback HTTP captures; static browsing executes no SQL.",
+    "Fresh worker and disabled external file cache; OS/disk caches are uncontrolled, not cold S3.",
+    "Server writes do not prove client receipt, chunk decoding or use. Overlap is not automatic waste.",
+    "Read bytes do not imply proportional speedup, S3 performance or a cloud bill.",
+    "One workload on one month does not establish a universally better layout.",
+    "A/B change writer, encoding and layout as well as row groups; no single-factor attribution.",
+    "B/C use identical writer settings; row order is the intended difference. Ties have no extra key.",
+    "Pruning and sorting are established mechanisms; ParquetScope exposes this workload's observations.",
+    "Captures retain SQL, column names and metadata; they omit preview rows, not all possible data.",
+    "Versions, scheduling and platform can affect sizes, timing and request sequences.",
+    "Runs are sequential A1..A3, B1..B3, C1..C3, without cache eviction or randomized timing trials."
+  ],
+  "wheel_acceptance": {
+    "url": "https://github.com/0then0/parquetscope/releases/download/v0.1.0/parquetscope-0.1.0-py3-none-any.whl",
+    "sha256": "616192b3e0b776ca1221b86d4b2c80dbd545b6884457d6df0394045a6d9169e9",
+    "version": "0.1.0",
+    "installed_non_editable": true,
+    "installed_files_verified_against_wheel": true,
+    "environment": "Separate virtual environment; execution package in site-packages",
+    "cwd_outside_checkout": true,
+    "dependencies": {
+      "uvicorn": "0.54.0",
+      "click": "8.5.0",
+      "starlette": "1.9.0",
+      "pyarrow": "26.0.0",
+      "duckdb": "1.5.6",
+      "opentelemetry-api": "1.45.1",
+      "h11": "0.16.0",
+      "pydantic_core": "2.50.1",
+      "parquetscope": "0.1.0",
+      "annotated-types": "0.8.0",
+      "annotated-doc": "0.0.5",
+      "typing-inspection": "0.4.4",
+      "fastapi": "0.156.1",
+      "typing_extensions": "4.16.0",
+      "pydantic": "2.14.1",
+      "anyio": "4.15.1",
+      "idna": "3.20"
+    }
+  },
+  "preparation_effective_settings": {
+    "threads": 1,
+    "memory_limit": "953.6 MiB",
+    "preserve_insertion_order": true,
+    "max_temp_directory_size": "9.3 GiB"
+  },
+  "failure": {
+    "stage": "capture-A-1",
+    "error": "Exact SQL result mismatch: {'columns': ['n', 'fare'], 'rows': [['142826', '\"8038349.75\"']]}"
+  }
+}

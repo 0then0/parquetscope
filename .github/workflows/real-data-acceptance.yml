@@ -1,0 +1,53 @@
+name: NYC TLC real-data acceptance (opt-in)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  experiment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PARQUETSCOPE_HOME: /tmp/tlc-runtime
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.13'
+      - uses: astral-sh/setup-uv@v10.3.0
+        with:
+          version: '0.13.1'
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: '24'
+      - uses: pnpm/action-setup@v6.1.0
+        with:
+          version: '12.14.0'
+      - name: Install existing published release in an isolated environment
+        run: |
+          curl -fL --max-time 60 https://github.com/0then0/parquetscope/releases/download/v0.1.0/parquetscope-0.1.0-py3-none-any.whl -o /tmp/parquetscope-0.1.0-py3-none-any.whl
+          echo '616192b3e0b776ca1221b86d4b2c80dbd545b6884457d6df0394045a6d9169e9  /tmp/parquetscope-0.1.0-py3-none-any.whl' | sha256sum -c -
+          uv venv /tmp/tlc-env --python 3.13
+          uv pip install --python /tmp/tlc-env/bin/python /tmp/parquetscope-0.1.0-py3-none-any.whl
+          cd /tmp
+          /tmp/tlc-env/bin/parquetscope setup
+      - name: Download, verify, prepare, prove equivalence and capture nine fresh runs
+        run: |
+          cd /tmp
+          /tmp/tlc-env/bin/python "$GITHUB_WORKSPACE/scripts/real_data_lab.py" --wheel /tmp/parquetscope-0.1.0-py3-none-any.whl --work-dir /tmp/tlc-work --output /tmp/tlc-evidence
+          /tmp/tlc-env/bin/python "$GITHUB_WORKSPACE/scripts/real_data_lab.py" --output /tmp/tlc-evidence --verify
+      - run: pnpm --dir frontend install --frozen-lockfile
+      - name: Build lab with freshly measured evidence
+        run: |
+          pnpm --dir frontend build
+          cd frontend
+          node scripts/lab.mjs /tmp/tlc-evidence
+      - uses: actions/upload-artifact@v7.0.2
+        if: always()
+        with:
+          name: nyc-tlc-measurements-and-static-lab
+          path: |
+            /tmp/tlc-evidence/
+            .runtime/pages/parquetscope/

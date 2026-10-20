@@ -219,6 +219,19 @@ async function importRealCapture(page: Page) {
   await expect(page.getByRole("status")).toContainText("Artifact opened locally");
 }
 
+test("analysis navigation preserves an unexecuted SQL draft in a local session", async ({
+  page,
+}) => {
+  await importRealCapture(page);
+  await page.locator(".query-panel").evaluate((node) => node.setAttribute("open", ""));
+  const draft = "SELECT count(*) FROM input WHERE customer_id = 42";
+  await page.getByLabel("SQL query").fill(draft);
+  await page.getByRole("button", { name: "Structure", exact: true }).click();
+  await expect(page.getByLabel("SQL query")).toHaveValue(draft);
+  await page.getByRole("button", { name: "Range lab", exact: true }).click();
+  await expect(page.getByLabel("SQL query")).toHaveValue(draft);
+});
+
 for (const templateState of ["delayed", "failed"] as const) {
   test(`offline export handles a ${templateState} template without producing broken HTML`, async ({
     page,

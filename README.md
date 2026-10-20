@@ -108,6 +108,31 @@ Measured on macOS arm64, Python 3.13.16, DuckDB 1.5.6, PyArrow 26.0.0:
 
 These are observations, not fixed expected request sequences. Parallel scheduling, timing and platform can change the trace. `demo-output/report.json` records the actual metrics and conditions of every CLI demo. Each capture has a fresh worker and disabled external file cache. **Cold client does not mean cold OS cache, disk or S3.** A portable evidence report is in [docs/demo-report.json](docs/demo-report.json).
 
+## Real-data lab: NYC TLC
+
+[How Parquet layout changes HTTP reads](docs/real-data/README.md) records the same
+DECIMAL aggregate over NYC TLC Yellow Taxi January 2025 in three layouts. Nine fresh
+captures from the published v0.1.0 wheel verify identical results and complete server
+reconciliation. Full bidirectional EXCEPT ALL proves equality of all source rows.
+
+In all three new repetitions per layout: A observed 14 GET / 11,387,877 server-written
+body bytes, smaller B observed 118 GET / 11,446,545 bytes, and sorted C observed
+10 GET / 795,241 bytes; each also observed 2 HEAD. These are workload-specific loopback
+observations, not guaranteed request sequences, S3 performance or proportional speedups.
+
+```sh
+pnpm --dir frontend build:lab
+.venv/bin/python -m http.server 8418 --bind 127.0.0.1 --directory .runtime/pages
+# Open http://127.0.0.1:8418/parquetscope/ or /parquetscope/#compare-B-C
+pnpm --dir frontend test:lab
+```
+
+The static lab reuses Range lab and comparison, needs no execution backend, and includes
+all captures, three standalone offline viewers, provenance, report and checksums.
+[Reproduction and installed-wheel acceptance](docs/real-data/README.md#reproduce-with-the-published-wheel)
+are opt-in; normal PR tests do not download the TLC dataset. Pages deployment is a
+separate manually dispatched workflow and requires maintainer authorization.
+
 ## Runtime and UI limits
 
 Defaults: 30-second deadline, 512 MiB **DuckDB engine** memory limit, four threads, 30 preview rows / 64 KiB. Results are consumed in batches of 512 rows; preview limits do not stop consumption. Disk spilling is disabled. DuckDB’s memory limit is not an OS cap on all Python/native allocations, and one very large value can still be expensive. Cancellation or deadline terminates, then forcibly kills if needed, and reaps the owned worker; the server stops, closes active sockets, joins handlers and closes its file descriptor.

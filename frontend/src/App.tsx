@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import projectIconSvg from "../../docs/icon.svg?raw";
+import { type LabData, LabDetails, LabIntro } from "./Lab";
 import {
   bytes,
   exact,
@@ -16,6 +17,7 @@ import { RangeLab } from "./RangeLab";
 type InputFile = { id: string; name: string };
 type Preview = { columns: string[]; rows: (string | boolean | null)[][] };
 type Session = { inputs: InputFile[]; runs: Run[]; demo_available: boolean };
+type AnalysisView = "trace" | "structure" | "compare" | "preview";
 const DEFAULT_SQL = "SELECT *\nFROM input\nWHERE true";
 const DEFAULT_SETTINGS: Settings = {
   threads: 4,
@@ -169,7 +171,7 @@ function Structures({
     </section>
   );
 }
-function Comparison({ a, b }: { a: Run; b: Run }) {
+function Comparison({ a, b, runLabels = ["A", "B"] }: { a: Run; b: Run; runLabels?: string[] }) {
   const identical = a.input.sha256 === b.input.sha256;
   const labels = [
     "GET requests",
@@ -202,7 +204,9 @@ function Comparison({ a, b }: { a: Run; b: Run }) {
               : "Different input bytes. Schema similarity does not establish data equivalence."}
           </p>
         </div>
-        <span className="tag">A ↔ B</span>
+        <span className="tag">
+          {runLabels[0]} ↔ {runLabels[1]}
+        </span>
       </div>
       <div className="compare-grid">
         <div className="compare-labels">
@@ -214,7 +218,7 @@ function Comparison({ a, b }: { a: Run; b: Run }) {
         {[a, b].map((r, i) => (
           <div className="compare-values" key={r.id}>
             <h3>
-              <span className="run-letter">{i ? "B" : "A"}</span>
+              <span className="run-letter">{runLabels[i]}</span>
               {r.input.name}
             </h3>
             {(i ? bv : av).map((v, j) => (
@@ -270,7 +274,7 @@ function Comparison({ a, b }: { a: Run; b: Run }) {
     </section>
   );
 }
-export default function App() {
+export default function App({ lab }: { lab?: LabData }) {
   const [initial] = useState(() => {
     try {
       const text = document.getElementById("parquetscope-artifact")?.textContent;
@@ -280,13 +284,13 @@ export default function App() {
     }
   });
   const embedded = initial.run;
-  const [runs, setRuns] = useState<Run[]>(embedded ? [embedded] : []);
-  const [active, setActive] = useState(embedded?.id ?? "");
+  const [runs, setRuns] = useState<Run[]>(lab?.runs ?? (embedded ? [embedded] : []));
+  const [active, setActive] = useState(lab?.runs[0].id ?? embedded?.id ?? "");
   const [inputs, setInputs] = useState<InputFile[]>([]);
   const [inputId, setInputId] = useState("");
   const [sql, setSql] = useState(embedded?.sql ?? DEFAULT_SQL);
   const [settings, setSettings] = useState(DEFAULT_SETTINGS);
-  const [view, setView] = useState<"trace" | "structure" | "compare" | "preview">("trace");
+  const [view, setView] = useState<AnalysisView>("trace");
   const [requestId, setRequestId] = useState<string | null>(null);
   const [chunk, setChunk] = useState<Structure | null>(null);
   const [compareId, setCompareId] = useState("");
@@ -311,6 +315,26 @@ export default function App() {
   const run = runs.find((r) => r.id === active);
   const other =
     runs.find((r) => r.id === compareId && r.id !== active) ?? runs.find((r) => r.id !== active);
+  const navigate = useCallback(
+    (next: Run, nextView: AnalysisView = "trace", comparison?: Run, updateHistory = true) => {
+      setActive(next.id);
+      setSql(next.sql);
+      setView(nextView);
+      if (comparison) setCompareId(comparison.id);
+      if (!lab || !updateHistory) return;
+      const index = lab.runs.findIndex((r) => r.id === next.id);
+      if (index < 0) return;
+      const key = lab.report.layouts[index].id;
+      const otherIndex = lab.runs.findIndex((r) => r.id === comparison?.id);
+      const hash =
+        nextView === "compare" && otherIndex >= 0
+          ? `#compare-${key}-${lab.report.layouts[otherIndex].id}`
+          : `#${key}${nextView === "trace" ? "" : `-${nextView}`}`;
+      // Apply state even for the current hash; pushState avoids a second hashchange transition.
+      if (location.hash !== hash) history.pushState(null, "", hash);
+    },
+    [lab],
+  );
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
     try {
@@ -319,7 +343,15 @@ export default function App() {
   }, [theme]);
   useEffect(() => {
     mounted.current = true;
-    if (!embedded && location.protocol !== "file:") {
+    if (lab) {
+      fetch("./offline.html")
+        .then((r) => (r.ok ? r.text() : ""))
+        .then((t) => {
+          template.current = t;
+        })
+        .catch(() => {});
+    }
+    if (!lab && !embedded && location.protocol !== "file:") {
       api<Session>("/api/session")
         .then((s) => {
           if (!mounted.current) return;
@@ -343,13 +375,38 @@ export default function App() {
       mounted.current = false;
       stopped.current = true;
     };
-  }, [embedded]);
+  }, [embedded, lab]);
+  useEffect(() => {
+    if (!lab) return;
+    function restoreLocation() {
+      if (!lab) return;
+      const parts = location.hash.slice(1).split("-");
+      const compare = parts[0] === "compare";
+      const key = compare ? parts[1] : parts[0];
+      const index = lab.report.layouts.findIndex((l) => l.id === key);
+      if (index < 0) return;
+      setRequestId(null);
+      setChunk(null);
+      const otherIndex = lab.report.layouts.findIndex((l) => l.id === parts[2]);
+      const nextView = compare
+        ? "compare"
+        : parts[1] === "structure" || parts[1] === "preview"
+          ? parts[1]
+          : "trace";
+      navigate(lab.runs[index], nextView, compare ? lab.runs[otherIndex] : undefined, false);
+    }
+    restoreLocation();
+    window.addEventListener("hashchange", restoreLocation);
+    return () => window.removeEventListener("hashchange", restoreLocation);
+  }, [lab, navigate]);
   function activate(r: Run) {
-    setActive(r.id);
     setRequestId(null);
     setChunk(null);
-    setSql(r.sql);
-    setView("trace");
+    navigate(r);
+  }
+  function selectView(nextView: AnalysisView) {
+    if (lab && run) navigate(run, nextView, nextView === "compare" ? other : undefined);
+    else setView(nextView);
   }
   async function measure(id: string, query: string) {
     const job = await api<{ id: string }>("/api/runs", { input_id: id, sql: query, settings });
@@ -480,7 +537,7 @@ export default function App() {
   function selectChunk(s: Structure) {
     setChunk(s);
     setRequestId(null);
-    setView("trace");
+    selectView("trace");
   }
   return (
     <div className="app-shell">
@@ -579,8 +636,9 @@ export default function App() {
           </div>
         </header>
         <main>
+          {lab && <LabIntro lab={lab} active={active} onExplore={(i) => activate(lab.runs[i])} />}
           <div className="workspace-heading">
-            <h1>Range inspector</h1>
+            <h1>{lab ? "Measured run explorer" : "Range inspector"}</h1>
             <span>SELECT → HTTP → byte intervals → column chunks</span>
             {connected && demoAvailable && (
               <button type="button" disabled={busy} onClick={() => void demo()}>
@@ -766,7 +824,7 @@ export default function App() {
                       key={v}
                       aria-current={view === v ? "page" : undefined}
                       className={view === v ? "active" : ""}
-                      onClick={() => setView(v)}
+                      onClick={() => selectView(v)}
                     >
                       {
                         {
@@ -783,7 +841,11 @@ export default function App() {
                   <select
                     aria-label="Compare with run"
                     value={other?.id ?? ""}
-                    onChange={(e) => setCompareId(e.target.value)}
+                    onChange={(e) => {
+                      const comparison = runs.find((r) => r.id === e.target.value);
+                      if (lab && comparison) navigate(run, "compare", comparison);
+                      else setCompareId(e.target.value);
+                    }}
                   >
                     {runs
                       .filter((r) => r.id !== active)
@@ -813,7 +875,19 @@ export default function App() {
               )}
               {view === "compare" &&
                 (other ? (
-                  <Comparison a={run} b={other} />
+                  <Comparison
+                    a={run}
+                    b={other}
+                    runLabels={
+                      lab
+                        ? [run, other].map(
+                            (r) =>
+                              lab.report.layouts[lab.runs.findIndex((item) => item.id === r.id)]
+                                ?.id ?? "Imported",
+                          )
+                        : undefined
+                    }
+                  />
                 ) : (
                   <div className="panel empty-state">
                     <h2>A second perspective</h2>
@@ -929,6 +1003,7 @@ export default function App() {
               </p>
             </section>
           )}
+          {lab && <LabDetails lab={lab} />}
           <footer className="page-footer">
             <span>
               ParquetScope <b>v0.1</b>
