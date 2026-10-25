@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://github.com/0then0/parquetscope/blob/main/docs/README.md
+    about: Installation, usage, measurements, and reproducible examples.
+  - name: Security reporting
+    url: https://github.com/0then0/parquetscope/blob/main/SECURITY.md
+    about: Request a private contact channel before sharing vulnerability details.
+  - name: Conduct concerns
+    url: https://github.com/0then0/parquetscope/blob/main/CODE_OF_CONDUCT.md
+    about: How to request private contact about a conduct concern.

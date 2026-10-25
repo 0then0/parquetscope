@@ -1,0 +1,18 @@
+name: Private contact request
+description: Request a private channel for a security or conduct report. Do not include report details.
+title: "Private contact requested"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This issue is public. Do not include vulnerability details, incident descriptions, personal information, or attachments.
+        The maintainer will arrange a private channel before you share a report. No public description of the concern is required.
+  - type: dropdown
+    id: topic
+    attributes:
+      label: Contact topic
+      options:
+        - Security
+        - Code of conduct
+    validations:
+      required: true

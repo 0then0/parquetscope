@@ -19,6 +19,8 @@ ParquetScope connects a SQL query to the HTTP requests and Parquet structures it
 ## Development and maintenance
 
 - [Contributing](../CONTRIBUTING.md): setup, project structure, development server, and checks.
+- [Changelog](../CHANGELOG.md): released features and changes on `main`.
+- [Security policy](../SECURITY.md) and [code of conduct](../CODE_OF_CONDUCT.md): reporting and participation.
 - [Release guide](releasing.md): build and verify packages; publish the static lab.
 - [GitHub Actions](https://github.com/0then0/parquetscope/actions): CI runs and manually triggered experiments.
 - [Releases](https://github.com/0then0/parquetscope/releases): downloadable wheels, source archives, and checksums.

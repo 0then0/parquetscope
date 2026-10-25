@@ -108,4 +108,13 @@ See [Understanding measurements](docs/measurements.md) for definitions and limit
 - [Contributing](CONTRIBUTING.md): development environment, architecture, and checks.
 - [Testing and compatibility](docs/validation.md) and [release guide](docs/releasing.md).
 
+## Community and maintenance
+
+Read [Contributing](CONTRIBUTING.md) before submitting a change. Use the repository's
+[issue forms](https://github.com/0then0/parquetscope/issues/new/choose) for bugs,
+feature requests, and documentation issues. Participation follows the
+[code of conduct](CODE_OF_CONDUCT.md). Report security concerns through the process
+in [SECURITY.md](SECURITY.md), and see [CHANGELOG.md](CHANGELOG.md) for release history
+and changes on `main`.
+
 ParquetScope currently supports DuckDB 1.5.6 and one file per run. It does not capture production S3 traffic, run multiple query engines, or predict query costs. The project is licensed under [Apache-2.0](LICENSE).

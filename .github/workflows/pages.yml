@@ -8,6 +8,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   build:
+    timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.1
@@ -26,6 +27,7 @@ jobs:
         with:
           path: .runtime/pages/parquetscope
   deploy:
+    timeout-minutes: 10
     needs: build
     runs-on: ubuntu-latest
     permissions:

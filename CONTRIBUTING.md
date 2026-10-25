@@ -2,6 +2,12 @@
 
 ParquetScope is a Python capture pipeline with a React viewer. Changes should preserve the connection between one query, independent HTTP observations, and the file structures shown in the UI.
 
+## Before contributing
+
+Follow the [code of conduct](CODE_OF_CONDUCT.md). Use [issue forms](https://github.com/0then0/parquetscope/issues/new/choose) for reproducible bugs, feature requests, or documentation problems. Security reports follow [SECURITY.md](SECURITY.md); do not include vulnerability details in a public issue.
+
+The repository's `.editorconfig` matches Ruff and Biome. Formatters remain authoritative. `.gitattributes` keeps source line endings consistent and preserves checksummed experiment evidence exactly. `.gitignore` excludes local datasets, captures, environments, secrets, and generated test output; the published evidence under `docs/real-data/` is intentional.
+
 ## Set up the development environment
 
 Use Python 3.10+, [uv](https://docs.astral.sh/uv/), Node.js 24, and pnpm 12.14.0. Python dependencies are locked in `uv.lock`; frontend dependencies are locked in `frontend/pnpm-lock.yaml`.
@@ -87,6 +93,8 @@ Recorded captures, their reports, and archived runner sources are experiment evi
 ## Submit a change
 
 Describe the user-visible behavior, why it changes, and the checks you ran. Include a regression test for a behavioral fix. For UI changes, check linked selections, keyboard access, light/dark themes, a narrow viewport, and offline export where relevant.
+
+Use the pull request template to describe validation and compatibility. Update [CHANGELOG.md](CHANGELOG.md) under **Unreleased** for user-visible changes.
 
 Use Conventional Commits in English, such as `fix: preserve comparison selection on refresh` or `docs: clarify capture metrics`.
 

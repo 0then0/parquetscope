@@ -1,0 +1,25 @@
+# Use LF for portable source, configuration, and documentation.
+* text=auto eol=lf
+*.py text diff=python
+*.md text
+*.svg text
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.parquet binary
+*.whl binary
+*.zip binary
+*.gz binary
+
+# Evidence hashes refer to exact bytes, independent of checkout settings.
+docs/real-data/** -text
+
+# Keep generated files in releases while reducing noise in source reviews.
+src/parquetscope/static/** linguist-generated=true
+frontend/src/artifact-schema.json linguist-generated=true
+uv.lock linguist-generated=true
+frontend/pnpm-lock.yaml linguist-generated=true

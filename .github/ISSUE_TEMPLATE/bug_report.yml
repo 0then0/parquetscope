@@ -1,0 +1,42 @@
+name: Bug report
+description: Report a reproducible problem with capture, inspection, or packaging.
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Check existing issues and the user guide first. For vulnerabilities, follow [SECURITY.md](https://github.com/0then0/parquetscope/blob/main/SECURITY.md).
+        Use synthetic data where possible. Captures can expose SQL, column names, headers, and metadata; remove secrets and personal data from reports.
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include ParquetScope version or commit, installation method, OS/architecture, Python and DuckDB versions, and browser/version when relevant.
+      placeholder: "ParquetScope 0.1.0 release wheel; macOS arm64; Python 3.13; DuckDB 1.5.6; Chromium"
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Provide exact commands or UI steps and a minimal synthetic input or generator. For captures, include SQL and execution settings.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Include the error, SQL status, and capture completeness when available. For a measurement concern, identify the metric and request interval.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs or evidence
+      description: Optional sanitized logs, screenshots, or a synthetic capture. Share only data you are permitted to publish.

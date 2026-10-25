@@ -1,0 +1,23 @@
+name: Documentation issue
+description: Report unclear instructions, incorrect examples, or missing explanations.
+title: "[Docs]: "
+body:
+  - type: input
+    id: location
+    attributes:
+      label: Page or file
+      description: Link to the page and section, including a version or commit when relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is unclear or incorrect?
+      description: For a command that fails, include the command, error, and environment. Omit sensitive information.
+    validations:
+      required: true
+  - type: textarea
+    id: improvement
+    attributes:
+      label: Suggested improvement
+      description: Optional wording, example, or explanation that would help.
