@@ -12,7 +12,7 @@ body:
     attributes:
       label: Environment
       description: Include ParquetScope version or commit, installation method, OS/architecture, Python and DuckDB versions, and browser/version when relevant.
-      placeholder: "ParquetScope 0.1.0 release wheel; macOS arm64; Python 3.13; DuckDB 1.5.6; Chromium"
+      placeholder: "ParquetScope 0.2.0 release wheel; macOS arm64; Python 3.13; DuckDB 1.5.6; Chromium"
     validations:
       required: true
   - type: textarea

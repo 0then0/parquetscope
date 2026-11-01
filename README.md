@@ -4,7 +4,7 @@
 
 See how DuckDB reads Parquet over HTTP: requests, byte ranges, column chunks, which files of a set it touches, and the effect of a different file layout.
 
-[![Version](https://img.shields.io/badge/version-0.2.0-16775c)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.2.0-16775c)](https://github.com/0then0/parquetscope/releases/tag/v0.2.0)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776ab?logo=python&logoColor=white)](pyproject.toml)
 [![DuckDB](https://img.shields.io/badge/DuckDB-1.5.6-fff000?logo=duckdb&logoColor=black)](pyproject.toml)
 [![CI](https://github.com/0then0/parquetscope/actions/workflows/ci.yml/badge.svg)](https://github.com/0then0/parquetscope/actions/workflows/ci.yml)
@@ -16,16 +16,16 @@ ParquetScope captures one SELECT against one local Parquet file, or against an e
 
 ## Install and run
 
-Install the [v0.1.0 release wheel](https://github.com/0then0/parquetscope/releases/tag/v0.1.0) with [uv](https://docs.astral.sh/uv/):
+Install the [v0.2.0 release wheel](https://github.com/0then0/parquetscope/releases/tag/v0.2.0) with [uv](https://docs.astral.sh/uv/):
 
 ```sh
 uv tool install --python 3.13 \
-  https://github.com/0then0/parquetscope/releases/download/v0.1.0/parquetscope-0.1.0-py3-none-any.whl
+  https://github.com/0then0/parquetscope/releases/download/v0.2.0/parquetscope-0.2.0-py3-none-any.whl
 parquetscope setup
 parquetscope serve --demo
 ```
 
-This installs the released v0.1.0. File sets (v0.2) are available from source, below, until a v0.2.0 wheel is published. Open **http://127.0.0.1:8400** and choose **Run layout demo**. The demo creates two equivalent Parquet layouts and measures the same query against both.
+Open **http://127.0.0.1:8400** and choose **Run layout demo**. The demo creates two equivalent Parquet layouts and measures the same query against both.
 
 Python 3.10+ is required. The wheel includes the browser UI; Node.js is needed only for frontend development. `setup` downloads the signed httpfs extension for DuckDB 1.5.6 once. Subsequent local captures and offline viewing need no external internet, account, or cloud credentials.
 

@@ -2,9 +2,7 @@
 
 User-visible changes are recorded here. Dates use YYYY-MM-DD. Entries under Unreleased describe changes on `main` that are not part of a new package release.
 
-## [0.2.0] - unreleased
-
-The release date is set when the version is tagged.
+## [0.2.0] - 2026-11-02
 
 ### Added
 
@@ -43,4 +41,5 @@ Initial release.
 - Run a deterministic two-layout demo with independent checks of data and query-result equality.
 - Bound query execution with cancellation, deadlines, engine memory settings, and worker/listener cleanup.
 
+[0.2.0]: https://github.com/0then0/parquetscope/releases/tag/v0.2.0
 [0.1.0]: https://github.com/0then0/parquetscope/releases/tag/v0.1.0
