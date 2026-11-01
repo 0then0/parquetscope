@@ -4,6 +4,7 @@
     "includes": [
       "**",
       "!src/artifact-schema.json",
+      "!src/artifact-schema-v2.json",
       "!test-results",
       "!playwright-report",
       "!node_modules",

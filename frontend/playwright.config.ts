@@ -10,10 +10,19 @@ export default defineConfig({
     viewport: { width: 1440, height: 1100 },
     trace: "retain-on-failure",
   },
-  webServer: {
-    command: "../.venv/bin/parquetscope serve --demo --port 8411",
-    url: "http://127.0.0.1:8411/api/session",
-    reuseExistingServer: false,
-    env: { PARQUETSCOPE_HOME: process.env.PARQUETSCOPE_HOME ?? resolve("../.runtime") },
-  },
+  // Two independent servers keep session state of the single-file and file-set tests apart.
+  webServer: [
+    {
+      command: "../.venv/bin/parquetscope serve --demo --port 8411",
+      url: "http://127.0.0.1:8411/api/session",
+      reuseExistingServer: false,
+      env: { PARQUETSCOPE_HOME: process.env.PARQUETSCOPE_HOME ?? resolve("../.runtime") },
+    },
+    {
+      command: "../.venv/bin/python ../scripts/browser_fixture.py",
+      url: "http://127.0.0.1:8412/api/session",
+      reuseExistingServer: false,
+      env: { PARQUETSCOPE_HOME: process.env.PARQUETSCOPE_HOME ?? resolve("../.runtime") },
+    },
+  ],
 });

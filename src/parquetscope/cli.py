@@ -13,13 +13,21 @@ def main():
         "serve", help="Open local files and/or saved artifacts in the browser UI"
     )
     serve.add_argument("files", nargs="*", type=Path)
+    serve.add_argument(
+        "--manifest",
+        action="append",
+        default=[],
+        type=Path,
+        help="Explicit file-set manifest (repeatable); see docs/manifest.md",
+    )
     serve.add_argument("--artifact", action="append", default=[], type=Path)
     serve.add_argument("--demo", action="store_true")
     serve.add_argument("--port", type=int, default=8400)
     demo = sub.add_parser("demo", help="Generate two layouts, capture and verify both queries")
     demo.add_argument("--output", type=Path, default=Path("demo-output"))
     capture = sub.add_parser("capture", help="Capture one SELECT as an artifact")
-    capture.add_argument("file", type=Path)
+    capture.add_argument("file", nargs="?", type=Path, help="One Parquet file (v1 artifact)")
+    capture.add_argument("--manifest", type=Path, help="A file-set manifest (v2 artifact)")
     capture.add_argument("--sql", required=True)
     capture.add_argument("--output", required=True, type=Path)
     capture.add_argument("--deadline", type=float, default=30)
@@ -42,14 +50,18 @@ def main():
             import uvicorn
 
             from .app import create_app
+            from .manifest import load_manifest
             from .models import load_artifact_file
 
             artifacts = [load_artifact_file(p) for p in args.artifact]
             for path in args.files:
                 if not path.is_file():
                     raise ValueError(f"Not a file: {path}")
+            manifests = [load_manifest(p) for p in args.manifest]
             with tempfile.TemporaryDirectory(prefix="parquetscope-demo-") as temp:
-                app = create_app(args.files, artifacts, Path(temp) if args.demo else None)
+                app = create_app(
+                    args.files, artifacts, Path(temp) if args.demo else None, manifests
+                )
                 print(f"ParquetScope: http://127.0.0.1:{args.port}")
                 uvicorn.run(app, host="127.0.0.1", port=args.port)
         elif args.command == "demo":
@@ -58,22 +70,32 @@ def main():
             _, report = run_demo(args.output)
             print(json.dumps(report, indent=2))
         elif args.command == "capture":
-            if args.output.exists() and args.output.samefile(args.file):
-                raise ValueError("Output must not refer to the input Parquet file")
-
-            from .capture import capture
             from .models import Settings, save_artifact
 
-            run, _ = capture(
-                args.file,
-                args.sql,
-                Settings(
-                    threads=4,
-                    memory_limit_mb=512,
-                    deadline_seconds=args.deadline,
-                    preview_rows=30,
-                ),
+            if (args.file is None) == (args.manifest is None):
+                raise ValueError("Give exactly one input: a Parquet file or --manifest")
+            settings = Settings(
+                threads=4,
+                memory_limit_mb=512,
+                deadline_seconds=args.deadline,
+                preview_rows=30,
             )
+            if args.manifest:
+                from .capture import capture_set
+                from .manifest import load_manifest
+
+                spec = load_manifest(args.manifest)
+                protected = [args.manifest, *(e.source for e in spec.entries)]
+                if args.output.exists() and any(args.output.samefile(p) for p in protected):
+                    raise ValueError("Output must not refer to the manifest or an input file")
+                run, _ = capture_set(spec, args.sql, settings)
+            else:
+                if args.output.exists() and args.output.samefile(args.file):
+                    raise ValueError("Output must not refer to the input Parquet file")
+
+                from .capture import capture
+
+                run, _ = capture(args.file, args.sql, settings)
             save_artifact(run, args.output)
             print(f"SQL {run.sql_status}; capture complete={run.capture.complete}; {args.output}")
             if run.errors or not run.capture.complete:

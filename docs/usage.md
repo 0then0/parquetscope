@@ -22,11 +22,37 @@ parquetscope serve /path/to/events.parquet
 
 Open **http://127.0.0.1:8400**. Expand **SQL workspace**, choose an input if several files are available, and enter one SELECT against the `input` view. Choose **Run query**, or press Ctrl/Cmd+Enter in the SQL editor.
 
-The file is read-only. Each run reads one selected file. Multiple files may be offered at startup, but queries do not span them. The browser accepts only files made available by the server at startup; it does not open arbitrary server paths.
+The file is read-only. Each run reads one selected input. Several files may be offered at startup, but a single-file query does not span them; to query several files together, use a [manifest](#capture-a-file-set). The browser accepts only inputs made available by the server at startup; it does not open arbitrary server paths.
 
 Default execution settings are four threads, a 512 MiB DuckDB engine memory limit, and a 30-second deadline. The UI's **Execution settings** control threads, memory, and deadline. Results are fully consumed even when the preview is limited to 30 rows and 64 KiB. The memory limit applies to DuckDB, not the whole Python process. Capture workers have disk spilling disabled.
 
 Use **Cancel run** to stop a running query. A cancelled or timed-out run may retain partial HTTP evidence; its SQL status and capture completeness are shown separately.
+
+## Capture a file set
+
+A [manifest](manifest.md) lists up to 256 local files that share one schema. Their relative paths, including Hive directories such as `month=3/`, are the logical layout.
+
+```sh
+parquetscope serve --manifest hive.manifest.json --manifest flat.manifest.json
+```
+
+Each manifest appears in **Query input** as `label · N files`. Run a SELECT against `input` as usual. The result opens on **Files**:
+
+- Every file is shown by its location and partition segments, with requests, server-written bytes, unique coverage and an observed-access state: GET observed, HEAD only, or no observed requests. Filter by state or path and sort by size, requests or bytes.
+- **Inspect** opens the file in **Range lab** or **Structure**. The **Inspected file** selector switches files; byte offsets and intervals belong to that file only.
+- "No observed requests" is a statement about the trace. When the capture is partial it does not prove the file was not accessed.
+- **In binding** counts requests that started while the view was created, before the SELECT. DuckDB reads the first listed file to bind the schema, so a query that matches other files can still show requests for it.
+
+From the command line:
+
+```sh
+parquetscope capture --manifest hive.manifest.json \
+  --sql 'SELECT count(*) FROM input WHERE month = 3' --output set.parquetscope.json
+```
+
+This writes a [v2 artifact](artifacts.md#format-v2-file-sets). Relative paths and partition values are included, so review them before sharing. The output must not be the manifest or any listed file.
+
+To compare two sets, run both or import their artifacts and open **Compare runs**. Files are paired by SHA-256, so identical bytes at different locations line up. The comparison also shows read parameters, versions, engine settings and a list of limits. It never calls two sets logically equivalent on the strength of similar schemas or equal ordered result digests, and it makes no estimate of speed or cost. The [partition-pruning lab](pruning-lab/README.md) walks through a recorded example.
 
 ## Read Range lab
 
@@ -45,7 +71,7 @@ A complete capture has reconciled DuckDB logs and independent server observation
 
 Create another run or use **Open artifact** to import a capture. Choose **Compare runs** and select the other run.
 
-Comparison includes query text, versions, settings, input hashes, and measured totals. Different files have different byte coordinate systems: matching offsets do not necessarily identify the same data. A similar schema or matching result digest is not proof that the files contain identical rows.
+Comparison includes query text, versions, settings, input hashes (for file sets, per-file content matching), and measured totals. Different files have different byte coordinate systems: matching offsets do not necessarily identify the same data. A similar schema or matching result digest is not proof that the files contain identical rows.
 
 The [NYC TLC case study](real-data/README.md) provides a comparison with separately verified data equality.
 
@@ -117,7 +143,7 @@ Wait for the template to load and try again. If the server cannot provide it, us
 
 ### An artifact cannot be opened
 
-Use an artifact produced by a supported ParquetScope version. Unknown schema versions, invalid intervals, incomplete reconciliation claims, or metrics that disagree with observations are rejected. Keep the original file unchanged when investigating a validation error.
+Use an artifact produced by ParquetScope 0.1 or later (schema versions 1 and 2). Unknown schema versions, invalid intervals, incomplete reconciliation claims, or metrics that disagree with observations are rejected. Keep the original file unchanged when investigating a validation error.
 
 ### The default port is busy
 

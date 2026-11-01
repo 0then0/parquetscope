@@ -12,13 +12,21 @@ The local checks recorded on **2026-10-20** passed on macOS arm64 with Python 3.
 - Wheel and source-distribution checks, plus an isolated wheel smoke test outside the checkout.
 - Offline validation of all nine NYC TLC captures and their report.
 
+For the v0.2 file-set work, the local checks recorded on **2026-11-01** passed on macOS arm64 with Python 3.13.18, DuckDB 1.5.6 (httpfs `4bc690d`), PyArrow 26.0.0 and Node.js 26.13.0. The frontend tools were run from `node_modules` directly because the installed pnpm (12.16.1) differs from the pinned 12.14.0. Python 3.10 and Linux were not exercised in this run:
+
+- 205 backend tests (manifest rules, multi-file server, real-DuckDB file-set captures, v2 artifact corruption cases, application jobs, a miniature pruning lab), Ruff lint and formatting, and the generated schema check for both artifact versions.
+- 32 frontend unit tests, Biome, TypeScript, and the production and static-lab builds.
+- 11 application browser scenarios on two servers and 6 static-lab scenarios in Chromium, including file-set offline viewers with networking disabled.
+- Wheel and source-distribution checks, and an isolated wheel smoke test that also captures a two-file Hive set.
+- The recorded [partition-pruning lab](pruning-lab/README.md): 12 captures with independently verified data and results.
+
 The machine-readable [real-data validation record](real-data/validation.json) contains commands and browser coverage. The [CI workflow](../.github/workflows/ci.yml) runs the current suite on Python 3.10 and 3.13 on Linux x86_64; inspect [Actions](https://github.com/0then0/parquetscope/actions/workflows/ci.yml) for results associated with a particular commit.
 
 Earlier v0.1 checks also exercised Linux arm64 on Python 3.10 and 3.13, including an installed-wheel smoke run with external networking disabled after dependency and extension preparation. Those runs predate the current suite and do not establish results for later changes. Windows has not been validated.
 
 ## What the checks cover
 
-Backend checks cover HTTP range normalization, HEAD body exclusion, unsatisfiable ranges, multi-range policy, interrupted streams, file changes, dictionary offsets, unknown regions, large integers, artifact integrity, SQL restrictions, full result consumption, memory limits, cancellation, deadlines, process cleanup, and listener shutdown.
+Backend checks cover manifest and path validation, per-file attribution, equal offsets in different files, route encoding and traversal, per-file change detection, connection and observation budgets, v1 compatibility, corrupted v2 artifacts, HTTP range normalization, HEAD body exclusion, unsatisfiable ranges, multi-range policy, interrupted streams, file changes, dictionary offsets, unknown regions, large integers, artifact integrity, SQL restrictions, full result consumption, memory limits, cancellation, deadlines, process cleanup, and listener shutdown.
 
 Frontend checks cover exact byte geometry, linked selections, comparison, keyboard navigation, mobile width, light/dark themes, import/export, failed or delayed offline-template loading, and standalone viewers with networking disabled. Static-lab checks cover project-subpath loading, hash navigation and history, all capture downloads, comparison, and zero execution API calls.
 

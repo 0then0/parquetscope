@@ -1,0 +1,1511 @@
+{
+  "schema_version": "1",
+  "seed": 20261101,
+  "dataset": {
+    "months": 6,
+    "files_per_month": 2,
+    "rows_per_file": 20000,
+    "row_group_size": 5000,
+    "compression": "zstd",
+    "columns": [
+      "event_id",
+      "month",
+      "account_id",
+      "amount_cents",
+      "region"
+    ],
+    "files": [
+      {
+        "flat_path": "m01-data-0.parquet",
+        "hive_path": "month=1/data-0.parquet",
+        "rows": 20000,
+        "size": 216364,
+        "sha256": "55ff2853ef004a97a43953b6f6ea68b257884c1467ec421198fecb18afa633e1"
+      },
+      {
+        "flat_path": "m01-data-1.parquet",
+        "hive_path": "month=1/data-1.parquet",
+        "rows": 20000,
+        "size": 216230,
+        "sha256": "1daafc52a0ed1cd47a7a99ff9095a0469ed2aa8630ad7ef5d81f0ed991f8cd03"
+      },
+      {
+        "flat_path": "m02-data-0.parquet",
+        "hive_path": "month=2/data-0.parquet",
+        "rows": 20000,
+        "size": 216135,
+        "sha256": "bfa7d410e8093a834715aca1d93d1d426f5dbb9c0f2d5789244b27792e3c17fb"
+      },
+      {
+        "flat_path": "m02-data-1.parquet",
+        "hive_path": "month=2/data-1.parquet",
+        "rows": 20000,
+        "size": 215415,
+        "sha256": "88e48e760d0e1ccb88580aebdcb6dcf6ab744462f297073ad1d5ed82cee8df19"
+      },
+      {
+        "flat_path": "m03-data-0.parquet",
+        "hive_path": "month=3/data-0.parquet",
+        "rows": 20000,
+        "size": 215360,
+        "sha256": "74a3bdd80abd10cdbc72031741c3a846db725f634a14caabd6b06eea08a9269c"
+      },
+      {
+        "flat_path": "m03-data-1.parquet",
+        "hive_path": "month=3/data-1.parquet",
+        "rows": 20000,
+        "size": 215544,
+        "sha256": "fc2bf4f55dbdfe20b5ad883299ba0010f8ac85353001bc0155cd094108add297"
+      },
+      {
+        "flat_path": "m04-data-0.parquet",
+        "hive_path": "month=4/data-0.parquet",
+        "rows": 20000,
+        "size": 216085,
+        "sha256": "c5c23cc93326008e8284394dbdc159995f18ca72f0a4641b9acea0109931d2ab"
+      },
+      {
+        "flat_path": "m04-data-1.parquet",
+        "hive_path": "month=4/data-1.parquet",
+        "rows": 20000,
+        "size": 215467,
+        "sha256": "bd107c9f96c1006116f3ce9afed491984cb2cafd3a9ed04ae0bc71148d9a797f"
+      },
+      {
+        "flat_path": "m05-data-0.parquet",
+        "hive_path": "month=5/data-0.parquet",
+        "rows": 20000,
+        "size": 215792,
+        "sha256": "fe38423e6ab7e21de46f79d82d9018c1032c77b41fb59d7336cb594728847ac5"
+      },
+      {
+        "flat_path": "m05-data-1.parquet",
+        "hive_path": "month=5/data-1.parquet",
+        "rows": 20000,
+        "size": 215654,
+        "sha256": "3b9a683eb8c568a9b038188e172e5eb082dc8d94fbfbb4095e62b4570d239cf4"
+      },
+      {
+        "flat_path": "m06-data-0.parquet",
+        "hive_path": "month=6/data-0.parquet",
+        "rows": 20000,
+        "size": 216307,
+        "sha256": "e6a60440d71a08f68dfebdd21e0b0f962a48b4a7345c5465ffef7acb314054ff"
+      },
+      {
+        "flat_path": "m06-data-1.parquet",
+        "hive_path": "month=6/data-1.parquet",
+        "rows": 20000,
+        "size": 216104,
+        "sha256": "65839dfd1e4a3e85b0f81e09483ba10c4fc141b3183f6be8499262616ce1071e"
+      }
+    ]
+  },
+  "versions": {
+    "parquetscope": "0.2.0",
+    "duckdb": "1.5.6",
+    "pyarrow": "26.0.0",
+    "httpfs": "4bc690d",
+    "platform": "macOS-15.7.9-arm64-arm-64bit-Mach-O"
+  },
+  "settings": {
+    "threads": 4,
+    "memory_limit_mb": 512,
+    "deadline_seconds": 60.0,
+    "preview_rows": 5,
+    "preview_bytes": 65536,
+    "external_file_cache": false,
+    "cold_client": true
+  },
+  "queries": {
+    "selective": {
+      "sql": "SELECT count(*) AS n, sum(amount_cents) AS total_cents, sum(event_id % 97) AS checksum FROM input WHERE month = 3",
+      "meaning": "One partition value; matches the rows of a single month.",
+      "expected": [
+        [
+          "40000",
+          "1999029613",
+          "1920427"
+        ]
+      ]
+    },
+    "control": {
+      "sql": "SELECT count(*) AS n, sum(amount_cents) AS total_cents, sum(event_id % 97) AS checksum FROM input WHERE month >= 1",
+      "meaning": "Same column, matches every month; no file can be excluded by the key.",
+      "expected": [
+        [
+          "240000",
+          "12014029617",
+          "11519175"
+        ]
+      ]
+    }
+  },
+  "checks": {
+    "file_bytes_identical": true,
+    "data_equivalent": true,
+    "path_values_match_stored_month": true,
+    "rows": 240000,
+    "results_match_independent_expectation": true,
+    "ordered_digests_match_across_layouts": true
+  },
+  "repetitions": 3,
+  "runs": [
+    {
+      "layout": "flat",
+      "query": "selective",
+      "repetition": 1,
+      "capture": "captures/flat-selective-1.parquetscope.json",
+      "get_count": 29,
+      "head_count": 13,
+      "server_written_bytes": 622872,
+      "unique_coverage_bytes": 582706,
+      "files_with_get": 12,
+      "files_head_only": 0,
+      "files_without_observed_access": 0,
+      "binding_requests": 2,
+      "unattributed_requests": 0,
+      "query_duration_ms": 20.162,
+      "files": {
+        "get": [
+          "m01-data-0.parquet",
+          "m01-data-1.parquet",
+          "m02-data-0.parquet",
+          "m02-data-1.parquet",
+          "m03-data-0.parquet",
+          "m03-data-1.parquet",
+          "m04-data-0.parquet",
+          "m04-data-1.parquet",
+          "m05-data-0.parquet",
+          "m05-data-1.parquet",
+          "m06-data-0.parquet",
+          "m06-data-1.parquet"
+        ],
+        "head_only": [],
+        "none": []
+      },
+      "per_file": {
+        "m01-data-0.parquet": {
+          "get": 2,
+          "head": 2,
+          "server_written_bytes": 32768
+        },
+        "m01-data-1.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        },
+        "m02-data-0.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        },
+        "m02-data-1.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        },
+        "m03-data-0.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221232
+        },
+        "m03-data-1.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221416
+        },
+        "m04-data-0.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        },
+        "m04-data-1.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        },
+        "m05-data-0.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        },
+        "m05-data-1.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        },
+        "m06-data-0.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        },
+        "m06-data-1.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        }
+      }
+    },
+    {
+      "layout": "flat",
+      "query": "selective",
+      "repetition": 2,
+      "capture": "captures/flat-selective-2.parquetscope.json",
+      "get_count": 29,
+      "head_count": 13,
+      "server_written_bytes": 622872,
+      "unique_coverage_bytes": 582706,
+      "files_with_get": 12,
+      "files_head_only": 0,
+      "files_without_observed_access": 0,
+      "binding_requests": 2,
+      "unattributed_requests": 0,
+      "query_duration_ms": 22.045,
+      "files": {
+        "get": [
+          "m01-data-0.parquet",
+          "m01-data-1.parquet",
+          "m02-data-0.parquet",
+          "m02-data-1.parquet",
+          "m03-data-0.parquet",
+          "m03-data-1.parquet",
+          "m04-data-0.parquet",
+          "m04-data-1.parquet",
+          "m05-data-0.parquet",
+          "m05-data-1.parquet",
+          "m06-data-0.parquet",
+          "m06-data-1.parquet"
+        ],
+        "head_only": [],
+        "none": []
+      },
+      "per_file": {
+        "m01-data-0.parquet": {
+          "get": 2,
+          "head": 2,
+          "server_written_bytes": 32768
+        },
+        "m01-data-1.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        },
+        "m02-data-0.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        },
+        "m02-data-1.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        },
+        "m03-data-0.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221232
+        },
+        "m03-data-1.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221416
+        },
+        "m04-data-0.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        },
+        "m04-data-1.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        },
+        "m05-data-0.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        },
+        "m05-data-1.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        },
+        "m06-data-0.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        },
+        "m06-data-1.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        }
+      }
+    },
+    {
+      "layout": "flat",
+      "query": "selective",
+      "repetition": 3,
+      "capture": "captures/flat-selective-3.parquetscope.json",
+      "get_count": 29,
+      "head_count": 13,
+      "server_written_bytes": 622872,
+      "unique_coverage_bytes": 582706,
+      "files_with_get": 12,
+      "files_head_only": 0,
+      "files_without_observed_access": 0,
+      "binding_requests": 2,
+      "unattributed_requests": 0,
+      "query_duration_ms": 17.653,
+      "files": {
+        "get": [
+          "m01-data-0.parquet",
+          "m01-data-1.parquet",
+          "m02-data-0.parquet",
+          "m02-data-1.parquet",
+          "m03-data-0.parquet",
+          "m03-data-1.parquet",
+          "m04-data-0.parquet",
+          "m04-data-1.parquet",
+          "m05-data-0.parquet",
+          "m05-data-1.parquet",
+          "m06-data-0.parquet",
+          "m06-data-1.parquet"
+        ],
+        "head_only": [],
+        "none": []
+      },
+      "per_file": {
+        "m01-data-0.parquet": {
+          "get": 2,
+          "head": 2,
+          "server_written_bytes": 32768
+        },
+        "m01-data-1.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        },
+        "m02-data-0.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        },
+        "m02-data-1.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        },
+        "m03-data-0.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221232
+        },
+        "m03-data-1.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221416
+        },
+        "m04-data-0.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        },
+        "m04-data-1.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        },
+        "m05-data-0.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        },
+        "m05-data-1.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        },
+        "m06-data-0.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        },
+        "m06-data-1.parquet": {
+          "get": 1,
+          "head": 1,
+          "server_written_bytes": 16384
+        }
+      }
+    },
+    {
+      "layout": "hive",
+      "query": "selective",
+      "repetition": 1,
+      "capture": "captures/hive-selective-1.parquetscope.json",
+      "get_count": 12,
+      "head_count": 4,
+      "server_written_bytes": 474496,
+      "unique_coverage_bytes": 435250,
+      "files_with_get": 3,
+      "files_head_only": 0,
+      "files_without_observed_access": 9,
+      "binding_requests": 2,
+      "unattributed_requests": 0,
+      "query_duration_ms": 12.344,
+      "files": {
+        "get": [
+          "month=1/data-0.parquet",
+          "month=3/data-0.parquet",
+          "month=3/data-1.parquet"
+        ],
+        "head_only": [],
+        "none": [
+          "month=1/data-1.parquet",
+          "month=2/data-0.parquet",
+          "month=2/data-1.parquet",
+          "month=4/data-0.parquet",
+          "month=4/data-1.parquet",
+          "month=5/data-0.parquet",
+          "month=5/data-1.parquet",
+          "month=6/data-0.parquet",
+          "month=6/data-1.parquet"
+        ]
+      },
+      "per_file": {
+        "month=1/data-0.parquet": {
+          "get": 2,
+          "head": 2,
+          "server_written_bytes": 32768
+        },
+        "month=1/data-1.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        },
+        "month=2/data-0.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        },
+        "month=2/data-1.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        },
+        "month=3/data-0.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 220772
+        },
+        "month=3/data-1.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 220956
+        },
+        "month=4/data-0.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        },
+        "month=4/data-1.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        },
+        "month=5/data-0.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        },
+        "month=5/data-1.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        },
+        "month=6/data-0.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        },
+        "month=6/data-1.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        }
+      }
+    },
+    {
+      "layout": "hive",
+      "query": "selective",
+      "repetition": 2,
+      "capture": "captures/hive-selective-2.parquetscope.json",
+      "get_count": 12,
+      "head_count": 4,
+      "server_written_bytes": 474496,
+      "unique_coverage_bytes": 435250,
+      "files_with_get": 3,
+      "files_head_only": 0,
+      "files_without_observed_access": 9,
+      "binding_requests": 2,
+      "unattributed_requests": 0,
+      "query_duration_ms": 11.4,
+      "files": {
+        "get": [
+          "month=1/data-0.parquet",
+          "month=3/data-0.parquet",
+          "month=3/data-1.parquet"
+        ],
+        "head_only": [],
+        "none": [
+          "month=1/data-1.parquet",
+          "month=2/data-0.parquet",
+          "month=2/data-1.parquet",
+          "month=4/data-0.parquet",
+          "month=4/data-1.parquet",
+          "month=5/data-0.parquet",
+          "month=5/data-1.parquet",
+          "month=6/data-0.parquet",
+          "month=6/data-1.parquet"
+        ]
+      },
+      "per_file": {
+        "month=1/data-0.parquet": {
+          "get": 2,
+          "head": 2,
+          "server_written_bytes": 32768
+        },
+        "month=1/data-1.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        },
+        "month=2/data-0.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        },
+        "month=2/data-1.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        },
+        "month=3/data-0.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 220772
+        },
+        "month=3/data-1.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 220956
+        },
+        "month=4/data-0.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        },
+        "month=4/data-1.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        },
+        "month=5/data-0.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        },
+        "month=5/data-1.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        },
+        "month=6/data-0.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        },
+        "month=6/data-1.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        }
+      }
+    },
+    {
+      "layout": "hive",
+      "query": "selective",
+      "repetition": 3,
+      "capture": "captures/hive-selective-3.parquetscope.json",
+      "get_count": 12,
+      "head_count": 4,
+      "server_written_bytes": 474496,
+      "unique_coverage_bytes": 435250,
+      "files_with_get": 3,
+      "files_head_only": 0,
+      "files_without_observed_access": 9,
+      "binding_requests": 2,
+      "unattributed_requests": 0,
+      "query_duration_ms": 11.509,
+      "files": {
+        "get": [
+          "month=1/data-0.parquet",
+          "month=3/data-0.parquet",
+          "month=3/data-1.parquet"
+        ],
+        "head_only": [],
+        "none": [
+          "month=1/data-1.parquet",
+          "month=2/data-0.parquet",
+          "month=2/data-1.parquet",
+          "month=4/data-0.parquet",
+          "month=4/data-1.parquet",
+          "month=5/data-0.parquet",
+          "month=5/data-1.parquet",
+          "month=6/data-0.parquet",
+          "month=6/data-1.parquet"
+        ]
+      },
+      "per_file": {
+        "month=1/data-0.parquet": {
+          "get": 2,
+          "head": 2,
+          "server_written_bytes": 32768
+        },
+        "month=1/data-1.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        },
+        "month=2/data-0.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        },
+        "month=2/data-1.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        },
+        "month=3/data-0.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 220772
+        },
+        "month=3/data-1.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 220956
+        },
+        "month=4/data-0.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        },
+        "month=4/data-1.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        },
+        "month=5/data-0.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        },
+        "month=5/data-1.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        },
+        "month=6/data-0.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        },
+        "month=6/data-1.parquet": {
+          "get": 0,
+          "head": 0,
+          "server_written_bytes": 0
+        }
+      }
+    },
+    {
+      "layout": "flat",
+      "query": "control",
+      "repetition": 1,
+      "capture": "captures/flat-control-1.parquetscope.json",
+      "get_count": 109,
+      "head_count": 13,
+      "server_written_bytes": 2677305,
+      "unique_coverage_bytes": 2518229,
+      "files_with_get": 12,
+      "files_head_only": 0,
+      "files_without_observed_access": 0,
+      "binding_requests": 2,
+      "unattributed_requests": 0,
+      "query_duration_ms": 33.861,
+      "files": {
+        "get": [
+          "m01-data-0.parquet",
+          "m01-data-1.parquet",
+          "m02-data-0.parquet",
+          "m02-data-1.parquet",
+          "m03-data-0.parquet",
+          "m03-data-1.parquet",
+          "m04-data-0.parquet",
+          "m04-data-1.parquet",
+          "m05-data-0.parquet",
+          "m05-data-1.parquet",
+          "m06-data-0.parquet",
+          "m06-data-1.parquet"
+        ],
+        "head_only": [],
+        "none": []
+      },
+      "per_file": {
+        "m01-data-0.parquet": {
+          "get": 10,
+          "head": 2,
+          "server_written_bytes": 238620
+        },
+        "m01-data-1.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 222102
+        },
+        "m02-data-0.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 222007
+        },
+        "m02-data-1.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221287
+        },
+        "m03-data-0.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221232
+        },
+        "m03-data-1.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221416
+        },
+        "m04-data-0.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221957
+        },
+        "m04-data-1.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221339
+        },
+        "m05-data-0.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221664
+        },
+        "m05-data-1.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221526
+        },
+        "m06-data-0.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 222179
+        },
+        "m06-data-1.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221976
+        }
+      }
+    },
+    {
+      "layout": "flat",
+      "query": "control",
+      "repetition": 2,
+      "capture": "captures/flat-control-2.parquetscope.json",
+      "get_count": 109,
+      "head_count": 13,
+      "server_written_bytes": 2677305,
+      "unique_coverage_bytes": 2518229,
+      "files_with_get": 12,
+      "files_head_only": 0,
+      "files_without_observed_access": 0,
+      "binding_requests": 2,
+      "unattributed_requests": 0,
+      "query_duration_ms": 33.528,
+      "files": {
+        "get": [
+          "m01-data-0.parquet",
+          "m01-data-1.parquet",
+          "m02-data-0.parquet",
+          "m02-data-1.parquet",
+          "m03-data-0.parquet",
+          "m03-data-1.parquet",
+          "m04-data-0.parquet",
+          "m04-data-1.parquet",
+          "m05-data-0.parquet",
+          "m05-data-1.parquet",
+          "m06-data-0.parquet",
+          "m06-data-1.parquet"
+        ],
+        "head_only": [],
+        "none": []
+      },
+      "per_file": {
+        "m01-data-0.parquet": {
+          "get": 10,
+          "head": 2,
+          "server_written_bytes": 238620
+        },
+        "m01-data-1.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 222102
+        },
+        "m02-data-0.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 222007
+        },
+        "m02-data-1.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221287
+        },
+        "m03-data-0.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221232
+        },
+        "m03-data-1.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221416
+        },
+        "m04-data-0.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221957
+        },
+        "m04-data-1.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221339
+        },
+        "m05-data-0.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221664
+        },
+        "m05-data-1.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221526
+        },
+        "m06-data-0.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 222179
+        },
+        "m06-data-1.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221976
+        }
+      }
+    },
+    {
+      "layout": "flat",
+      "query": "control",
+      "repetition": 3,
+      "capture": "captures/flat-control-3.parquetscope.json",
+      "get_count": 109,
+      "head_count": 13,
+      "server_written_bytes": 2677305,
+      "unique_coverage_bytes": 2518229,
+      "files_with_get": 12,
+      "files_head_only": 0,
+      "files_without_observed_access": 0,
+      "binding_requests": 2,
+      "unattributed_requests": 0,
+      "query_duration_ms": 34.828,
+      "files": {
+        "get": [
+          "m01-data-0.parquet",
+          "m01-data-1.parquet",
+          "m02-data-0.parquet",
+          "m02-data-1.parquet",
+          "m03-data-0.parquet",
+          "m03-data-1.parquet",
+          "m04-data-0.parquet",
+          "m04-data-1.parquet",
+          "m05-data-0.parquet",
+          "m05-data-1.parquet",
+          "m06-data-0.parquet",
+          "m06-data-1.parquet"
+        ],
+        "head_only": [],
+        "none": []
+      },
+      "per_file": {
+        "m01-data-0.parquet": {
+          "get": 10,
+          "head": 2,
+          "server_written_bytes": 238620
+        },
+        "m01-data-1.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 222102
+        },
+        "m02-data-0.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 222007
+        },
+        "m02-data-1.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221287
+        },
+        "m03-data-0.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221232
+        },
+        "m03-data-1.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221416
+        },
+        "m04-data-0.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221957
+        },
+        "m04-data-1.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221339
+        },
+        "m05-data-0.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221664
+        },
+        "m05-data-1.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221526
+        },
+        "m06-data-0.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 222179
+        },
+        "m06-data-1.parquet": {
+          "get": 9,
+          "head": 1,
+          "server_written_bytes": 221976
+        }
+      }
+    },
+    {
+      "layout": "hive",
+      "query": "control",
+      "repetition": 1,
+      "capture": "captures/hive-control-1.parquetscope.json",
+      "get_count": 61,
+      "head_count": 13,
+      "server_written_bytes": 2671785,
+      "unique_coverage_bytes": 2518229,
+      "files_with_get": 12,
+      "files_head_only": 0,
+      "files_without_observed_access": 0,
+      "binding_requests": 2,
+      "unattributed_requests": 0,
+      "query_duration_ms": 26.531,
+      "files": {
+        "get": [
+          "month=1/data-0.parquet",
+          "month=1/data-1.parquet",
+          "month=2/data-0.parquet",
+          "month=2/data-1.parquet",
+          "month=3/data-0.parquet",
+          "month=3/data-1.parquet",
+          "month=4/data-0.parquet",
+          "month=4/data-1.parquet",
+          "month=5/data-0.parquet",
+          "month=5/data-1.parquet",
+          "month=6/data-0.parquet",
+          "month=6/data-1.parquet"
+        ],
+        "head_only": [],
+        "none": []
+      },
+      "per_file": {
+        "month=1/data-0.parquet": {
+          "get": 6,
+          "head": 2,
+          "server_written_bytes": 238160
+        },
+        "month=1/data-1.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 221642
+        },
+        "month=2/data-0.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 221547
+        },
+        "month=2/data-1.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 220827
+        },
+        "month=3/data-0.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 220772
+        },
+        "month=3/data-1.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 220956
+        },
+        "month=4/data-0.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 221497
+        },
+        "month=4/data-1.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 220879
+        },
+        "month=5/data-0.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 221204
+        },
+        "month=5/data-1.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 221066
+        },
+        "month=6/data-0.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 221719
+        },
+        "month=6/data-1.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 221516
+        }
+      }
+    },
+    {
+      "layout": "hive",
+      "query": "control",
+      "repetition": 2,
+      "capture": "captures/hive-control-2.parquetscope.json",
+      "get_count": 61,
+      "head_count": 13,
+      "server_written_bytes": 2671785,
+      "unique_coverage_bytes": 2518229,
+      "files_with_get": 12,
+      "files_head_only": 0,
+      "files_without_observed_access": 0,
+      "binding_requests": 2,
+      "unattributed_requests": 0,
+      "query_duration_ms": 24.682,
+      "files": {
+        "get": [
+          "month=1/data-0.parquet",
+          "month=1/data-1.parquet",
+          "month=2/data-0.parquet",
+          "month=2/data-1.parquet",
+          "month=3/data-0.parquet",
+          "month=3/data-1.parquet",
+          "month=4/data-0.parquet",
+          "month=4/data-1.parquet",
+          "month=5/data-0.parquet",
+          "month=5/data-1.parquet",
+          "month=6/data-0.parquet",
+          "month=6/data-1.parquet"
+        ],
+        "head_only": [],
+        "none": []
+      },
+      "per_file": {
+        "month=1/data-0.parquet": {
+          "get": 6,
+          "head": 2,
+          "server_written_bytes": 238160
+        },
+        "month=1/data-1.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 221642
+        },
+        "month=2/data-0.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 221547
+        },
+        "month=2/data-1.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 220827
+        },
+        "month=3/data-0.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 220772
+        },
+        "month=3/data-1.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 220956
+        },
+        "month=4/data-0.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 221497
+        },
+        "month=4/data-1.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 220879
+        },
+        "month=5/data-0.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 221204
+        },
+        "month=5/data-1.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 221066
+        },
+        "month=6/data-0.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 221719
+        },
+        "month=6/data-1.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 221516
+        }
+      }
+    },
+    {
+      "layout": "hive",
+      "query": "control",
+      "repetition": 3,
+      "capture": "captures/hive-control-3.parquetscope.json",
+      "get_count": 61,
+      "head_count": 13,
+      "server_written_bytes": 2671785,
+      "unique_coverage_bytes": 2518229,
+      "files_with_get": 12,
+      "files_head_only": 0,
+      "files_without_observed_access": 0,
+      "binding_requests": 2,
+      "unattributed_requests": 0,
+      "query_duration_ms": 25.519,
+      "files": {
+        "get": [
+          "month=1/data-0.parquet",
+          "month=1/data-1.parquet",
+          "month=2/data-0.parquet",
+          "month=2/data-1.parquet",
+          "month=3/data-0.parquet",
+          "month=3/data-1.parquet",
+          "month=4/data-0.parquet",
+          "month=4/data-1.parquet",
+          "month=5/data-0.parquet",
+          "month=5/data-1.parquet",
+          "month=6/data-0.parquet",
+          "month=6/data-1.parquet"
+        ],
+        "head_only": [],
+        "none": []
+      },
+      "per_file": {
+        "month=1/data-0.parquet": {
+          "get": 6,
+          "head": 2,
+          "server_written_bytes": 238160
+        },
+        "month=1/data-1.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 221642
+        },
+        "month=2/data-0.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 221547
+        },
+        "month=2/data-1.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 220827
+        },
+        "month=3/data-0.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 220772
+        },
+        "month=3/data-1.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 220956
+        },
+        "month=4/data-0.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 221497
+        },
+        "month=4/data-1.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 220879
+        },
+        "month=5/data-0.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 221204
+        },
+        "month=5/data-1.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 221066
+        },
+        "month=6/data-0.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 221719
+        },
+        "month=6/data-1.parquet": {
+          "get": 5,
+          "head": 1,
+          "server_written_bytes": 221516
+        }
+      }
+    }
+  ],
+  "summary": {
+    "flat/selective": {
+      "get_count": {
+        "min": 29,
+        "median": 29,
+        "max": 29
+      },
+      "head_count": {
+        "min": 13,
+        "median": 13,
+        "max": 13
+      },
+      "server_written_bytes": {
+        "min": 622872,
+        "median": 622872,
+        "max": 622872
+      },
+      "unique_coverage_bytes": {
+        "min": 582706,
+        "median": 582706,
+        "max": 582706
+      },
+      "files_with_get": {
+        "min": 12,
+        "median": 12,
+        "max": 12
+      },
+      "files_head_only": {
+        "min": 0,
+        "median": 0,
+        "max": 0
+      },
+      "files_without_observed_access": {
+        "min": 0,
+        "median": 0,
+        "max": 0
+      },
+      "binding_requests": {
+        "min": 2,
+        "median": 2,
+        "max": 2
+      },
+      "query_duration_ms": {
+        "min": 17.653,
+        "median": 20.162,
+        "max": 22.045
+      }
+    },
+    "hive/selective": {
+      "get_count": {
+        "min": 12,
+        "median": 12,
+        "max": 12
+      },
+      "head_count": {
+        "min": 4,
+        "median": 4,
+        "max": 4
+      },
+      "server_written_bytes": {
+        "min": 474496,
+        "median": 474496,
+        "max": 474496
+      },
+      "unique_coverage_bytes": {
+        "min": 435250,
+        "median": 435250,
+        "max": 435250
+      },
+      "files_with_get": {
+        "min": 3,
+        "median": 3,
+        "max": 3
+      },
+      "files_head_only": {
+        "min": 0,
+        "median": 0,
+        "max": 0
+      },
+      "files_without_observed_access": {
+        "min": 9,
+        "median": 9,
+        "max": 9
+      },
+      "binding_requests": {
+        "min": 2,
+        "median": 2,
+        "max": 2
+      },
+      "query_duration_ms": {
+        "min": 11.4,
+        "median": 11.509,
+        "max": 12.344
+      }
+    },
+    "flat/control": {
+      "get_count": {
+        "min": 109,
+        "median": 109,
+        "max": 109
+      },
+      "head_count": {
+        "min": 13,
+        "median": 13,
+        "max": 13
+      },
+      "server_written_bytes": {
+        "min": 2677305,
+        "median": 2677305,
+        "max": 2677305
+      },
+      "unique_coverage_bytes": {
+        "min": 2518229,
+        "median": 2518229,
+        "max": 2518229
+      },
+      "files_with_get": {
+        "min": 12,
+        "median": 12,
+        "max": 12
+      },
+      "files_head_only": {
+        "min": 0,
+        "median": 0,
+        "max": 0
+      },
+      "files_without_observed_access": {
+        "min": 0,
+        "median": 0,
+        "max": 0
+      },
+      "binding_requests": {
+        "min": 2,
+        "median": 2,
+        "max": 2
+      },
+      "query_duration_ms": {
+        "min": 33.528,
+        "median": 33.861,
+        "max": 34.828
+      }
+    },
+    "hive/control": {
+      "get_count": {
+        "min": 61,
+        "median": 61,
+        "max": 61
+      },
+      "head_count": {
+        "min": 13,
+        "median": 13,
+        "max": 13
+      },
+      "server_written_bytes": {
+        "min": 2671785,
+        "median": 2671785,
+        "max": 2671785
+      },
+      "unique_coverage_bytes": {
+        "min": 2518229,
+        "median": 2518229,
+        "max": 2518229
+      },
+      "files_with_get": {
+        "min": 12,
+        "median": 12,
+        "max": 12
+      },
+      "files_head_only": {
+        "min": 0,
+        "median": 0,
+        "max": 0
+      },
+      "files_without_observed_access": {
+        "min": 0,
+        "median": 0,
+        "max": 0
+      },
+      "binding_requests": {
+        "min": 2,
+        "median": 2,
+        "max": 2
+      },
+      "query_duration_ms": {
+        "min": 24.682,
+        "median": 25.519,
+        "max": 26.531
+      }
+    }
+  },
+  "layout_notes": {
+    "flat": "hive_partitioning=false; month is read from the files themselves.",
+    "hive": "hive_partitioning=true; month also appears in the path. The files store the same value, which the lab verifies, so the bytes are identical."
+  },
+  "limitations": [
+    "Loopback HTTP, not S3: an explicit URL list does not reproduce object-store listing.",
+    "Cold client per run; OS and disk caches are not controlled.",
+    "Server-written bytes are not total application I/O and not bytes DuckDB used.",
+    "Hashing and footer reads for manifest preparation are outside the measurement.",
+    "Counts can vary between runs; the spread above is observed, not a guarantee."
+  ]
+}

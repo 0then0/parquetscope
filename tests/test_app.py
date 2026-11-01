@@ -1,3 +1,4 @@
+import json
 import time
 
 from fastapi.testclient import TestClient
@@ -73,3 +74,49 @@ def test_fixed_measurement_settings_cannot_be_misrepresented(parquet):
                 "/api/runs", json={"input_id": "0", "sql": "SELECT 1", "settings": settings}
             )
             assert response.status_code == 422
+
+
+def test_file_set_input_is_listed_and_runs_as_a_v2_job(hive_set, httpfs):
+    from parquetscope.manifest import load_manifest
+    from parquetscope.models import load_artifact
+
+    app = create_app(manifests=[load_manifest(hive_set)])
+    with TestClient(app) as client:
+        (item,) = client.get("/api/session").json()["inputs"]
+        assert item == {"id": "set-0", "name": "test-set", "kind": "set", "file_count": 3}
+        assert str(hive_set.parent) not in json.dumps(item)
+        started = client.post(
+            "/api/runs",
+            json={"input_id": "set-0", "sql": "SELECT count(*) FROM input WHERE month = 2"},
+        )
+        assert started.status_code == 202
+        job = started.json()["id"]
+        deadline = time.monotonic() + 20
+        while time.monotonic() < deadline:
+            value = client.get(f"/api/jobs/{job}").json()
+            if value["status"] != "running":
+                break
+            time.sleep(0.05)
+        assert value["status"] == "finished", value
+        run = value["run"]
+        assert run["schema_version"] == "2" and run["capture"]["complete"]
+        assert value["preview"]["rows"] == [["3000"]]
+        exported = client.get(f"/api/artifact/{run['id']}")
+        assert "preview" not in exported.json()
+        assert load_artifact(exported.content).id == run["id"]
+        assert client.post("/api/import", content=exported.content).status_code == 200
+        broken = exported.json()
+        broken["metrics"]["get_count"] += 1
+        assert client.post("/api/import", json=broken).status_code == 422
+        assert (
+            client.post("/api/runs", json={"input_id": "set-9", "sql": "SELECT 1"}).status_code
+            == 404
+        )
+
+
+def test_session_serves_v1_and_v2_artifacts_together(set_measured, measured):
+    v2, _ = set_measured
+    v1, _ = measured
+    with TestClient(create_app(artifacts=[v1, v2])) as client:
+        versions = sorted(r["schema_version"] for r in client.get("/api/session").json()["runs"])
+        assert versions == ["1", "2"]

@@ -1,16 +1,27 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { bytes, exact, intersects, type Run, rangeText, type Span, type Structure } from "./model";
+import {
+  bytes,
+  exact,
+  type FileEntry,
+  intersects,
+  type Run,
+  rangeText,
+  type Span,
+  type Structure,
+} from "./model";
 import { position, tick } from "./rangeGeometry";
 
 const PAGE = 12;
 export function RangeLab({
   run,
+  file,
   requestId,
   chunk,
   onRequest,
   onChunk,
 }: {
   run: Run;
+  file: FileEntry;
   requestId: string | null;
   chunk: Structure | null;
   onRequest: (id: string) => void;
@@ -21,28 +32,31 @@ export function RangeLab({
   const [zoom, setZoom] = useState<Span | null>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const [width, setWidth] = useState(800);
-  const initial = run.observations.find(
+  // Everything below is scoped to one file: offsets of other files are never mixed in.
+  const group = run.byFile.get(file.id);
+  const fileObservations = group?.observations ?? [];
+  const initial = fileObservations.find(
     (o) =>
       o.method === "GET" &&
       o.response_span &&
-      BigInt(o.response_span.start) < BigInt(run.input.size) / 2n,
+      BigInt(o.response_span.start) < BigInt(file.size) / 2n,
   );
   const selected =
-    chunk && !requestId ? null : (run.observations.find((o) => o.id === requestId) ?? initial);
+    chunk && !requestId ? null : (fileObservations.find((o) => o.id === requestId) ?? initial);
   const span = selected ? selected.response_span : (chunk?.span ?? null);
-  const domain = zoom ?? { start: "0", end: run.input.size };
+  const domain = zoom ?? { start: "0", end: file.size };
   const records = useMemo(
-    () => [...run.observations].sort((a, b) => a.start_ms - b.start_ms),
-    [run],
+    () => [...fileObservations].sort((a, b) => a.start_ms - b.start_ms),
+    [fileObservations],
   );
   const list =
     related && chunk ? records.filter((o) => intersects(o.response_span, chunk.span)) : records;
   const maxTime = records.reduce((max, o) => Math.max(max, o.start_ms + o.duration_ms), 1);
   const chunks = useMemo(
-    () => run.input.structures.filter((s) => intersects(s.span, selected?.response_span ?? null)),
-    [run, selected],
+    () => file.structures.filter((s) => intersects(s.span, selected?.response_span ?? null)),
+    [file, selected],
   );
-  const server = run.server_observations.find((o) => o.id === selected?.id);
+  const server = group?.server.find((o) => o.id === selected?.id);
   const left = 66,
     right = 20,
     top = 106,
@@ -71,6 +85,9 @@ export function RangeLab({
       const styles = getComputedStyle(node);
       const muted = styles.getPropertyValue("--muted");
       const line = styles.getPropertyValue("--line");
+      const mark = styles.getPropertyValue("--mark");
+      const layout = styles.getPropertyValue("--layout");
+      const warn = styles.getPropertyValue("--warn");
       const accent = styles.getPropertyValue("--accent");
       ctx.font = "11px ui-monospace, monospace";
       ctx.fillStyle = muted;
@@ -81,14 +98,14 @@ export function RangeLab({
       ctx.beginPath();
       ctx.rect(left, 40, width - left - right, 305);
       ctx.clip();
-      for (const s of run.input.structures) {
+      for (const s of file.structures) {
         if (!intersects(s.span, domain)) continue;
         ctx.fillStyle =
           s.id === chunk?.id || intersects(s.span, selected?.response_span ?? null)
             ? accent
             : s.kind === "footer"
-              ? "#b88a4a"
-              : "#8293a855";
+              ? warn
+              : layout;
         ctx.fillRect(x(s.span.start), 44, Math.max(1, x(s.span.end) - x(s.span.start) - 0.5), 17);
       }
       for (let i = 0; i <= divisions; i++) {
@@ -106,7 +123,7 @@ export function RangeLab({
       for (const o of records) {
         if (o.method !== "GET" || !o.response_span || !intersects(o.response_span, domain))
           continue;
-        ctx.strokeStyle = o.id === selected?.id ? accent : "#7189ad";
+        ctx.strokeStyle = o.id === selected?.id ? accent : mark;
         ctx.lineWidth = o.id === selected?.id ? 5 : 2;
         ctx.beginPath();
         ctx.moveTo(x(o.response_span.start), y(o.start_ms));
@@ -212,7 +229,7 @@ export function RangeLab({
               const px = e.clientX - rect.left,
                 py = e.clientY - rect.top;
               if (py >= 40 && py <= 65) {
-                const found = run.input.structures.find(
+                const found = file.structures.find(
                   (s) => px >= x(s.span.start) && px <= x(s.span.end),
                 );
                 if (found) chooseChunk(found);
@@ -372,7 +389,7 @@ export function RangeLab({
                 </td>
                 <td>{bytes(o.declared_body_bytes)}</td>
                 <td>
-                  {run.input.structures.find(
+                  {file.structures.find(
                     (s) => s.kind === "column_chunk" && intersects(s.span, o.response_span),
                   )?.label ?? (o.method === "HEAD" ? "No body" : "Metadata / other")}
                 </td>

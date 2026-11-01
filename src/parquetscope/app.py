@@ -10,9 +10,11 @@ from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import Field
 
-from .capture import capture
+from .capture import capture, capture_set
 from .demo import SQL, generate
+from .manifest import SetSpec
 from .models import MAX_ARTIFACT_BYTES, Model, Run, Settings, load_artifact
+from .models_v2 import SetRun
 from .offline import STATIC, viewer_html
 
 
@@ -29,12 +31,23 @@ class RunRequest(Model):
     )
 
 
+def describe_inputs(inputs: dict[str, "Path | SetSpec"]) -> list[dict]:
+    return [
+        {"id": i, "name": p.label, "kind": "set", "file_count": len(p.entries)}
+        if isinstance(p, SetSpec)
+        else {"id": i, "name": p.name, "kind": "file", "file_count": 1}
+        for i, p in inputs.items()
+    ]
+
+
 def create_app(
     paths: list[Path] | None = None,
-    artifacts: list[Run] | None = None,
+    artifacts: list[Run | SetRun] | None = None,
     demo_directory: Path | None = None,
+    manifests: list[SetSpec] | None = None,
 ) -> FastAPI:
-    inputs = {str(i): p.resolve() for i, p in enumerate(paths or [])}
+    inputs: dict[str, Path | SetSpec] = {str(i): p.resolve() for i, p in enumerate(paths or [])}
+    inputs.update({f"set-{i}": spec for i, spec in enumerate(manifests or [])})
     jobs: dict[str, dict] = {}
     stored = {r.id: r for r in artifacts or []}
     tasks: set[asyncio.Task] = set()
@@ -67,7 +80,7 @@ def create_app(
     @app.get("/api/session")
     def session():
         return {
-            "inputs": [{"id": i, "name": p.name} for i, p in inputs.items()],
+            "inputs": describe_inputs(inputs),
             "runs": [r.model_dump() for r in stored.values()],
             "demo_available": demo_directory is not None,
         }
@@ -80,14 +93,15 @@ def create_app(
             raise HTTPException(409, "Wait for the current run to finish")
         original, sorted_path, _ = await asyncio.to_thread(generate, demo_directory)
         inputs["demo-original"], inputs["demo-sorted"] = original, sorted_path
-        return {"inputs": [{"id": i, "name": p.name} for i, p in inputs.items()], "sql": SQL}
+        return {"inputs": describe_inputs(inputs), "sql": SQL}
 
     async def work(job_id: str, payload: RunRequest):
         job = jobs[job_id]
         try:
+            source = inputs[payload.input_id]
             run, preview = await asyncio.to_thread(
-                capture,
-                inputs[payload.input_id],
+                capture_set if isinstance(source, SetSpec) else capture,
+                source,
                 payload.sql,
                 payload.settings,
                 job["cancel"],

@@ -1,23 +1,28 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import projectIconSvg from "../../docs/icon.svg?raw";
+import { Comparison } from "./Comparison";
+import { FileOverview } from "./FileOverview";
 import { type LabData, LabDetails, LabIntro } from "./Lab";
 import {
   bytes,
   exact,
+  type FileEntry,
+  fileTitle,
   intersects,
   MAX_BYTES,
   parseArtifact,
+  parseArtifactValue,
   type Run,
-  rangeText,
   type Settings,
   type Structure,
 } from "./model";
+import { Pagination } from "./Pagination";
 import { RangeLab } from "./RangeLab";
 
-type InputFile = { id: string; name: string };
+type InputFile = { id: string; name: string; kind: "file" | "set"; file_count: number };
 type Preview = { columns: string[]; rows: (string | boolean | null)[][] };
-type Session = { inputs: InputFile[]; runs: Run[]; demo_available: boolean };
-type AnalysisView = "trace" | "structure" | "compare" | "preview";
+type Session = { inputs: InputFile[]; runs: unknown[]; demo_available: boolean };
+type AnalysisView = "files" | "trace" | "structure" | "compare" | "preview";
 const DEFAULT_SQL = "SELECT *\nFROM input\nWHERE true";
 const DEFAULT_SETTINGS: Settings = {
   threads: 4,
@@ -44,6 +49,10 @@ async function api<T>(url: string, body?: unknown): Promise<T> {
     throw new Error(typeof value.detail === "string" ? value.detail : "Request failed");
   return value;
 }
+function defaultFile(run: Run): FileEntry {
+  const withGet = run.file_metrics.find((m) => m.observed_access === "get");
+  return run.files.find((f) => f.id === withGet?.file_id) ?? run.files[0];
+}
 function download(text: string, name: string, mime = "application/json") {
   const url = URL.createObjectURL(new Blob([text], { type: mime }));
   const a = document.createElement("a");
@@ -59,54 +68,21 @@ function Mark() {
     <img className="project-mark" src={projectIcon} width="30" height="30" alt="ParquetScope" />
   );
 }
-function Pagination({
-  page,
-  total,
-  size,
-  onChange,
-}: {
-  page: number;
-  total: number;
-  size: number;
-  onChange: (n: number) => void;
-}) {
-  const pages = Math.max(1, Math.ceil(total / size));
-  return (
-    <div className="pagination">
-      <span>
-        {total ? page * size + 1 : 0}–{Math.min((page + 1) * size, total)} of {total}
-      </span>
-      <button
-        type="button"
-        disabled={page === 0}
-        onClick={() => onChange(page - 1)}
-        aria-label="Previous page"
-      >
-        ←
-      </button>
-      <button
-        type="button"
-        disabled={page + 1 >= pages}
-        onClick={() => onChange(page + 1)}
-        aria-label="Next page"
-      >
-        →
-      </button>
-    </div>
-  );
-}
 function Structures({
   run,
+  file,
   selected,
   onSelect,
 }: {
   run: Run;
+  file: FileEntry;
   selected: Structure | null;
   onSelect: (s: Structure) => void;
 }) {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(0);
-  const list = run.input.structures.filter((s) =>
+  const observations = run.byFile.get(file.id)?.observations ?? [];
+  const list = file.structures.filter((s) =>
     `${s.label} ${s.kind}`.toLowerCase().includes(search.toLowerCase()),
   );
   return (
@@ -115,7 +91,7 @@ function Structures({
         <div>
           <h2>Physical structure</h2>
           <p>
-            {run.input.row_groups} row groups · {run.input.schema_fields.length} columns ·
+            {fileTitle(file)} · {file.row_groups} row groups · {file.schema_fields.length} columns ·
             dictionary pages included
           </p>
         </div>
@@ -159,118 +135,13 @@ function Structures({
                 <td title={exact((BigInt(s.span.end) - BigInt(s.span.start)).toString())}>
                   {bytes((BigInt(s.span.end) - BigInt(s.span.start)).toString())}
                 </td>
-                <td>
-                  {run.observations.filter((o) => intersects(o.response_span, s.span)).length}
-                </td>
+                <td>{observations.filter((o) => intersects(o.response_span, s.span)).length}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
       <Pagination page={page} total={list.length} size={50} onChange={setPage} />
-    </section>
-  );
-}
-function Comparison({ a, b, runLabels = ["A", "B"] }: { a: Run; b: Run; runLabels?: string[] }) {
-  const identical = a.input.sha256 === b.input.sha256;
-  const labels = [
-    "GET requests",
-    "HEAD requests",
-    "Confirmed ranges",
-    "Unique coverage",
-    "Repeated coverage",
-    "Server wrote",
-    "SELECT duration",
-  ];
-  const values = (r: Run) => [
-    String(r.metrics.get_count),
-    String(r.metrics.head_count),
-    bytes(r.metrics.confirmed_range_bytes),
-    bytes(r.metrics.unique_coverage_bytes),
-    bytes(r.metrics.repeated_coverage_bytes),
-    bytes(r.metrics.server_written_bytes),
-    r.query_duration_ms === null ? "Unknown" : `${r.query_duration_ms.toFixed(1)} ms`,
-  ];
-  const av = values(a),
-    bv = values(b);
-  return (
-    <section className="panel compare-panel">
-      <div className="panel-heading">
-        <div>
-          <h2>Run comparison</h2>
-          <p>
-            {identical
-              ? "Identical input bytes (SHA-256)"
-              : "Different input bytes. Schema similarity does not establish data equivalence."}
-          </p>
-        </div>
-        <span className="tag">
-          {runLabels[0]} ↔ {runLabels[1]}
-        </span>
-      </div>
-      <div className="compare-grid">
-        <div className="compare-labels">
-          <h3>Observed metric</h3>
-          {labels.map((l) => (
-            <div key={l}>{l}</div>
-          ))}
-        </div>
-        {[a, b].map((r, i) => (
-          <div className="compare-values" key={r.id}>
-            <h3>
-              <span className="run-letter">{runLabels[i]}</span>
-              {r.input.name}
-            </h3>
-            {(i ? bv : av).map((v, j) => (
-              <div key={labels[j]} className={av[j] !== bv[j] ? "difference" : ""}>
-                {v}
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-      <div className="comparison-context">
-        {[a, b].map((r) => (
-          <article key={r.id}>
-            <h3>
-              {r.input.name}{" "}
-              <span className={`status ${r.capture.complete ? "ok" : "warn"}`}>
-                {r.capture.complete ? "Complete" : "Partial capture"}
-              </span>
-            </h3>
-            <pre>{r.sql}</pre>
-            <dl>
-              <dt>Versions</dt>
-              <dd>
-                ParquetScope {r.app_version} · DuckDB {r.duckdb_version} · PyArrow{" "}
-                {r.pyarrow_version}
-              </dd>
-              <dt>Environment</dt>
-              <dd>{r.platform}</dd>
-              <dt>Input identity (SHA-256)</dt>
-              <dd>{r.input.sha256}</dd>
-              <dt>File size</dt>
-              <dd>{exact(r.input.size)}</dd>
-              <dt>Settings</dt>
-              <dd>
-                <code>{JSON.stringify(r.settings)}</code>
-              </dd>
-              <dt>Coverage intervals (exact, half-open)</dt>
-              <dd>
-                <details>
-                  <summary>{r.metrics.coverage?.length ?? "Unknown"} intervals</summary>
-                  <pre>{r.metrics.coverage?.map(rangeText).join("\n") ?? "Unknown"}</pre>
-                </details>
-              </dd>
-            </dl>
-          </article>
-        ))}
-      </div>
-      <p className="footnote">
-        Byte positions belong to their own file. Different layouts are compared by measured totals,
-        not by matching offsets. Overlap is not automatically wasted work. Metrics from partial
-        captures describe observed subsets.
-      </p>
     </section>
   );
 }
@@ -290,9 +161,12 @@ export default function App({ lab }: { lab?: LabData }) {
   const [inputId, setInputId] = useState("");
   const [sql, setSql] = useState(embedded?.sql ?? DEFAULT_SQL);
   const [settings, setSettings] = useState(DEFAULT_SETTINGS);
-  const [view, setView] = useState<AnalysisView>("trace");
+  const [view, setView] = useState<AnalysisView>(
+    embedded?.schema_version === "2" ? "files" : "trace",
+  );
   const [requestId, setRequestId] = useState<string | null>(null);
   const [chunk, setChunk] = useState<Structure | null>(null);
+  const [fileId, setFileId] = useState("");
   const [compareId, setCompareId] = useState("");
   const [busy, setBusy] = useState(false);
   const [jobId, setJobId] = useState("");
@@ -313,10 +187,16 @@ export default function App({ lab }: { lab?: LabData }) {
   const mounted = useRef(true);
   const fileRef = useRef<HTMLInputElement>(null);
   const run = runs.find((r) => r.id === active);
+  const file = run ? (run.files.find((f) => f.id === fileId) ?? defaultFile(run)) : undefined;
   const other =
     runs.find((r) => r.id === compareId && r.id !== active) ?? runs.find((r) => r.id !== active);
   const navigate = useCallback(
-    (next: Run, nextView: AnalysisView = "trace", comparison?: Run, updateHistory = true) => {
+    (
+      next: Run,
+      nextView: AnalysisView = next.schema_version === "2" ? "files" : "trace",
+      comparison?: Run,
+      updateHistory = true,
+    ) => {
       setActive(next.id);
       setSql(next.sql);
       setView(nextView);
@@ -358,9 +238,17 @@ export default function App({ lab }: { lab?: LabData }) {
           setConnected(true);
           setInputs(s.inputs);
           setInputId(s.inputs[0]?.id ?? "");
-          setRuns(s.runs);
-          setActive(s.runs[0]?.id ?? "");
-          setSql(s.runs[0]?.sql ?? DEFAULT_SQL);
+          const stored = s.runs.flatMap((value) => {
+            try {
+              return [parseArtifactValue(value)];
+            } catch {
+              return [];
+            }
+          });
+          setRuns(stored);
+          setActive(stored[0]?.id ?? "");
+          setSql(stored[0]?.sql ?? DEFAULT_SQL);
+          if (stored[0]?.schema_version === "2") setView("files");
           setDemoAvailable(s.demo_available);
         })
         .catch(() => {});
@@ -402,7 +290,14 @@ export default function App({ lab }: { lab?: LabData }) {
   function activate(r: Run) {
     setRequestId(null);
     setChunk(null);
+    setFileId("");
     navigate(r);
+  }
+  function inspectFile(id: string) {
+    setFileId(id);
+    setChunk(null);
+    setRequestId(null);
+    selectView("trace");
   }
   function selectView(nextView: AnalysisView) {
     if (lab && run) navigate(run, nextView, nextView === "compare" ? other : undefined);
@@ -415,16 +310,20 @@ export default function App({ lab }: { lab?: LabData }) {
     for (;;) {
       await new Promise((resolve) => setTimeout(resolve, 200));
       if (!mounted.current) return null;
-      const state = await api<{ status: string; run?: Run; preview?: Preview; error?: string }>(
-        `/api/jobs/${job.id}`,
-      );
+      const state = await api<{
+        status: string;
+        run?: unknown;
+        preview?: Preview;
+        error?: string;
+      }>(`/api/jobs/${job.id}`);
       if (state.status === "error") throw new Error(state.error);
       if (state.run) {
-        const result = state.run;
+        const result = parseArtifactValue(state.run);
         setRuns((old) => [...old.filter((r) => r.id !== result.id), result]);
         setActive(result.id);
         setRequestId(null);
         setChunk(null);
+        setFileId("");
         if (state.preview) {
           const p = state.preview;
           setPreview((old) => ({ ...old, [result.id]: p }));
@@ -441,7 +340,8 @@ export default function App({ lab }: { lab?: LabData }) {
     setMessage("Capturing real DuckDB HTTP requests…");
     stopped.current = false;
     try {
-      await measure(inputId, sql);
+      const result = await measure(inputId, sql);
+      if (result?.schema_version === "2") setView("files");
       setMessage("Run finished. Select a request to inspect its range.");
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
@@ -521,7 +421,9 @@ export default function App({ lab }: { lab?: LabData }) {
       );
       return;
     }
-    const payload = JSON.stringify(run).replaceAll("<", "\\u003c").replaceAll(">", "\\u003e");
+    const payload = JSON.stringify(run.artifact)
+      .replaceAll("<", "\\u003c")
+      .replaceAll(">", "\\u003e");
     const doc = new DOMParser().parseFromString(base, "text/html");
     const data = doc.getElementById("parquetscope-artifact");
     if (!data) {
@@ -532,7 +434,7 @@ export default function App({ lab }: { lab?: LabData }) {
     const root = doc.getElementById("root");
     if (root) root.replaceChildren();
     const html = `<!doctype html>${doc.documentElement.outerHTML}`;
-    download(html, `${run.input.name}.viewer.html`, "text/html");
+    download(html, `${run.label}.viewer.html`, "text/html");
   }
   function selectChunk(s: Structure) {
     setChunk(s);
@@ -545,7 +447,7 @@ export default function App({ lab }: { lab?: LabData }) {
         <div className="brand">
           <Mark />
           <span>
-            ParquetScope<small>v0.1 / LOCAL INSPECTOR</small>
+            ParquetScope<small>v0.2 / LOCAL INSPECTOR</small>
           </span>
         </div>
         <button type="button" className="import-button" onClick={() => fileRef.current?.click()}>
@@ -577,9 +479,11 @@ export default function App({ lab }: { lab?: LabData }) {
             >
               <span className={`run-dot ${r.capture.complete ? "ok" : "warn"}`} />
               <span>
-                <strong>{r.input.name}</strong>
+                <strong>{r.label}</strong>
                 <small>
-                  Run {String(i + 1).padStart(2, "0")} · {r.metrics.get_count} GET · {r.sql_status}
+                  Run {String(i + 1).padStart(2, "0")}
+                  {r.files.length > 1 ? ` · ${r.files.length} files` : ""} · {r.metrics.get_count}{" "}
+                  GET · {r.sql_status}
                 </small>
               </span>
               <span className="run-arrow">↗</span>
@@ -617,7 +521,7 @@ export default function App({ lab }: { lab?: LabData }) {
           <div>
             <span className="breadcrumb">Workspace</span>
             <span className="slash">/</span>
-            <span>{run?.input.name ?? "Range inspector"}</span>
+            <span>{run?.label ?? "Range inspector"}</span>
           </div>
           <div className="header-actions">
             <span className="version-tag">DuckDB 1.5.6</span>
@@ -625,7 +529,8 @@ export default function App({ lab }: { lab?: LabData }) {
               type="button"
               disabled={!run}
               onClick={() =>
-                run && download(JSON.stringify(run, null, 2), `${run.input.name}.parquetscope.json`)
+                run &&
+                download(JSON.stringify(run.artifact, null, 2), `${run.label}.parquetscope.json`)
               }
             >
               ↓ Export JSON
@@ -684,7 +589,7 @@ export default function App({ lab }: { lab?: LabData }) {
                   {!inputs.length && <option value="">No file selected</option>}
                   {inputs.map((i) => (
                     <option key={i.id} value={i.id}>
-                      {i.name}
+                      {i.kind === "set" ? `${i.name} · ${i.file_count} files` : i.name}
                     </option>
                   ))}
                 </select>
@@ -773,16 +678,19 @@ export default function App({ lab }: { lab?: LabData }) {
             <>
               <div className="run-heading">
                 <div>
-                  <h2>{run.input.name}</h2>
+                  <h2>{run.label}</h2>
                   <span className={`status ${run.capture.complete ? "ok" : "warn"}`}>
                     {run.capture.complete ? "● Complete capture" : "◐ Partial capture"}
                   </span>
                   <span className="status">SQL {run.sql_status}</span>
                 </div>
                 <span>
-                  {run.input.row_groups} row groups <span className="muted">/</span>{" "}
-                  {run.input.schema_fields.length} columns <span className="muted">/</span>{" "}
-                  {BigInt(run.input.rows).toLocaleString()} rows
+                  {run.files.length > 1
+                    ? `${run.files.length} files`
+                    : `${run.files[0].row_groups} row groups`}{" "}
+                  <span className="muted">/</span> {run.files[0].schema_fields.length} columns{" "}
+                  <span className="muted">/</span>{" "}
+                  {run.files.reduce((n, f) => n + BigInt(f.rows), 0n).toLocaleString()} rows
                 </span>
               </div>
               {run.sql_status === "failed" && run.errors.length > 0 && (
@@ -818,7 +726,10 @@ export default function App({ lab }: { lab?: LabData }) {
               </details>
               <div className="view-tabs">
                 <nav aria-label="Analysis view">
-                  {(["trace", "structure", "compare", "preview"] as const).map((v) => (
+                  {(run.schema_version === "2"
+                    ? (["files", "trace", "structure", "compare", "preview"] as const)
+                    : (["trace", "structure", "compare", "preview"] as const)
+                  ).map((v) => (
                     <button
                       type="button"
                       key={v}
@@ -828,6 +739,7 @@ export default function App({ lab }: { lab?: LabData }) {
                     >
                       {
                         {
+                          files: "Files",
                           trace: "Range lab",
                           structure: "Structure",
                           compare: "Compare runs",
@@ -851,17 +763,46 @@ export default function App({ lab }: { lab?: LabData }) {
                       .filter((r) => r.id !== active)
                       .map((r) => (
                         <option key={r.id} value={r.id}>
-                          {r.input.name} · {r.id.slice(0, 6)}
+                          {r.label} · {r.id.slice(0, 6)}
                         </option>
                       ))}
                   </select>
                 )}
                 <span className="micro">ALL OFFSETS IN BYTES · [START, END)</span>
               </div>
-              {view === "trace" && (
+              {run.files.length > 1 && file && (view === "trace" || view === "structure") && (
+                <div className="file-picker">
+                  <label>
+                    File
+                    <select
+                      aria-label="Inspected file"
+                      value={file.id}
+                      onChange={(e) => {
+                        setFileId(e.target.value);
+                        setChunk(null);
+                        setRequestId(null);
+                      }}
+                    >
+                      {run.files.map((f) => (
+                        <option key={f.id} value={f.id}>
+                          {fileTitle(f)}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <span className="micro">
+                    Byte offsets and intervals belong to this file only.
+                  </span>
+                </div>
+              )}
+              {view === "files" && file && (
+                <FileOverview run={run} selectedId={file.id} onInspect={inspectFile} />
+              )}
+              {view === "trace" && file && (
                 <RangeLab
-                  key={run.id}
+                  key={`${run.id}-${file.id}`}
                   run={run}
+                  file={file}
                   requestId={requestId}
                   chunk={chunk}
                   onRequest={(id) => {
@@ -870,8 +811,14 @@ export default function App({ lab }: { lab?: LabData }) {
                   onChunk={selectChunk}
                 />
               )}
-              {view === "structure" && (
-                <Structures key={run.id} run={run} selected={chunk} onSelect={selectChunk} />
+              {view === "structure" && file && (
+                <Structures
+                  key={`${run.id}-${file.id}`}
+                  run={run}
+                  file={file}
+                  selected={chunk}
+                  onSelect={selectChunk}
+                />
               )}
               {view === "compare" &&
                 (other ? (
@@ -964,8 +911,32 @@ export default function App({ lab }: { lab?: LabData }) {
                       ? "Matched by response ID, method, range, status and length"
                       : "Incomplete / mismatched"}
                   </dd>
-                  <dt>Input SHA-256</dt>
-                  <dd>{run.input.sha256}</dd>
+                  {run.files.length === 1 ? (
+                    <>
+                      <dt>Input SHA-256</dt>
+                      <dd>{run.files[0].sha256}</dd>
+                    </>
+                  ) : (
+                    <>
+                      <dt>File set</dt>
+                      <dd>
+                        {run.files.length} files with their own SHA-256 under Files. Paths and
+                        partition values are exported and may be sensitive.
+                      </dd>
+                    </>
+                  )}
+                  <dt>Read options</dt>
+                  <dd>
+                    {run.read
+                      ? `hive_partitioning=${run.read.hive_partitioning}, union_by_name=${run.read.union_by_name}`
+                      : "Not recorded (v1 artifact)"}
+                  </dd>
+                  <dt>Engine</dt>
+                  <dd>
+                    {run.engine
+                      ? `DuckDB ${run.duckdb_version}, httpfs ${run.engine.httpfs_version ?? "unknown"}`
+                      : "httpfs version and effective settings not recorded (v1 artifact)"}
+                  </dd>
                 </dl>
                 {run.metrics.unknown_reasons.map((reason) => (
                   <p key={reason}>{reason}</p>
@@ -1006,7 +977,7 @@ export default function App({ lab }: { lab?: LabData }) {
           {lab && <LabDetails lab={lab} />}
           <footer className="page-footer">
             <span>
-              ParquetScope <b>v0.1</b>
+              ParquetScope <b>v0.2</b>
             </span>
             <span>HTTP intervals · half-open byte offsets</span>
             <span>LOCAL / NO TELEMETRY</span>

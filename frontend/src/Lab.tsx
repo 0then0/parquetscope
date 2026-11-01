@@ -81,8 +81,8 @@ export function LabIntro({
               <span className="lab-kicker">LAYOUT {layout.id} / REPETITION 1</span>
               <h2>{layout.label}</h2>
               <dl>
-                <dt>File size · {run.input.row_groups} row groups</dt>
-                <dd title={exact(run.input.size)}>{bytes(run.input.size)}</dd>
+                <dt>File size · {run.files[0].row_groups} row groups</dt>
+                <dd title={exact(run.files[0].size)}>{bytes(run.files[0].size)}</dd>
                 <dt>Observed requests</dt>
                 <dd>
                   {run.metrics.get_count} GET + {run.metrics.head_count} HEAD
@@ -95,7 +95,7 @@ export function LabIntro({
               <details>
                 <summary>Exact byte counts</summary>
                 <p>
-                  File: {exact(run.input.size)}
+                  File: {exact(run.files[0].size)}
                   <br />
                   Server wrote: {exact(run.metrics.server_written_bytes)}
                 </p>
@@ -118,7 +118,7 @@ export function LabIntro({
       </div>
       <p className="lab-finding">
         B is{" "}
-        {BigInt(lab.runs[1].input.size) < BigInt(lab.runs[0].input.size)
+        {BigInt(lab.runs[1].files[0].size) < BigInt(lab.runs[0].files[0].size)
           ? "smaller"
           : "at least as large"}{" "}
         than A and has{" "}

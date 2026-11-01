@@ -40,3 +40,25 @@ PyArrow metadata and the standard Parquet trailer locate chunks and footer. Dict
 The primary view connects the captured SELECT, HTTP observations, exact response intervals and intersecting column chunks. The horizontal axis is proportional to byte offsets in the selected file; the vertical axis is engine-observed request start time in milliseconds. Each GET response interval is drawn at its start time. Mark height is visual emphasis, not duration. Use explicit start/duration values to assess concurrent reads. HEAD has no body interval. Layout regions share the same byte scale.
 
 All observations and layout regions are drawn without sampling on a canvas. At whole-file scale, nearby marks can overlap or become subpixel. The primary **Zoom to selected range** button changes the byte domain to the exact selected response or structure interval; it preserves the time scale. **Whole file** restores `[0, file size)`. Exact half-open offsets remain visible above the plot and in the compact paginated ledger and linked inspector. BigInt subtraction occurs before conversion to pixel coordinates, including beyond JavaScript’s safe integer range. These display operations do not execute another query or alter measured totals.
+
+## File sets
+
+A manifest capture reads several files through one `input` view. The contract above holds per file; this section adds what changes.
+
+**Boundary.** HTTP logging starts before the view is created and stops after the SELECT result is fully consumed. DuckDB binds the view against the first listed file, so those requests belong to the capture and are labelled `view_creation`. Requests that start during the SELECT are labelled `select`. The label is the phase in which a request started, from wall-clock boundaries recorded by the worker. It does not say why DuckDB issued the request. A request starting outside both windows is `unattributed`. Hashing and footer reads done by the application to prepare the manifest are excluded, may read every file completely, and are not HTTP traffic. A lower HTTP byte count therefore says nothing about the application's total I/O.
+
+**Per-file accounting.** Counters, intervals and coverage are computed per file and summed for the set. Equal offsets in two files are different bytes. Files are compared across runs by content hash, never by offset or basename.
+
+**Observed access.** A file is `get`, `head_only` or `none` according to the requests recorded for it. `none` is an observation about this trace. If the capture is incomplete it does not establish that the file was untouched.
+
+**What stays unproven.** The measurements do not show that:
+
+- a GET interval intersecting a column chunk means the column was decoded or used. The first read of a file often fetches its final bytes, which can cover the footer and the tail of an earlier chunk;
+- a footer intersection means the query was metadata-only;
+- server-written bytes were received, confirmed or used by DuckDB;
+- a query with a small result reads little, or that reading fewer files makes anything faster or cheaper.
+
+The loopback server serves an explicit URL list. It does not reproduce object-store listing, globbing or retries, so it cannot reproduce behavior that depends on them, such as duckdb/duckdb#21347. That issue is closed and is not claimed to apply to the supported DuckDB version.
+
+**Comparison.** Two runs are comparable only with respect to the facts the UI lists: file contents and locations, read options, DuckDB and httpfs versions, effective settings, SQL, completeness and artifact version. Ordered result digests and similar schemas do not establish equivalence of the data.
+

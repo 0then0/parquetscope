@@ -1,0 +1,5367 @@
+{
+  "schema_version": "2",
+  "app_version": "0.2.0",
+  "duckdb_version": "1.5.6",
+  "pyarrow_version": "26.0.0",
+  "platform": "Darwin arm64 Python 3.13.18",
+  "id": "1a6e26dcbddc4e1484789638befc83e5",
+  "created_at": "2026-11-01T20:37:33.868570+00:00",
+  "sql": "SELECT count(*) AS n, sum(amount_cents) AS total_cents, sum(event_id % 97) AS checksum FROM input WHERE month = 3",
+  "file_set": {
+    "label": "pruning-lab-hive",
+    "read": {
+      "hive_partitioning": true,
+      "union_by_name": false
+    },
+    "files": [
+      {
+        "name": "data-0.parquet",
+        "sha256": "55ff2853ef004a97a43953b6f6ea68b257884c1467ec421198fecb18afa633e1",
+        "size": "216364",
+        "rows": "20000",
+        "row_groups": 4,
+        "schema_fields": [
+          "event_id",
+          "month",
+          "account_id",
+          "amount_cents",
+          "region"
+        ],
+        "structures": [
+          {
+            "id": "header",
+            "kind": "header",
+            "label": "PAR1 header",
+            "span": {
+              "start": "0",
+              "end": "4"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "footer",
+            "kind": "footer",
+            "label": "Footer + length + magic",
+            "span": {
+              "start": "213416",
+              "end": "216364"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "rg0-c0",
+            "kind": "column_chunk",
+            "label": "RG 0 · event_id",
+            "span": {
+              "start": "4",
+              "end": "13742"
+            },
+            "row_group": 0,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "4",
+            "data_offset": "5726",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c1",
+            "kind": "column_chunk",
+            "label": "RG 0 · month",
+            "span": {
+              "start": "13742",
+              "end": "13857"
+            },
+            "row_group": 0,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "13742",
+            "data_offset": "13773",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c2",
+            "kind": "column_chunk",
+            "label": "RG 0 · account_id",
+            "span": {
+              "start": "13857",
+              "end": "28856"
+            },
+            "row_group": 0,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "13857",
+            "data_offset": "21262",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c3",
+            "kind": "column_chunk",
+            "label": "RG 0 · amount_cents",
+            "span": {
+              "start": "28856",
+              "end": "51784"
+            },
+            "row_group": 0,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "28856",
+            "data_offset": "43565",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c4",
+            "kind": "column_chunk",
+            "label": "RG 0 · region",
+            "span": {
+              "start": "51784",
+              "end": "53789"
+            },
+            "row_group": 0,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "51784",
+            "data_offset": "51840",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c0",
+            "kind": "column_chunk",
+            "label": "RG 1 · event_id",
+            "span": {
+              "start": "53789",
+              "end": "66941"
+            },
+            "row_group": 1,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "53789",
+            "data_offset": "58925",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c1",
+            "kind": "column_chunk",
+            "label": "RG 1 · month",
+            "span": {
+              "start": "66941",
+              "end": "67056"
+            },
+            "row_group": 1,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "66941",
+            "data_offset": "66972",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c2",
+            "kind": "column_chunk",
+            "label": "RG 1 · account_id",
+            "span": {
+              "start": "67056",
+              "end": "82035"
+            },
+            "row_group": 1,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "67056",
+            "data_offset": "74441",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c3",
+            "kind": "column_chunk",
+            "label": "RG 1 · amount_cents",
+            "span": {
+              "start": "82035",
+              "end": "105015"
+            },
+            "row_group": 1,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "82035",
+            "data_offset": "96796",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c4",
+            "kind": "column_chunk",
+            "label": "RG 1 · region",
+            "span": {
+              "start": "105015",
+              "end": "107020"
+            },
+            "row_group": 1,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "105015",
+            "data_offset": "105071",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c0",
+            "kind": "column_chunk",
+            "label": "RG 2 · event_id",
+            "span": {
+              "start": "107020",
+              "end": "120169"
+            },
+            "row_group": 2,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "107020",
+            "data_offset": "112153",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c1",
+            "kind": "column_chunk",
+            "label": "RG 2 · month",
+            "span": {
+              "start": "120169",
+              "end": "120284"
+            },
+            "row_group": 2,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "120169",
+            "data_offset": "120200",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c2",
+            "kind": "column_chunk",
+            "label": "RG 2 · account_id",
+            "span": {
+              "start": "120284",
+              "end": "135342"
+            },
+            "row_group": 2,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "120284",
+            "data_offset": "127748",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c3",
+            "kind": "column_chunk",
+            "label": "RG 2 · amount_cents",
+            "span": {
+              "start": "135342",
+              "end": "158064"
+            },
+            "row_group": 2,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "135342",
+            "data_offset": "149845",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c4",
+            "kind": "column_chunk",
+            "label": "RG 2 · region",
+            "span": {
+              "start": "158064",
+              "end": "160069"
+            },
+            "row_group": 2,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "158064",
+            "data_offset": "158120",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c0",
+            "kind": "column_chunk",
+            "label": "RG 3 · event_id",
+            "span": {
+              "start": "160069",
+              "end": "173221"
+            },
+            "row_group": 3,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "160069",
+            "data_offset": "165205",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c1",
+            "kind": "column_chunk",
+            "label": "RG 3 · month",
+            "span": {
+              "start": "173221",
+              "end": "173336"
+            },
+            "row_group": 3,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "173221",
+            "data_offset": "173252",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c2",
+            "kind": "column_chunk",
+            "label": "RG 3 · account_id",
+            "span": {
+              "start": "173336",
+              "end": "188371"
+            },
+            "row_group": 3,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "173336",
+            "data_offset": "180777",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c3",
+            "kind": "column_chunk",
+            "label": "RG 3 · amount_cents",
+            "span": {
+              "start": "188371",
+              "end": "211411"
+            },
+            "row_group": 3,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "188371",
+            "data_offset": "203192",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c4",
+            "kind": "column_chunk",
+            "label": "RG 3 · region",
+            "span": {
+              "start": "211411",
+              "end": "213416"
+            },
+            "row_group": 3,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "211411",
+            "data_offset": "211467",
+            "compression": "ZSTD"
+          }
+        ],
+        "id": "f001",
+        "logical_path": "month=1/data-0.parquet",
+        "partition": [
+          {
+            "key": "month",
+            "value": "1"
+          }
+        ]
+      },
+      {
+        "name": "data-1.parquet",
+        "sha256": "1daafc52a0ed1cd47a7a99ff9095a0469ed2aa8630ad7ef5d81f0ed991f8cd03",
+        "size": "216230",
+        "rows": "20000",
+        "row_groups": 4,
+        "schema_fields": [
+          "event_id",
+          "month",
+          "account_id",
+          "amount_cents",
+          "region"
+        ],
+        "structures": [
+          {
+            "id": "header",
+            "kind": "header",
+            "label": "PAR1 header",
+            "span": {
+              "start": "0",
+              "end": "4"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "footer",
+            "kind": "footer",
+            "label": "Footer + length + magic",
+            "span": {
+              "start": "213282",
+              "end": "216230"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "rg0-c0",
+            "kind": "column_chunk",
+            "label": "RG 0 · event_id",
+            "span": {
+              "start": "4",
+              "end": "13153"
+            },
+            "row_group": 0,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "4",
+            "data_offset": "5137",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c1",
+            "kind": "column_chunk",
+            "label": "RG 0 · month",
+            "span": {
+              "start": "13153",
+              "end": "13268"
+            },
+            "row_group": 0,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "13153",
+            "data_offset": "13184",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c2",
+            "kind": "column_chunk",
+            "label": "RG 0 · account_id",
+            "span": {
+              "start": "13268",
+              "end": "28279"
+            },
+            "row_group": 0,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "13268",
+            "data_offset": "20685",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c3",
+            "kind": "column_chunk",
+            "label": "RG 0 · amount_cents",
+            "span": {
+              "start": "28279",
+              "end": "51338"
+            },
+            "row_group": 0,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "28279",
+            "data_offset": "43119",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c4",
+            "kind": "column_chunk",
+            "label": "RG 0 · region",
+            "span": {
+              "start": "51338",
+              "end": "53343"
+            },
+            "row_group": 0,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "51338",
+            "data_offset": "51394",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c0",
+            "kind": "column_chunk",
+            "label": "RG 1 · event_id",
+            "span": {
+              "start": "53343",
+              "end": "66495"
+            },
+            "row_group": 1,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "53343",
+            "data_offset": "58479",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c1",
+            "kind": "column_chunk",
+            "label": "RG 1 · month",
+            "span": {
+              "start": "66495",
+              "end": "66610"
+            },
+            "row_group": 1,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "66495",
+            "data_offset": "66526",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c2",
+            "kind": "column_chunk",
+            "label": "RG 1 · account_id",
+            "span": {
+              "start": "66610",
+              "end": "81728"
+            },
+            "row_group": 1,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "66610",
+            "data_offset": "74134",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c3",
+            "kind": "column_chunk",
+            "label": "RG 1 · amount_cents",
+            "span": {
+              "start": "81728",
+              "end": "104704"
+            },
+            "row_group": 1,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "81728",
+            "data_offset": "96485",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c4",
+            "kind": "column_chunk",
+            "label": "RG 1 · region",
+            "span": {
+              "start": "104704",
+              "end": "106709"
+            },
+            "row_group": 1,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "104704",
+            "data_offset": "104760",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c0",
+            "kind": "column_chunk",
+            "label": "RG 2 · event_id",
+            "span": {
+              "start": "106709",
+              "end": "119857"
+            },
+            "row_group": 2,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "106709",
+            "data_offset": "111841",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c1",
+            "kind": "column_chunk",
+            "label": "RG 2 · month",
+            "span": {
+              "start": "119857",
+              "end": "119972"
+            },
+            "row_group": 2,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "119857",
+            "data_offset": "119888",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c2",
+            "kind": "column_chunk",
+            "label": "RG 2 · account_id",
+            "span": {
+              "start": "119972",
+              "end": "134982"
+            },
+            "row_group": 2,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "119972",
+            "data_offset": "127388",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c3",
+            "kind": "column_chunk",
+            "label": "RG 2 · amount_cents",
+            "span": {
+              "start": "134982",
+              "end": "157917"
+            },
+            "row_group": 2,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "134982",
+            "data_offset": "149698",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c4",
+            "kind": "column_chunk",
+            "label": "RG 2 · region",
+            "span": {
+              "start": "157917",
+              "end": "159922"
+            },
+            "row_group": 2,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "157917",
+            "data_offset": "157973",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c0",
+            "kind": "column_chunk",
+            "label": "RG 3 · event_id",
+            "span": {
+              "start": "159922",
+              "end": "173073"
+            },
+            "row_group": 3,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "159922",
+            "data_offset": "165057",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c1",
+            "kind": "column_chunk",
+            "label": "RG 3 · month",
+            "span": {
+              "start": "173073",
+              "end": "173188"
+            },
+            "row_group": 3,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "173073",
+            "data_offset": "173104",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c2",
+            "kind": "column_chunk",
+            "label": "RG 3 · account_id",
+            "span": {
+              "start": "173188",
+              "end": "188264"
+            },
+            "row_group": 3,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "173188",
+            "data_offset": "180670",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c3",
+            "kind": "column_chunk",
+            "label": "RG 3 · amount_cents",
+            "span": {
+              "start": "188264",
+              "end": "211277"
+            },
+            "row_group": 3,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "188264",
+            "data_offset": "203058",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c4",
+            "kind": "column_chunk",
+            "label": "RG 3 · region",
+            "span": {
+              "start": "211277",
+              "end": "213282"
+            },
+            "row_group": 3,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "211277",
+            "data_offset": "211333",
+            "compression": "ZSTD"
+          }
+        ],
+        "id": "f002",
+        "logical_path": "month=1/data-1.parquet",
+        "partition": [
+          {
+            "key": "month",
+            "value": "1"
+          }
+        ]
+      },
+      {
+        "name": "data-0.parquet",
+        "sha256": "bfa7d410e8093a834715aca1d93d1d426f5dbb9c0f2d5789244b27792e3c17fb",
+        "size": "216135",
+        "rows": "20000",
+        "row_groups": 4,
+        "schema_fields": [
+          "event_id",
+          "month",
+          "account_id",
+          "amount_cents",
+          "region"
+        ],
+        "structures": [
+          {
+            "id": "header",
+            "kind": "header",
+            "label": "PAR1 header",
+            "span": {
+              "start": "0",
+              "end": "4"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "footer",
+            "kind": "footer",
+            "label": "Footer + length + magic",
+            "span": {
+              "start": "213187",
+              "end": "216135"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "rg0-c0",
+            "kind": "column_chunk",
+            "label": "RG 0 · event_id",
+            "span": {
+              "start": "4",
+              "end": "13153"
+            },
+            "row_group": 0,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "4",
+            "data_offset": "5137",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c1",
+            "kind": "column_chunk",
+            "label": "RG 0 · month",
+            "span": {
+              "start": "13153",
+              "end": "13268"
+            },
+            "row_group": 0,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "13153",
+            "data_offset": "13184",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c2",
+            "kind": "column_chunk",
+            "label": "RG 0 · account_id",
+            "span": {
+              "start": "13268",
+              "end": "28311"
+            },
+            "row_group": 0,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "13268",
+            "data_offset": "20717",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c3",
+            "kind": "column_chunk",
+            "label": "RG 0 · amount_cents",
+            "span": {
+              "start": "28311",
+              "end": "51298"
+            },
+            "row_group": 0,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "28311",
+            "data_offset": "43079",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c4",
+            "kind": "column_chunk",
+            "label": "RG 0 · region",
+            "span": {
+              "start": "51298",
+              "end": "53303"
+            },
+            "row_group": 0,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "51298",
+            "data_offset": "51354",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c0",
+            "kind": "column_chunk",
+            "label": "RG 1 · event_id",
+            "span": {
+              "start": "53303",
+              "end": "66455"
+            },
+            "row_group": 1,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "53303",
+            "data_offset": "58439",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c1",
+            "kind": "column_chunk",
+            "label": "RG 1 · month",
+            "span": {
+              "start": "66455",
+              "end": "66570"
+            },
+            "row_group": 1,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "66455",
+            "data_offset": "66486",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c2",
+            "kind": "column_chunk",
+            "label": "RG 1 · account_id",
+            "span": {
+              "start": "66570",
+              "end": "81578"
+            },
+            "row_group": 1,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "66570",
+            "data_offset": "73984",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c3",
+            "kind": "column_chunk",
+            "label": "RG 1 · amount_cents",
+            "span": {
+              "start": "81578",
+              "end": "104588"
+            },
+            "row_group": 1,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "81578",
+            "data_offset": "96369",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c4",
+            "kind": "column_chunk",
+            "label": "RG 1 · region",
+            "span": {
+              "start": "104588",
+              "end": "106593"
+            },
+            "row_group": 1,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "104588",
+            "data_offset": "104644",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c0",
+            "kind": "column_chunk",
+            "label": "RG 2 · event_id",
+            "span": {
+              "start": "106593",
+              "end": "119742"
+            },
+            "row_group": 2,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "106593",
+            "data_offset": "111726",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c1",
+            "kind": "column_chunk",
+            "label": "RG 2 · month",
+            "span": {
+              "start": "119742",
+              "end": "119857"
+            },
+            "row_group": 2,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "119742",
+            "data_offset": "119773",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c2",
+            "kind": "column_chunk",
+            "label": "RG 2 · account_id",
+            "span": {
+              "start": "119857",
+              "end": "134864"
+            },
+            "row_group": 2,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "119857",
+            "data_offset": "127270",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c3",
+            "kind": "column_chunk",
+            "label": "RG 2 · amount_cents",
+            "span": {
+              "start": "134864",
+              "end": "157859"
+            },
+            "row_group": 2,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "134864",
+            "data_offset": "149640",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c4",
+            "kind": "column_chunk",
+            "label": "RG 2 · region",
+            "span": {
+              "start": "157859",
+              "end": "159864"
+            },
+            "row_group": 2,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "157859",
+            "data_offset": "157915",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c0",
+            "kind": "column_chunk",
+            "label": "RG 3 · event_id",
+            "span": {
+              "start": "159864",
+              "end": "173016"
+            },
+            "row_group": 3,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "159864",
+            "data_offset": "165000",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c1",
+            "kind": "column_chunk",
+            "label": "RG 3 · month",
+            "span": {
+              "start": "173016",
+              "end": "173131"
+            },
+            "row_group": 3,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "173016",
+            "data_offset": "173047",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c2",
+            "kind": "column_chunk",
+            "label": "RG 3 · account_id",
+            "span": {
+              "start": "173131",
+              "end": "188167"
+            },
+            "row_group": 3,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "173131",
+            "data_offset": "180573",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c3",
+            "kind": "column_chunk",
+            "label": "RG 3 · amount_cents",
+            "span": {
+              "start": "188167",
+              "end": "211182"
+            },
+            "row_group": 3,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "188167",
+            "data_offset": "202963",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c4",
+            "kind": "column_chunk",
+            "label": "RG 3 · region",
+            "span": {
+              "start": "211182",
+              "end": "213187"
+            },
+            "row_group": 3,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "211182",
+            "data_offset": "211238",
+            "compression": "ZSTD"
+          }
+        ],
+        "id": "f003",
+        "logical_path": "month=2/data-0.parquet",
+        "partition": [
+          {
+            "key": "month",
+            "value": "2"
+          }
+        ]
+      },
+      {
+        "name": "data-1.parquet",
+        "sha256": "88e48e760d0e1ccb88580aebdcb6dcf6ab744462f297073ad1d5ed82cee8df19",
+        "size": "215415",
+        "rows": "20000",
+        "row_groups": 4,
+        "schema_fields": [
+          "event_id",
+          "month",
+          "account_id",
+          "amount_cents",
+          "region"
+        ],
+        "structures": [
+          {
+            "id": "header",
+            "kind": "header",
+            "label": "PAR1 header",
+            "span": {
+              "start": "0",
+              "end": "4"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "footer",
+            "kind": "footer",
+            "label": "Footer + length + magic",
+            "span": {
+              "start": "212467",
+              "end": "215415"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "rg0-c0",
+            "kind": "column_chunk",
+            "label": "RG 0 · event_id",
+            "span": {
+              "start": "4",
+              "end": "13153"
+            },
+            "row_group": 0,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "4",
+            "data_offset": "5137",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c1",
+            "kind": "column_chunk",
+            "label": "RG 0 · month",
+            "span": {
+              "start": "13153",
+              "end": "13268"
+            },
+            "row_group": 0,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "13153",
+            "data_offset": "13184",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c2",
+            "kind": "column_chunk",
+            "label": "RG 0 · account_id",
+            "span": {
+              "start": "13268",
+              "end": "28311"
+            },
+            "row_group": 0,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "13268",
+            "data_offset": "20717",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c3",
+            "kind": "column_chunk",
+            "label": "RG 0 · amount_cents",
+            "span": {
+              "start": "28311",
+              "end": "51107"
+            },
+            "row_group": 0,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "28311",
+            "data_offset": "42888",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c4",
+            "kind": "column_chunk",
+            "label": "RG 0 · region",
+            "span": {
+              "start": "51107",
+              "end": "53112"
+            },
+            "row_group": 0,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "51107",
+            "data_offset": "51163",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c0",
+            "kind": "column_chunk",
+            "label": "RG 1 · event_id",
+            "span": {
+              "start": "53112",
+              "end": "66265"
+            },
+            "row_group": 1,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "53112",
+            "data_offset": "58249",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c1",
+            "kind": "column_chunk",
+            "label": "RG 1 · month",
+            "span": {
+              "start": "66265",
+              "end": "66380"
+            },
+            "row_group": 1,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "66265",
+            "data_offset": "66296",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c2",
+            "kind": "column_chunk",
+            "label": "RG 1 · account_id",
+            "span": {
+              "start": "66380",
+              "end": "81462"
+            },
+            "row_group": 1,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "66380",
+            "data_offset": "73868",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c3",
+            "kind": "column_chunk",
+            "label": "RG 1 · amount_cents",
+            "span": {
+              "start": "81462",
+              "end": "104280"
+            },
+            "row_group": 1,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "81462",
+            "data_offset": "96061",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c4",
+            "kind": "column_chunk",
+            "label": "RG 1 · region",
+            "span": {
+              "start": "104280",
+              "end": "106285"
+            },
+            "row_group": 1,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "104280",
+            "data_offset": "104336",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c0",
+            "kind": "column_chunk",
+            "label": "RG 2 · event_id",
+            "span": {
+              "start": "106285",
+              "end": "119436"
+            },
+            "row_group": 2,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "106285",
+            "data_offset": "111420",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c1",
+            "kind": "column_chunk",
+            "label": "RG 2 · month",
+            "span": {
+              "start": "119436",
+              "end": "119551"
+            },
+            "row_group": 2,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "119436",
+            "data_offset": "119467",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c2",
+            "kind": "column_chunk",
+            "label": "RG 2 · account_id",
+            "span": {
+              "start": "119551",
+              "end": "134511"
+            },
+            "row_group": 2,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "119551",
+            "data_offset": "126917",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c3",
+            "kind": "column_chunk",
+            "label": "RG 2 · amount_cents",
+            "span": {
+              "start": "134511",
+              "end": "157177"
+            },
+            "row_group": 2,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "134511",
+            "data_offset": "148958",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c4",
+            "kind": "column_chunk",
+            "label": "RG 2 · region",
+            "span": {
+              "start": "157177",
+              "end": "159182"
+            },
+            "row_group": 2,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "157177",
+            "data_offset": "157233",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c0",
+            "kind": "column_chunk",
+            "label": "RG 3 · event_id",
+            "span": {
+              "start": "159182",
+              "end": "172336"
+            },
+            "row_group": 3,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "159182",
+            "data_offset": "164320",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c1",
+            "kind": "column_chunk",
+            "label": "RG 3 · month",
+            "span": {
+              "start": "172336",
+              "end": "172451"
+            },
+            "row_group": 3,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "172336",
+            "data_offset": "172367",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c2",
+            "kind": "column_chunk",
+            "label": "RG 3 · account_id",
+            "span": {
+              "start": "172451",
+              "end": "187482"
+            },
+            "row_group": 3,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "172451",
+            "data_offset": "179888",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c3",
+            "kind": "column_chunk",
+            "label": "RG 3 · amount_cents",
+            "span": {
+              "start": "187482",
+              "end": "210462"
+            },
+            "row_group": 3,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "187482",
+            "data_offset": "202243",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c4",
+            "kind": "column_chunk",
+            "label": "RG 3 · region",
+            "span": {
+              "start": "210462",
+              "end": "212467"
+            },
+            "row_group": 3,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "210462",
+            "data_offset": "210518",
+            "compression": "ZSTD"
+          }
+        ],
+        "id": "f004",
+        "logical_path": "month=2/data-1.parquet",
+        "partition": [
+          {
+            "key": "month",
+            "value": "2"
+          }
+        ]
+      },
+      {
+        "name": "data-0.parquet",
+        "sha256": "74a3bdd80abd10cdbc72031741c3a846db725f634a14caabd6b06eea08a9269c",
+        "size": "215360",
+        "rows": "20000",
+        "row_groups": 4,
+        "schema_fields": [
+          "event_id",
+          "month",
+          "account_id",
+          "amount_cents",
+          "region"
+        ],
+        "structures": [
+          {
+            "id": "header",
+            "kind": "header",
+            "label": "PAR1 header",
+            "span": {
+              "start": "0",
+              "end": "4"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "footer",
+            "kind": "footer",
+            "label": "Footer + length + magic",
+            "span": {
+              "start": "212412",
+              "end": "215360"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "rg0-c0",
+            "kind": "column_chunk",
+            "label": "RG 0 · event_id",
+            "span": {
+              "start": "4",
+              "end": "13158"
+            },
+            "row_group": 0,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "4",
+            "data_offset": "5142",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c1",
+            "kind": "column_chunk",
+            "label": "RG 0 · month",
+            "span": {
+              "start": "13158",
+              "end": "13273"
+            },
+            "row_group": 0,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "13158",
+            "data_offset": "13189",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c2",
+            "kind": "column_chunk",
+            "label": "RG 0 · account_id",
+            "span": {
+              "start": "13273",
+              "end": "28322"
+            },
+            "row_group": 0,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "13273",
+            "data_offset": "20728",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c3",
+            "kind": "column_chunk",
+            "label": "RG 0 · amount_cents",
+            "span": {
+              "start": "28322",
+              "end": "51313"
+            },
+            "row_group": 0,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "28322",
+            "data_offset": "43094",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c4",
+            "kind": "column_chunk",
+            "label": "RG 0 · region",
+            "span": {
+              "start": "51313",
+              "end": "53318"
+            },
+            "row_group": 0,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "51313",
+            "data_offset": "51369",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c0",
+            "kind": "column_chunk",
+            "label": "RG 1 · event_id",
+            "span": {
+              "start": "53318",
+              "end": "66469"
+            },
+            "row_group": 1,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "53318",
+            "data_offset": "58453",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c1",
+            "kind": "column_chunk",
+            "label": "RG 1 · month",
+            "span": {
+              "start": "66469",
+              "end": "66584"
+            },
+            "row_group": 1,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "66469",
+            "data_offset": "66500",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c2",
+            "kind": "column_chunk",
+            "label": "RG 1 · account_id",
+            "span": {
+              "start": "66584",
+              "end": "81665"
+            },
+            "row_group": 1,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "66584",
+            "data_offset": "74071",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c3",
+            "kind": "column_chunk",
+            "label": "RG 1 · amount_cents",
+            "span": {
+              "start": "81665",
+              "end": "104146"
+            },
+            "row_group": 1,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "81665",
+            "data_offset": "95927",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c4",
+            "kind": "column_chunk",
+            "label": "RG 1 · region",
+            "span": {
+              "start": "104146",
+              "end": "106151"
+            },
+            "row_group": 1,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "104146",
+            "data_offset": "104202",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c0",
+            "kind": "column_chunk",
+            "label": "RG 2 · event_id",
+            "span": {
+              "start": "106151",
+              "end": "119305"
+            },
+            "row_group": 2,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "106151",
+            "data_offset": "111289",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c1",
+            "kind": "column_chunk",
+            "label": "RG 2 · month",
+            "span": {
+              "start": "119305",
+              "end": "119420"
+            },
+            "row_group": 2,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "119305",
+            "data_offset": "119336",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c2",
+            "kind": "column_chunk",
+            "label": "RG 2 · account_id",
+            "span": {
+              "start": "119420",
+              "end": "134470"
+            },
+            "row_group": 2,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "119420",
+            "data_offset": "126876",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c3",
+            "kind": "column_chunk",
+            "label": "RG 2 · amount_cents",
+            "span": {
+              "start": "134470",
+              "end": "157251"
+            },
+            "row_group": 2,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "134470",
+            "data_offset": "149032",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c4",
+            "kind": "column_chunk",
+            "label": "RG 2 · region",
+            "span": {
+              "start": "157251",
+              "end": "159256"
+            },
+            "row_group": 2,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "157251",
+            "data_offset": "157307",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c0",
+            "kind": "column_chunk",
+            "label": "RG 3 · event_id",
+            "span": {
+              "start": "159256",
+              "end": "172407"
+            },
+            "row_group": 3,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "159256",
+            "data_offset": "164391",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c1",
+            "kind": "column_chunk",
+            "label": "RG 3 · month",
+            "span": {
+              "start": "172407",
+              "end": "172522"
+            },
+            "row_group": 3,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "172407",
+            "data_offset": "172438",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c2",
+            "kind": "column_chunk",
+            "label": "RG 3 · account_id",
+            "span": {
+              "start": "172522",
+              "end": "187461"
+            },
+            "row_group": 3,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "172522",
+            "data_offset": "179867",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c3",
+            "kind": "column_chunk",
+            "label": "RG 3 · amount_cents",
+            "span": {
+              "start": "187461",
+              "end": "210407"
+            },
+            "row_group": 3,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "187461",
+            "data_offset": "202188",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c4",
+            "kind": "column_chunk",
+            "label": "RG 3 · region",
+            "span": {
+              "start": "210407",
+              "end": "212412"
+            },
+            "row_group": 3,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "210407",
+            "data_offset": "210463",
+            "compression": "ZSTD"
+          }
+        ],
+        "id": "f005",
+        "logical_path": "month=3/data-0.parquet",
+        "partition": [
+          {
+            "key": "month",
+            "value": "3"
+          }
+        ]
+      },
+      {
+        "name": "data-1.parquet",
+        "sha256": "fc2bf4f55dbdfe20b5ad883299ba0010f8ac85353001bc0155cd094108add297",
+        "size": "215544",
+        "rows": "20000",
+        "row_groups": 4,
+        "schema_fields": [
+          "event_id",
+          "month",
+          "account_id",
+          "amount_cents",
+          "region"
+        ],
+        "structures": [
+          {
+            "id": "header",
+            "kind": "header",
+            "label": "PAR1 header",
+            "span": {
+              "start": "0",
+              "end": "4"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "footer",
+            "kind": "footer",
+            "label": "Footer + length + magic",
+            "span": {
+              "start": "212596",
+              "end": "215544"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "rg0-c0",
+            "kind": "column_chunk",
+            "label": "RG 0 · event_id",
+            "span": {
+              "start": "4",
+              "end": "13158"
+            },
+            "row_group": 0,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "4",
+            "data_offset": "5142",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c1",
+            "kind": "column_chunk",
+            "label": "RG 0 · month",
+            "span": {
+              "start": "13158",
+              "end": "13273"
+            },
+            "row_group": 0,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "13158",
+            "data_offset": "13189",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c2",
+            "kind": "column_chunk",
+            "label": "RG 0 · account_id",
+            "span": {
+              "start": "13273",
+              "end": "28283"
+            },
+            "row_group": 0,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "13273",
+            "data_offset": "20689",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c3",
+            "kind": "column_chunk",
+            "label": "RG 0 · amount_cents",
+            "span": {
+              "start": "28283",
+              "end": "51234"
+            },
+            "row_group": 0,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "28283",
+            "data_offset": "43015",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c4",
+            "kind": "column_chunk",
+            "label": "RG 0 · region",
+            "span": {
+              "start": "51234",
+              "end": "53239"
+            },
+            "row_group": 0,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "51234",
+            "data_offset": "51290",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c0",
+            "kind": "column_chunk",
+            "label": "RG 1 · event_id",
+            "span": {
+              "start": "53239",
+              "end": "66390"
+            },
+            "row_group": 1,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "53239",
+            "data_offset": "58374",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c1",
+            "kind": "column_chunk",
+            "label": "RG 1 · month",
+            "span": {
+              "start": "66390",
+              "end": "66505"
+            },
+            "row_group": 1,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "66390",
+            "data_offset": "66421",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c2",
+            "kind": "column_chunk",
+            "label": "RG 1 · account_id",
+            "span": {
+              "start": "66505",
+              "end": "81522"
+            },
+            "row_group": 1,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "66505",
+            "data_offset": "73928",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c3",
+            "kind": "column_chunk",
+            "label": "RG 1 · amount_cents",
+            "span": {
+              "start": "81522",
+              "end": "104477"
+            },
+            "row_group": 1,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "81522",
+            "data_offset": "96258",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c4",
+            "kind": "column_chunk",
+            "label": "RG 1 · region",
+            "span": {
+              "start": "104477",
+              "end": "106482"
+            },
+            "row_group": 1,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "104477",
+            "data_offset": "104533",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c0",
+            "kind": "column_chunk",
+            "label": "RG 2 · event_id",
+            "span": {
+              "start": "106482",
+              "end": "119636"
+            },
+            "row_group": 2,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "106482",
+            "data_offset": "111620",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c1",
+            "kind": "column_chunk",
+            "label": "RG 2 · month",
+            "span": {
+              "start": "119636",
+              "end": "119751"
+            },
+            "row_group": 2,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "119636",
+            "data_offset": "119667",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c2",
+            "kind": "column_chunk",
+            "label": "RG 2 · account_id",
+            "span": {
+              "start": "119751",
+              "end": "134753"
+            },
+            "row_group": 2,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "119751",
+            "data_offset": "127159",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c3",
+            "kind": "column_chunk",
+            "label": "RG 2 · amount_cents",
+            "span": {
+              "start": "134753",
+              "end": "157482"
+            },
+            "row_group": 2,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "134753",
+            "data_offset": "149263",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c4",
+            "kind": "column_chunk",
+            "label": "RG 2 · region",
+            "span": {
+              "start": "157482",
+              "end": "159487"
+            },
+            "row_group": 2,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "157482",
+            "data_offset": "157538",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c0",
+            "kind": "column_chunk",
+            "label": "RG 3 · event_id",
+            "span": {
+              "start": "159487",
+              "end": "172638"
+            },
+            "row_group": 3,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "159487",
+            "data_offset": "164622",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c1",
+            "kind": "column_chunk",
+            "label": "RG 3 · month",
+            "span": {
+              "start": "172638",
+              "end": "172753"
+            },
+            "row_group": 3,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "172638",
+            "data_offset": "172669",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c2",
+            "kind": "column_chunk",
+            "label": "RG 3 · account_id",
+            "span": {
+              "start": "172753",
+              "end": "187868"
+            },
+            "row_group": 3,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "172753",
+            "data_offset": "180274",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c3",
+            "kind": "column_chunk",
+            "label": "RG 3 · amount_cents",
+            "span": {
+              "start": "187868",
+              "end": "210591"
+            },
+            "row_group": 3,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "187868",
+            "data_offset": "202372",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c4",
+            "kind": "column_chunk",
+            "label": "RG 3 · region",
+            "span": {
+              "start": "210591",
+              "end": "212596"
+            },
+            "row_group": 3,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "210591",
+            "data_offset": "210647",
+            "compression": "ZSTD"
+          }
+        ],
+        "id": "f006",
+        "logical_path": "month=3/data-1.parquet",
+        "partition": [
+          {
+            "key": "month",
+            "value": "3"
+          }
+        ]
+      },
+      {
+        "name": "data-0.parquet",
+        "sha256": "c5c23cc93326008e8284394dbdc159995f18ca72f0a4641b9acea0109931d2ab",
+        "size": "216085",
+        "rows": "20000",
+        "row_groups": 4,
+        "schema_fields": [
+          "event_id",
+          "month",
+          "account_id",
+          "amount_cents",
+          "region"
+        ],
+        "structures": [
+          {
+            "id": "header",
+            "kind": "header",
+            "label": "PAR1 header",
+            "span": {
+              "start": "0",
+              "end": "4"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "footer",
+            "kind": "footer",
+            "label": "Footer + length + magic",
+            "span": {
+              "start": "213137",
+              "end": "216085"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "rg0-c0",
+            "kind": "column_chunk",
+            "label": "RG 0 · event_id",
+            "span": {
+              "start": "4",
+              "end": "13158"
+            },
+            "row_group": 0,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "4",
+            "data_offset": "5142",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c1",
+            "kind": "column_chunk",
+            "label": "RG 0 · month",
+            "span": {
+              "start": "13158",
+              "end": "13273"
+            },
+            "row_group": 0,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "13158",
+            "data_offset": "13189",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c2",
+            "kind": "column_chunk",
+            "label": "RG 0 · account_id",
+            "span": {
+              "start": "13273",
+              "end": "28325"
+            },
+            "row_group": 0,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "13273",
+            "data_offset": "20731",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c3",
+            "kind": "column_chunk",
+            "label": "RG 0 · amount_cents",
+            "span": {
+              "start": "28325",
+              "end": "51347"
+            },
+            "row_group": 0,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "28325",
+            "data_offset": "43128",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c4",
+            "kind": "column_chunk",
+            "label": "RG 0 · region",
+            "span": {
+              "start": "51347",
+              "end": "53352"
+            },
+            "row_group": 0,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "51347",
+            "data_offset": "51403",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c0",
+            "kind": "column_chunk",
+            "label": "RG 1 · event_id",
+            "span": {
+              "start": "53352",
+              "end": "66503"
+            },
+            "row_group": 1,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "53352",
+            "data_offset": "58487",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c1",
+            "kind": "column_chunk",
+            "label": "RG 1 · month",
+            "span": {
+              "start": "66503",
+              "end": "66618"
+            },
+            "row_group": 1,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "66503",
+            "data_offset": "66534",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c2",
+            "kind": "column_chunk",
+            "label": "RG 1 · account_id",
+            "span": {
+              "start": "66618",
+              "end": "81664"
+            },
+            "row_group": 1,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "66618",
+            "data_offset": "74070",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c3",
+            "kind": "column_chunk",
+            "label": "RG 1 · amount_cents",
+            "span": {
+              "start": "81664",
+              "end": "104611"
+            },
+            "row_group": 1,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "81664",
+            "data_offset": "96392",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c4",
+            "kind": "column_chunk",
+            "label": "RG 1 · region",
+            "span": {
+              "start": "104611",
+              "end": "106616"
+            },
+            "row_group": 1,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "104611",
+            "data_offset": "104667",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c0",
+            "kind": "column_chunk",
+            "label": "RG 2 · event_id",
+            "span": {
+              "start": "106616",
+              "end": "119775"
+            },
+            "row_group": 2,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "106616",
+            "data_offset": "111759",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c1",
+            "kind": "column_chunk",
+            "label": "RG 2 · month",
+            "span": {
+              "start": "119775",
+              "end": "119890"
+            },
+            "row_group": 2,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "119775",
+            "data_offset": "119806",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c2",
+            "kind": "column_chunk",
+            "label": "RG 2 · account_id",
+            "span": {
+              "start": "119890",
+              "end": "134906"
+            },
+            "row_group": 2,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "119890",
+            "data_offset": "127312",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c3",
+            "kind": "column_chunk",
+            "label": "RG 2 · amount_cents",
+            "span": {
+              "start": "134906",
+              "end": "157910"
+            },
+            "row_group": 2,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "134906",
+            "data_offset": "149691",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c4",
+            "kind": "column_chunk",
+            "label": "RG 2 · region",
+            "span": {
+              "start": "157910",
+              "end": "159915"
+            },
+            "row_group": 2,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "157910",
+            "data_offset": "157966",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c0",
+            "kind": "column_chunk",
+            "label": "RG 3 · event_id",
+            "span": {
+              "start": "159915",
+              "end": "173066"
+            },
+            "row_group": 3,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "159915",
+            "data_offset": "165050",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c1",
+            "kind": "column_chunk",
+            "label": "RG 3 · month",
+            "span": {
+              "start": "173066",
+              "end": "173181"
+            },
+            "row_group": 3,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "173066",
+            "data_offset": "173097",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c2",
+            "kind": "column_chunk",
+            "label": "RG 3 · account_id",
+            "span": {
+              "start": "173181",
+              "end": "188206"
+            },
+            "row_group": 3,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "173181",
+            "data_offset": "180612",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c3",
+            "kind": "column_chunk",
+            "label": "RG 3 · amount_cents",
+            "span": {
+              "start": "188206",
+              "end": "211132"
+            },
+            "row_group": 3,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "188206",
+            "data_offset": "202913",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c4",
+            "kind": "column_chunk",
+            "label": "RG 3 · region",
+            "span": {
+              "start": "211132",
+              "end": "213137"
+            },
+            "row_group": 3,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "211132",
+            "data_offset": "211188",
+            "compression": "ZSTD"
+          }
+        ],
+        "id": "f007",
+        "logical_path": "month=4/data-0.parquet",
+        "partition": [
+          {
+            "key": "month",
+            "value": "4"
+          }
+        ]
+      },
+      {
+        "name": "data-1.parquet",
+        "sha256": "bd107c9f96c1006116f3ce9afed491984cb2cafd3a9ed04ae0bc71148d9a797f",
+        "size": "215467",
+        "rows": "20000",
+        "row_groups": 4,
+        "schema_fields": [
+          "event_id",
+          "month",
+          "account_id",
+          "amount_cents",
+          "region"
+        ],
+        "structures": [
+          {
+            "id": "header",
+            "kind": "header",
+            "label": "PAR1 header",
+            "span": {
+              "start": "0",
+              "end": "4"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "footer",
+            "kind": "footer",
+            "label": "Footer + length + magic",
+            "span": {
+              "start": "212519",
+              "end": "215467"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "rg0-c0",
+            "kind": "column_chunk",
+            "label": "RG 0 · event_id",
+            "span": {
+              "start": "4",
+              "end": "13158"
+            },
+            "row_group": 0,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "4",
+            "data_offset": "5142",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c1",
+            "kind": "column_chunk",
+            "label": "RG 0 · month",
+            "span": {
+              "start": "13158",
+              "end": "13273"
+            },
+            "row_group": 0,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "13158",
+            "data_offset": "13189",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c2",
+            "kind": "column_chunk",
+            "label": "RG 0 · account_id",
+            "span": {
+              "start": "13273",
+              "end": "28331"
+            },
+            "row_group": 0,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "13273",
+            "data_offset": "20737",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c3",
+            "kind": "column_chunk",
+            "label": "RG 0 · amount_cents",
+            "span": {
+              "start": "28331",
+              "end": "51106"
+            },
+            "row_group": 0,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "28331",
+            "data_offset": "42887",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c4",
+            "kind": "column_chunk",
+            "label": "RG 0 · region",
+            "span": {
+              "start": "51106",
+              "end": "53111"
+            },
+            "row_group": 0,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "51106",
+            "data_offset": "51162",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c0",
+            "kind": "column_chunk",
+            "label": "RG 1 · event_id",
+            "span": {
+              "start": "53111",
+              "end": "66262"
+            },
+            "row_group": 1,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "53111",
+            "data_offset": "58246",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c1",
+            "kind": "column_chunk",
+            "label": "RG 1 · month",
+            "span": {
+              "start": "66262",
+              "end": "66377"
+            },
+            "row_group": 1,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "66262",
+            "data_offset": "66293",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c2",
+            "kind": "column_chunk",
+            "label": "RG 1 · account_id",
+            "span": {
+              "start": "66377",
+              "end": "81398"
+            },
+            "row_group": 1,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "66377",
+            "data_offset": "73804",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c3",
+            "kind": "column_chunk",
+            "label": "RG 1 · amount_cents",
+            "span": {
+              "start": "81398",
+              "end": "104215"
+            },
+            "row_group": 1,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "81398",
+            "data_offset": "95996",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c4",
+            "kind": "column_chunk",
+            "label": "RG 1 · region",
+            "span": {
+              "start": "104215",
+              "end": "106220"
+            },
+            "row_group": 1,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "104215",
+            "data_offset": "104271",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c0",
+            "kind": "column_chunk",
+            "label": "RG 2 · event_id",
+            "span": {
+              "start": "106220",
+              "end": "119374"
+            },
+            "row_group": 2,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "106220",
+            "data_offset": "111358",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c1",
+            "kind": "column_chunk",
+            "label": "RG 2 · month",
+            "span": {
+              "start": "119374",
+              "end": "119489"
+            },
+            "row_group": 2,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "119374",
+            "data_offset": "119405",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c2",
+            "kind": "column_chunk",
+            "label": "RG 2 · account_id",
+            "span": {
+              "start": "119489",
+              "end": "134483"
+            },
+            "row_group": 2,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "119489",
+            "data_offset": "126889",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c3",
+            "kind": "column_chunk",
+            "label": "RG 2 · amount_cents",
+            "span": {
+              "start": "134483",
+              "end": "157497"
+            },
+            "row_group": 2,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "134483",
+            "data_offset": "149278",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c4",
+            "kind": "column_chunk",
+            "label": "RG 2 · region",
+            "span": {
+              "start": "157497",
+              "end": "159502"
+            },
+            "row_group": 2,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "157497",
+            "data_offset": "157553",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c0",
+            "kind": "column_chunk",
+            "label": "RG 3 · event_id",
+            "span": {
+              "start": "159502",
+              "end": "172653"
+            },
+            "row_group": 3,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "159502",
+            "data_offset": "164637",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c1",
+            "kind": "column_chunk",
+            "label": "RG 3 · month",
+            "span": {
+              "start": "172653",
+              "end": "172768"
+            },
+            "row_group": 3,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "172653",
+            "data_offset": "172684",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c2",
+            "kind": "column_chunk",
+            "label": "RG 3 · account_id",
+            "span": {
+              "start": "172768",
+              "end": "187737"
+            },
+            "row_group": 3,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "172768",
+            "data_offset": "180143",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c3",
+            "kind": "column_chunk",
+            "label": "RG 3 · amount_cents",
+            "span": {
+              "start": "187737",
+              "end": "210514"
+            },
+            "row_group": 3,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "187737",
+            "data_offset": "202295",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c4",
+            "kind": "column_chunk",
+            "label": "RG 3 · region",
+            "span": {
+              "start": "210514",
+              "end": "212519"
+            },
+            "row_group": 3,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "210514",
+            "data_offset": "210570",
+            "compression": "ZSTD"
+          }
+        ],
+        "id": "f008",
+        "logical_path": "month=4/data-1.parquet",
+        "partition": [
+          {
+            "key": "month",
+            "value": "4"
+          }
+        ]
+      },
+      {
+        "name": "data-0.parquet",
+        "sha256": "fe38423e6ab7e21de46f79d82d9018c1032c77b41fb59d7336cb594728847ac5",
+        "size": "215792",
+        "rows": "20000",
+        "row_groups": 4,
+        "schema_fields": [
+          "event_id",
+          "month",
+          "account_id",
+          "amount_cents",
+          "region"
+        ],
+        "structures": [
+          {
+            "id": "header",
+            "kind": "header",
+            "label": "PAR1 header",
+            "span": {
+              "start": "0",
+              "end": "4"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "footer",
+            "kind": "footer",
+            "label": "Footer + length + magic",
+            "span": {
+              "start": "212844",
+              "end": "215792"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "rg0-c0",
+            "kind": "column_chunk",
+            "label": "RG 0 · event_id",
+            "span": {
+              "start": "4",
+              "end": "13155"
+            },
+            "row_group": 0,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "4",
+            "data_offset": "5139",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c1",
+            "kind": "column_chunk",
+            "label": "RG 0 · month",
+            "span": {
+              "start": "13155",
+              "end": "13270"
+            },
+            "row_group": 0,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "13155",
+            "data_offset": "13186",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c2",
+            "kind": "column_chunk",
+            "label": "RG 0 · account_id",
+            "span": {
+              "start": "13270",
+              "end": "28274"
+            },
+            "row_group": 0,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "13270",
+            "data_offset": "20680",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c3",
+            "kind": "column_chunk",
+            "label": "RG 0 · amount_cents",
+            "span": {
+              "start": "28274",
+              "end": "51280"
+            },
+            "row_group": 0,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "28274",
+            "data_offset": "43061",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c4",
+            "kind": "column_chunk",
+            "label": "RG 0 · region",
+            "span": {
+              "start": "51280",
+              "end": "53285"
+            },
+            "row_group": 0,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "51280",
+            "data_offset": "51336",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c0",
+            "kind": "column_chunk",
+            "label": "RG 1 · event_id",
+            "span": {
+              "start": "53285",
+              "end": "66439"
+            },
+            "row_group": 1,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "53285",
+            "data_offset": "58423",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c1",
+            "kind": "column_chunk",
+            "label": "RG 1 · month",
+            "span": {
+              "start": "66439",
+              "end": "66554"
+            },
+            "row_group": 1,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "66439",
+            "data_offset": "66470",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c2",
+            "kind": "column_chunk",
+            "label": "RG 1 · account_id",
+            "span": {
+              "start": "66554",
+              "end": "81660"
+            },
+            "row_group": 1,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "66554",
+            "data_offset": "74066",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c3",
+            "kind": "column_chunk",
+            "label": "RG 1 · amount_cents",
+            "span": {
+              "start": "81660",
+              "end": "104606"
+            },
+            "row_group": 1,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "81660",
+            "data_offset": "96387",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c4",
+            "kind": "column_chunk",
+            "label": "RG 1 · region",
+            "span": {
+              "start": "104606",
+              "end": "106611"
+            },
+            "row_group": 1,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "104606",
+            "data_offset": "104662",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c0",
+            "kind": "column_chunk",
+            "label": "RG 2 · event_id",
+            "span": {
+              "start": "106611",
+              "end": "119762"
+            },
+            "row_group": 2,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "106611",
+            "data_offset": "111746",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c1",
+            "kind": "column_chunk",
+            "label": "RG 2 · month",
+            "span": {
+              "start": "119762",
+              "end": "119877"
+            },
+            "row_group": 2,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "119762",
+            "data_offset": "119793",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c2",
+            "kind": "column_chunk",
+            "label": "RG 2 · account_id",
+            "span": {
+              "start": "119877",
+              "end": "134839"
+            },
+            "row_group": 2,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "119877",
+            "data_offset": "127245",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c3",
+            "kind": "column_chunk",
+            "label": "RG 2 · amount_cents",
+            "span": {
+              "start": "134839",
+              "end": "157787"
+            },
+            "row_group": 2,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "134839",
+            "data_offset": "149568",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c4",
+            "kind": "column_chunk",
+            "label": "RG 2 · region",
+            "span": {
+              "start": "157787",
+              "end": "159792"
+            },
+            "row_group": 2,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "157787",
+            "data_offset": "157843",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c0",
+            "kind": "column_chunk",
+            "label": "RG 3 · event_id",
+            "span": {
+              "start": "159792",
+              "end": "172946"
+            },
+            "row_group": 3,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "159792",
+            "data_offset": "164930",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c1",
+            "kind": "column_chunk",
+            "label": "RG 3 · month",
+            "span": {
+              "start": "172946",
+              "end": "173061"
+            },
+            "row_group": 3,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "172946",
+            "data_offset": "172977",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c2",
+            "kind": "column_chunk",
+            "label": "RG 3 · account_id",
+            "span": {
+              "start": "173061",
+              "end": "188056"
+            },
+            "row_group": 3,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "173061",
+            "data_offset": "180462",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c3",
+            "kind": "column_chunk",
+            "label": "RG 3 · amount_cents",
+            "span": {
+              "start": "188056",
+              "end": "210839"
+            },
+            "row_group": 3,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "188056",
+            "data_offset": "202620",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c4",
+            "kind": "column_chunk",
+            "label": "RG 3 · region",
+            "span": {
+              "start": "210839",
+              "end": "212844"
+            },
+            "row_group": 3,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "210839",
+            "data_offset": "210895",
+            "compression": "ZSTD"
+          }
+        ],
+        "id": "f009",
+        "logical_path": "month=5/data-0.parquet",
+        "partition": [
+          {
+            "key": "month",
+            "value": "5"
+          }
+        ]
+      },
+      {
+        "name": "data-1.parquet",
+        "sha256": "3b9a683eb8c568a9b038188e172e5eb082dc8d94fbfbb4095e62b4570d239cf4",
+        "size": "215654",
+        "rows": "20000",
+        "row_groups": 4,
+        "schema_fields": [
+          "event_id",
+          "month",
+          "account_id",
+          "amount_cents",
+          "region"
+        ],
+        "structures": [
+          {
+            "id": "header",
+            "kind": "header",
+            "label": "PAR1 header",
+            "span": {
+              "start": "0",
+              "end": "4"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "footer",
+            "kind": "footer",
+            "label": "Footer + length + magic",
+            "span": {
+              "start": "212706",
+              "end": "215654"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "rg0-c0",
+            "kind": "column_chunk",
+            "label": "RG 0 · event_id",
+            "span": {
+              "start": "4",
+              "end": "13155"
+            },
+            "row_group": 0,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "4",
+            "data_offset": "5139",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c1",
+            "kind": "column_chunk",
+            "label": "RG 0 · month",
+            "span": {
+              "start": "13155",
+              "end": "13270"
+            },
+            "row_group": 0,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "13155",
+            "data_offset": "13186",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c2",
+            "kind": "column_chunk",
+            "label": "RG 0 · account_id",
+            "span": {
+              "start": "13270",
+              "end": "28207"
+            },
+            "row_group": 0,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "13270",
+            "data_offset": "20613",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c3",
+            "kind": "column_chunk",
+            "label": "RG 0 · amount_cents",
+            "span": {
+              "start": "28207",
+              "end": "51244"
+            },
+            "row_group": 0,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "28207",
+            "data_offset": "43025",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c4",
+            "kind": "column_chunk",
+            "label": "RG 0 · region",
+            "span": {
+              "start": "51244",
+              "end": "53249"
+            },
+            "row_group": 0,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "51244",
+            "data_offset": "51300",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c0",
+            "kind": "column_chunk",
+            "label": "RG 1 · event_id",
+            "span": {
+              "start": "53249",
+              "end": "66403"
+            },
+            "row_group": 1,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "53249",
+            "data_offset": "58387",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c1",
+            "kind": "column_chunk",
+            "label": "RG 1 · month",
+            "span": {
+              "start": "66403",
+              "end": "66518"
+            },
+            "row_group": 1,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "66403",
+            "data_offset": "66434",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c2",
+            "kind": "column_chunk",
+            "label": "RG 1 · account_id",
+            "span": {
+              "start": "66518",
+              "end": "81577"
+            },
+            "row_group": 1,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "66518",
+            "data_offset": "73983",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c3",
+            "kind": "column_chunk",
+            "label": "RG 1 · amount_cents",
+            "span": {
+              "start": "81577",
+              "end": "104685"
+            },
+            "row_group": 1,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "81577",
+            "data_offset": "96466",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c4",
+            "kind": "column_chunk",
+            "label": "RG 1 · region",
+            "span": {
+              "start": "104685",
+              "end": "106690"
+            },
+            "row_group": 1,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "104685",
+            "data_offset": "104741",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c0",
+            "kind": "column_chunk",
+            "label": "RG 2 · event_id",
+            "span": {
+              "start": "106690",
+              "end": "119841"
+            },
+            "row_group": 2,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "106690",
+            "data_offset": "111825",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c1",
+            "kind": "column_chunk",
+            "label": "RG 2 · month",
+            "span": {
+              "start": "119841",
+              "end": "119956"
+            },
+            "row_group": 2,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "119841",
+            "data_offset": "119872",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c2",
+            "kind": "column_chunk",
+            "label": "RG 2 · account_id",
+            "span": {
+              "start": "119956",
+              "end": "134994"
+            },
+            "row_group": 2,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "119956",
+            "data_offset": "127400",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c3",
+            "kind": "column_chunk",
+            "label": "RG 2 · amount_cents",
+            "span": {
+              "start": "134994",
+              "end": "157305"
+            },
+            "row_group": 2,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "134994",
+            "data_offset": "149086",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c4",
+            "kind": "column_chunk",
+            "label": "RG 2 · region",
+            "span": {
+              "start": "157305",
+              "end": "159310"
+            },
+            "row_group": 2,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "157305",
+            "data_offset": "157361",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c0",
+            "kind": "column_chunk",
+            "label": "RG 3 · event_id",
+            "span": {
+              "start": "159310",
+              "end": "172469"
+            },
+            "row_group": 3,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "159310",
+            "data_offset": "164453",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c1",
+            "kind": "column_chunk",
+            "label": "RG 3 · month",
+            "span": {
+              "start": "172469",
+              "end": "172584"
+            },
+            "row_group": 3,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "172469",
+            "data_offset": "172500",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c2",
+            "kind": "column_chunk",
+            "label": "RG 3 · account_id",
+            "span": {
+              "start": "172584",
+              "end": "187648"
+            },
+            "row_group": 3,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "172584",
+            "data_offset": "180054",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c3",
+            "kind": "column_chunk",
+            "label": "RG 3 · amount_cents",
+            "span": {
+              "start": "187648",
+              "end": "210701"
+            },
+            "row_group": 3,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "187648",
+            "data_offset": "202482",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c4",
+            "kind": "column_chunk",
+            "label": "RG 3 · region",
+            "span": {
+              "start": "210701",
+              "end": "212706"
+            },
+            "row_group": 3,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "210701",
+            "data_offset": "210757",
+            "compression": "ZSTD"
+          }
+        ],
+        "id": "f010",
+        "logical_path": "month=5/data-1.parquet",
+        "partition": [
+          {
+            "key": "month",
+            "value": "5"
+          }
+        ]
+      },
+      {
+        "name": "data-0.parquet",
+        "sha256": "e6a60440d71a08f68dfebdd21e0b0f962a48b4a7345c5465ffef7acb314054ff",
+        "size": "216307",
+        "rows": "20000",
+        "row_groups": 4,
+        "schema_fields": [
+          "event_id",
+          "month",
+          "account_id",
+          "amount_cents",
+          "region"
+        ],
+        "structures": [
+          {
+            "id": "header",
+            "kind": "header",
+            "label": "PAR1 header",
+            "span": {
+              "start": "0",
+              "end": "4"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "footer",
+            "kind": "footer",
+            "label": "Footer + length + magic",
+            "span": {
+              "start": "213359",
+              "end": "216307"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "rg0-c0",
+            "kind": "column_chunk",
+            "label": "RG 0 · event_id",
+            "span": {
+              "start": "4",
+              "end": "13155"
+            },
+            "row_group": 0,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "4",
+            "data_offset": "5139",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c1",
+            "kind": "column_chunk",
+            "label": "RG 0 · month",
+            "span": {
+              "start": "13155",
+              "end": "13270"
+            },
+            "row_group": 0,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "13155",
+            "data_offset": "13186",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c2",
+            "kind": "column_chunk",
+            "label": "RG 0 · account_id",
+            "span": {
+              "start": "13270",
+              "end": "28302"
+            },
+            "row_group": 0,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "13270",
+            "data_offset": "20708",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c3",
+            "kind": "column_chunk",
+            "label": "RG 0 · amount_cents",
+            "span": {
+              "start": "28302",
+              "end": "51368"
+            },
+            "row_group": 0,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "28302",
+            "data_offset": "43149",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c4",
+            "kind": "column_chunk",
+            "label": "RG 0 · region",
+            "span": {
+              "start": "51368",
+              "end": "53373"
+            },
+            "row_group": 0,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "51368",
+            "data_offset": "51424",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c0",
+            "kind": "column_chunk",
+            "label": "RG 1 · event_id",
+            "span": {
+              "start": "53373",
+              "end": "66527"
+            },
+            "row_group": 1,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "53373",
+            "data_offset": "58511",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c1",
+            "kind": "column_chunk",
+            "label": "RG 1 · month",
+            "span": {
+              "start": "66527",
+              "end": "66642"
+            },
+            "row_group": 1,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "66527",
+            "data_offset": "66558",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c2",
+            "kind": "column_chunk",
+            "label": "RG 1 · account_id",
+            "span": {
+              "start": "66642",
+              "end": "81694"
+            },
+            "row_group": 1,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "66642",
+            "data_offset": "74100",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c3",
+            "kind": "column_chunk",
+            "label": "RG 1 · amount_cents",
+            "span": {
+              "start": "81694",
+              "end": "104758"
+            },
+            "row_group": 1,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "81694",
+            "data_offset": "96539",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c4",
+            "kind": "column_chunk",
+            "label": "RG 1 · region",
+            "span": {
+              "start": "104758",
+              "end": "106763"
+            },
+            "row_group": 1,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "104758",
+            "data_offset": "104814",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c0",
+            "kind": "column_chunk",
+            "label": "RG 2 · event_id",
+            "span": {
+              "start": "106763",
+              "end": "119914"
+            },
+            "row_group": 2,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "106763",
+            "data_offset": "111898",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c1",
+            "kind": "column_chunk",
+            "label": "RG 2 · month",
+            "span": {
+              "start": "119914",
+              "end": "120029"
+            },
+            "row_group": 2,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "119914",
+            "data_offset": "119945",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c2",
+            "kind": "column_chunk",
+            "label": "RG 2 · account_id",
+            "span": {
+              "start": "120029",
+              "end": "135069"
+            },
+            "row_group": 2,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "120029",
+            "data_offset": "127475",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c3",
+            "kind": "column_chunk",
+            "label": "RG 2 · amount_cents",
+            "span": {
+              "start": "135069",
+              "end": "158029"
+            },
+            "row_group": 2,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "135069",
+            "data_offset": "149810",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c4",
+            "kind": "column_chunk",
+            "label": "RG 2 · region",
+            "span": {
+              "start": "158029",
+              "end": "160034"
+            },
+            "row_group": 2,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "158029",
+            "data_offset": "158085",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c0",
+            "kind": "column_chunk",
+            "label": "RG 3 · event_id",
+            "span": {
+              "start": "160034",
+              "end": "173188"
+            },
+            "row_group": 3,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "160034",
+            "data_offset": "165172",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c1",
+            "kind": "column_chunk",
+            "label": "RG 3 · month",
+            "span": {
+              "start": "173188",
+              "end": "173303"
+            },
+            "row_group": 3,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "173188",
+            "data_offset": "173219",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c2",
+            "kind": "column_chunk",
+            "label": "RG 3 · account_id",
+            "span": {
+              "start": "173303",
+              "end": "188359"
+            },
+            "row_group": 3,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "173303",
+            "data_offset": "180765",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c3",
+            "kind": "column_chunk",
+            "label": "RG 3 · amount_cents",
+            "span": {
+              "start": "188359",
+              "end": "211354"
+            },
+            "row_group": 3,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "188359",
+            "data_offset": "203135",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c4",
+            "kind": "column_chunk",
+            "label": "RG 3 · region",
+            "span": {
+              "start": "211354",
+              "end": "213359"
+            },
+            "row_group": 3,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "211354",
+            "data_offset": "211410",
+            "compression": "ZSTD"
+          }
+        ],
+        "id": "f011",
+        "logical_path": "month=6/data-0.parquet",
+        "partition": [
+          {
+            "key": "month",
+            "value": "6"
+          }
+        ]
+      },
+      {
+        "name": "data-1.parquet",
+        "sha256": "65839dfd1e4a3e85b0f81e09483ba10c4fc141b3183f6be8499262616ce1071e",
+        "size": "216104",
+        "rows": "20000",
+        "row_groups": 4,
+        "schema_fields": [
+          "event_id",
+          "month",
+          "account_id",
+          "amount_cents",
+          "region"
+        ],
+        "structures": [
+          {
+            "id": "header",
+            "kind": "header",
+            "label": "PAR1 header",
+            "span": {
+              "start": "0",
+              "end": "4"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "footer",
+            "kind": "footer",
+            "label": "Footer + length + magic",
+            "span": {
+              "start": "213156",
+              "end": "216104"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "rg0-c0",
+            "kind": "column_chunk",
+            "label": "RG 0 · event_id",
+            "span": {
+              "start": "4",
+              "end": "13155"
+            },
+            "row_group": 0,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "4",
+            "data_offset": "5139",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c1",
+            "kind": "column_chunk",
+            "label": "RG 0 · month",
+            "span": {
+              "start": "13155",
+              "end": "13270"
+            },
+            "row_group": 0,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "13155",
+            "data_offset": "13186",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c2",
+            "kind": "column_chunk",
+            "label": "RG 0 · account_id",
+            "span": {
+              "start": "13270",
+              "end": "28289"
+            },
+            "row_group": 0,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "13270",
+            "data_offset": "20695",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c3",
+            "kind": "column_chunk",
+            "label": "RG 0 · amount_cents",
+            "span": {
+              "start": "28289",
+              "end": "51350"
+            },
+            "row_group": 0,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "28289",
+            "data_offset": "43131",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c4",
+            "kind": "column_chunk",
+            "label": "RG 0 · region",
+            "span": {
+              "start": "51350",
+              "end": "53355"
+            },
+            "row_group": 0,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "51350",
+            "data_offset": "51406",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c0",
+            "kind": "column_chunk",
+            "label": "RG 1 · event_id",
+            "span": {
+              "start": "53355",
+              "end": "66509"
+            },
+            "row_group": 1,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "53355",
+            "data_offset": "58493",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c1",
+            "kind": "column_chunk",
+            "label": "RG 1 · month",
+            "span": {
+              "start": "66509",
+              "end": "66624"
+            },
+            "row_group": 1,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "66509",
+            "data_offset": "66540",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c2",
+            "kind": "column_chunk",
+            "label": "RG 1 · account_id",
+            "span": {
+              "start": "66624",
+              "end": "81699"
+            },
+            "row_group": 1,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "66624",
+            "data_offset": "74105",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c3",
+            "kind": "column_chunk",
+            "label": "RG 1 · amount_cents",
+            "span": {
+              "start": "81699",
+              "end": "104594"
+            },
+            "row_group": 1,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "81699",
+            "data_offset": "96375",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c4",
+            "kind": "column_chunk",
+            "label": "RG 1 · region",
+            "span": {
+              "start": "104594",
+              "end": "106599"
+            },
+            "row_group": 1,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "104594",
+            "data_offset": "104650",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c0",
+            "kind": "column_chunk",
+            "label": "RG 2 · event_id",
+            "span": {
+              "start": "106599",
+              "end": "119750"
+            },
+            "row_group": 2,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "106599",
+            "data_offset": "111734",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c1",
+            "kind": "column_chunk",
+            "label": "RG 2 · month",
+            "span": {
+              "start": "119750",
+              "end": "119865"
+            },
+            "row_group": 2,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "119750",
+            "data_offset": "119781",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c2",
+            "kind": "column_chunk",
+            "label": "RG 2 · account_id",
+            "span": {
+              "start": "119865",
+              "end": "134909"
+            },
+            "row_group": 2,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "119865",
+            "data_offset": "127315",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c3",
+            "kind": "column_chunk",
+            "label": "RG 2 · amount_cents",
+            "span": {
+              "start": "134909",
+              "end": "157832"
+            },
+            "row_group": 2,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "134909",
+            "data_offset": "149613",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c4",
+            "kind": "column_chunk",
+            "label": "RG 2 · region",
+            "span": {
+              "start": "157832",
+              "end": "159837"
+            },
+            "row_group": 2,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "157832",
+            "data_offset": "157888",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c0",
+            "kind": "column_chunk",
+            "label": "RG 3 · event_id",
+            "span": {
+              "start": "159837",
+              "end": "172991"
+            },
+            "row_group": 3,
+            "column": "event_id",
+            "rows": "5000",
+            "dictionary_offset": "159837",
+            "data_offset": "164975",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c1",
+            "kind": "column_chunk",
+            "label": "RG 3 · month",
+            "span": {
+              "start": "172991",
+              "end": "173106"
+            },
+            "row_group": 3,
+            "column": "month",
+            "rows": "5000",
+            "dictionary_offset": "172991",
+            "data_offset": "173022",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c2",
+            "kind": "column_chunk",
+            "label": "RG 3 · account_id",
+            "span": {
+              "start": "173106",
+              "end": "188134"
+            },
+            "row_group": 3,
+            "column": "account_id",
+            "rows": "5000",
+            "dictionary_offset": "173106",
+            "data_offset": "180540",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c3",
+            "kind": "column_chunk",
+            "label": "RG 3 · amount_cents",
+            "span": {
+              "start": "188134",
+              "end": "211151"
+            },
+            "row_group": 3,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": "188134",
+            "data_offset": "202932",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c4",
+            "kind": "column_chunk",
+            "label": "RG 3 · region",
+            "span": {
+              "start": "211151",
+              "end": "213156"
+            },
+            "row_group": 3,
+            "column": "region",
+            "rows": "5000",
+            "dictionary_offset": "211151",
+            "data_offset": "211207",
+            "compression": "ZSTD"
+          }
+        ],
+        "id": "f012",
+        "logical_path": "month=6/data-1.parquet",
+        "partition": [
+          {
+            "key": "month",
+            "value": "6"
+          }
+        ]
+      }
+    ]
+  },
+  "settings": {
+    "threads": 4,
+    "memory_limit_mb": 512,
+    "deadline_seconds": 60.0,
+    "preview_rows": 5,
+    "preview_bytes": 65536,
+    "external_file_cache": false,
+    "cold_client": true
+  },
+  "engine": {
+    "httpfs_version": "4bc690d",
+    "effective_settings": {
+      "threads": "4",
+      "memory_limit": "512.0 MiB",
+      "enable_external_file_cache": "False",
+      "enable_http_metadata_cache": "False",
+      "http_keep_alive": "True",
+      "http_retries": "3",
+      "http_timeout": "30",
+      "http_retry_wait_ms": "100",
+      "http_retry_backoff": "4"
+    },
+    "bound_schema": [
+      {
+        "name": "event_id",
+        "type": "BIGINT"
+      },
+      {
+        "name": "month",
+        "type": "BIGINT"
+      },
+      {
+        "name": "account_id",
+        "type": "BIGINT"
+      },
+      {
+        "name": "amount_cents",
+        "type": "BIGINT"
+      },
+      {
+        "name": "region",
+        "type": "VARCHAR"
+      }
+    ]
+  },
+  "sql_status": "succeeded",
+  "query_duration_ms": 11.508916039019823,
+  "elapsed_ms": 268.6518750851974,
+  "result_rows": "1",
+  "result_digest": "11f6d5f5455053c8c5793cb29ec36c89d84d816019d25606cebdf45955f55e4a",
+  "observations": [
+    {
+      "id": "98ab2cef386e4e86b6bd6eb0b9527ccd",
+      "method": "HEAD",
+      "url": "http://127.0.0.1:53622/8a202bbb8970492bbc5730ed160c6e70/month=1/data-0.parquet",
+      "requested_range": null,
+      "requested_span": null,
+      "response_span": null,
+      "status": 200,
+      "start_ms": 0.0,
+      "duration_ms": 1.0,
+      "declared_body_bytes": "0",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5"
+      },
+      "response_headers": {
+        "Content-Length": "216364",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "X-ParquetScope-Request-ID": "98ab2cef386e4e86b6bd6eb0b9527ccd",
+        "Date": "Sun, 01 Nov 2026 20:37:33 GMT",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1793565451777425072\""
+      },
+      "engine_start_time": "2026-11-01 23:37:33.809002+03",
+      "file_id": "f001",
+      "phase": "view_creation"
+    },
+    {
+      "id": "2e88a32ca3824b0aa2b16ec3d5dee4cf",
+      "method": "GET",
+      "url": "http://127.0.0.1:53622/8a202bbb8970492bbc5730ed160c6e70/month=1/data-0.parquet",
+      "requested_range": "bytes=199980-216363",
+      "requested_span": {
+        "start": "199980",
+        "end": "216364"
+      },
+      "response_span": {
+        "start": "199980",
+        "end": "216364"
+      },
+      "status": 206,
+      "start_ms": 1.37890625,
+      "duration_ms": 0.0,
+      "declared_body_bytes": "16384",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=199980-216363"
+      },
+      "response_headers": {
+        "Content-Length": "16384",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Sun, 01 Nov 2026 20:37:33 GMT",
+        "X-ParquetScope-Request-ID": "2e88a32ca3824b0aa2b16ec3d5dee4cf",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1793565451777425072\"",
+        "Content-Range": "bytes 199980-216363/216364"
+      },
+      "engine_start_time": "2026-11-01 23:37:33.810381+03",
+      "file_id": "f001",
+      "phase": "view_creation"
+    },
+    {
+      "id": "29f21e4e89c845f7920e5185eae7201c",
+      "method": "HEAD",
+      "url": "http://127.0.0.1:53622/8a202bbb8970492bbc5730ed160c6e70/month=1/data-0.parquet",
+      "requested_range": null,
+      "requested_span": null,
+      "response_span": null,
+      "status": 200,
+      "start_ms": 2.35693359375,
+      "duration_ms": 0.0,
+      "declared_body_bytes": "0",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5"
+      },
+      "response_headers": {
+        "Content-Length": "216364",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "X-ParquetScope-Request-ID": "29f21e4e89c845f7920e5185eae7201c",
+        "Date": "Sun, 01 Nov 2026 20:37:33 GMT",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1793565451777425072\""
+      },
+      "engine_start_time": "2026-11-01 23:37:33.811359+03",
+      "file_id": "f001",
+      "phase": "select"
+    },
+    {
+      "id": "eb95c2cdd6bc40febb63aa77b07f3029",
+      "method": "GET",
+      "url": "http://127.0.0.1:53622/8a202bbb8970492bbc5730ed160c6e70/month=1/data-0.parquet",
+      "requested_range": "bytes=199980-216363",
+      "requested_span": {
+        "start": "199980",
+        "end": "216364"
+      },
+      "response_span": {
+        "start": "199980",
+        "end": "216364"
+      },
+      "status": 206,
+      "start_ms": 2.883056640625,
+      "duration_ms": 1.0,
+      "declared_body_bytes": "16384",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=199980-216363"
+      },
+      "response_headers": {
+        "Content-Length": "16384",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Sun, 01 Nov 2026 20:37:33 GMT",
+        "X-ParquetScope-Request-ID": "eb95c2cdd6bc40febb63aa77b07f3029",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1793565451777425072\"",
+        "Content-Range": "bytes 199980-216363/216364"
+      },
+      "engine_start_time": "2026-11-01 23:37:33.811885+03",
+      "file_id": "f001",
+      "phase": "select"
+    },
+    {
+      "id": "d8e27e07befe4fb280e3403bcda85d8b",
+      "method": "HEAD",
+      "url": "http://127.0.0.1:53622/8a202bbb8970492bbc5730ed160c6e70/month=3/data-0.parquet",
+      "requested_range": null,
+      "requested_span": null,
+      "response_span": null,
+      "status": 200,
+      "start_ms": 3.81005859375,
+      "duration_ms": 1.0,
+      "declared_body_bytes": "0",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5"
+      },
+      "response_headers": {
+        "Content-Length": "215360",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "X-ParquetScope-Request-ID": "d8e27e07befe4fb280e3403bcda85d8b",
+        "Date": "Sun, 01 Nov 2026 20:37:33 GMT",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1793565451861778466\""
+      },
+      "engine_start_time": "2026-11-01 23:37:33.812812+03",
+      "file_id": "f005",
+      "phase": "select"
+    },
+    {
+      "id": "929f486546094c498b1c6a1d505c1374",
+      "method": "HEAD",
+      "url": "http://127.0.0.1:53622/8a202bbb8970492bbc5730ed160c6e70/month=3/data-1.parquet",
+      "requested_range": null,
+      "requested_span": null,
+      "response_span": null,
+      "status": 200,
+      "start_ms": 3.822021484375,
+      "duration_ms": 1.0,
+      "declared_body_bytes": "0",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5"
+      },
+      "response_headers": {
+        "Content-Length": "215544",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "X-ParquetScope-Request-ID": "929f486546094c498b1c6a1d505c1374",
+        "Date": "Sun, 01 Nov 2026 20:37:33 GMT",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1793565451882763316\""
+      },
+      "engine_start_time": "2026-11-01 23:37:33.812824+03",
+      "file_id": "f006",
+      "phase": "select"
+    },
+    {
+      "id": "1b71178bdd81417a8e0379d2f90ba886",
+      "method": "GET",
+      "url": "http://127.0.0.1:53622/8a202bbb8970492bbc5730ed160c6e70/month=3/data-0.parquet",
+      "requested_range": "bytes=198976-215359",
+      "requested_span": {
+        "start": "198976",
+        "end": "215360"
+      },
+      "response_span": {
+        "start": "198976",
+        "end": "215360"
+      },
+      "status": 206,
+      "start_ms": 4.363037109375,
+      "duration_ms": 0.0,
+      "declared_body_bytes": "16384",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=198976-215359"
+      },
+      "response_headers": {
+        "Content-Length": "16384",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Sun, 01 Nov 2026 20:37:33 GMT",
+        "X-ParquetScope-Request-ID": "1b71178bdd81417a8e0379d2f90ba886",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1793565451861778466\"",
+        "Content-Range": "bytes 198976-215359/215360"
+      },
+      "engine_start_time": "2026-11-01 23:37:33.813365+03",
+      "file_id": "f005",
+      "phase": "select"
+    },
+    {
+      "id": "7a715b113f834831865c7554a22b5f7c",
+      "method": "GET",
+      "url": "http://127.0.0.1:53622/8a202bbb8970492bbc5730ed160c6e70/month=3/data-1.parquet",
+      "requested_range": "bytes=199160-215543",
+      "requested_span": {
+        "start": "199160",
+        "end": "215544"
+      },
+      "response_span": {
+        "start": "199160",
+        "end": "215544"
+      },
+      "status": 206,
+      "start_ms": 4.537109375,
+      "duration_ms": 0.0,
+      "declared_body_bytes": "16384",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=199160-215543"
+      },
+      "response_headers": {
+        "Content-Length": "16384",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Sun, 01 Nov 2026 20:37:33 GMT",
+        "X-ParquetScope-Request-ID": "7a715b113f834831865c7554a22b5f7c",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1793565451882763316\"",
+        "Content-Range": "bytes 199160-215543/215544"
+      },
+      "engine_start_time": "2026-11-01 23:37:33.813539+03",
+      "file_id": "f006",
+      "phase": "select"
+    },
+    {
+      "id": "e00c8bc314dd430c94dce145f7ef260a",
+      "method": "GET",
+      "url": "http://127.0.0.1:53622/8a202bbb8970492bbc5730ed160c6e70/month=3/data-0.parquet",
+      "requested_range": "bytes=4-51312",
+      "requested_span": {
+        "start": "4",
+        "end": "51313"
+      },
+      "response_span": {
+        "start": "4",
+        "end": "51313"
+      },
+      "status": 206,
+      "start_ms": 5.13818359375,
+      "duration_ms": 0.0,
+      "declared_body_bytes": "51309",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=4-51312"
+      },
+      "response_headers": {
+        "Content-Length": "51309",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Sun, 01 Nov 2026 20:37:33 GMT",
+        "X-ParquetScope-Request-ID": "e00c8bc314dd430c94dce145f7ef260a",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1793565451861778466\"",
+        "Content-Range": "bytes 4-51312/215360"
+      },
+      "engine_start_time": "2026-11-01 23:37:33.81414+03",
+      "file_id": "f005",
+      "phase": "select"
+    },
+    {
+      "id": "37643ea28b9447ccb4742da0dec2b50b",
+      "method": "GET",
+      "url": "http://127.0.0.1:53622/8a202bbb8970492bbc5730ed160c6e70/month=3/data-0.parquet",
+      "requested_range": "bytes=159256-210406",
+      "requested_span": {
+        "start": "159256",
+        "end": "210407"
+      },
+      "response_span": {
+        "start": "159256",
+        "end": "210407"
+      },
+      "status": 206,
+      "start_ms": 5.194091796875,
+      "duration_ms": 0.0,
+      "declared_body_bytes": "51151",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=159256-210406"
+      },
+      "response_headers": {
+        "Content-Length": "51151",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Sun, 01 Nov 2026 20:37:33 GMT",
+        "X-ParquetScope-Request-ID": "37643ea28b9447ccb4742da0dec2b50b",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1793565451861778466\"",
+        "Content-Range": "bytes 159256-210406/215360"
+      },
+      "engine_start_time": "2026-11-01 23:37:33.814196+03",
+      "file_id": "f005",
+      "phase": "select"
+    },
+    {
+      "id": "7748939704fc43aaac864c149dd02324",
+      "method": "GET",
+      "url": "http://127.0.0.1:53622/8a202bbb8970492bbc5730ed160c6e70/month=3/data-0.parquet",
+      "requested_range": "bytes=106151-157250",
+      "requested_span": {
+        "start": "106151",
+        "end": "157251"
+      },
+      "response_span": {
+        "start": "106151",
+        "end": "157251"
+      },
+      "status": 206,
+      "start_ms": 5.197998046875,
+      "duration_ms": 1.0,
+      "declared_body_bytes": "51100",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=106151-157250"
+      },
+      "response_headers": {
+        "Content-Length": "51100",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Sun, 01 Nov 2026 20:37:33 GMT",
+        "X-ParquetScope-Request-ID": "7748939704fc43aaac864c149dd02324",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1793565451861778466\"",
+        "Content-Range": "bytes 106151-157250/215360"
+      },
+      "engine_start_time": "2026-11-01 23:37:33.8142+03",
+      "file_id": "f005",
+      "phase": "select"
+    },
+    {
+      "id": "63e70ef3e5e14e6390bf97cda81144ad",
+      "method": "GET",
+      "url": "http://127.0.0.1:53622/8a202bbb8970492bbc5730ed160c6e70/month=3/data-0.parquet",
+      "requested_range": "bytes=53318-104145",
+      "requested_span": {
+        "start": "53318",
+        "end": "104146"
+      },
+      "response_span": {
+        "start": "53318",
+        "end": "104146"
+      },
+      "status": 206,
+      "start_ms": 5.18408203125,
+      "duration_ms": 1.0,
+      "declared_body_bytes": "50828",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=53318-104145"
+      },
+      "response_headers": {
+        "Content-Length": "50828",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Sun, 01 Nov 2026 20:37:33 GMT",
+        "X-ParquetScope-Request-ID": "63e70ef3e5e14e6390bf97cda81144ad",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1793565451861778466\"",
+        "Content-Range": "bytes 53318-104145/215360"
+      },
+      "engine_start_time": "2026-11-01 23:37:33.814186+03",
+      "file_id": "f005",
+      "phase": "select"
+    },
+    {
+      "id": "79899f0a7a96493d91a0393687f83032",
+      "method": "GET",
+      "url": "http://127.0.0.1:53622/8a202bbb8970492bbc5730ed160c6e70/month=3/data-1.parquet",
+      "requested_range": "bytes=53239-104476",
+      "requested_span": {
+        "start": "53239",
+        "end": "104477"
+      },
+      "response_span": {
+        "start": "53239",
+        "end": "104477"
+      },
+      "status": 206,
+      "start_ms": 6.180908203125,
+      "duration_ms": 0.0,
+      "declared_body_bytes": "51238",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=53239-104476"
+      },
+      "response_headers": {
+        "Content-Length": "51238",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Sun, 01 Nov 2026 20:37:33 GMT",
+        "X-ParquetScope-Request-ID": "79899f0a7a96493d91a0393687f83032",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1793565451882763316\"",
+        "Content-Range": "bytes 53239-104476/215544"
+      },
+      "engine_start_time": "2026-11-01 23:37:33.815183+03",
+      "file_id": "f006",
+      "phase": "select"
+    },
+    {
+      "id": "2d303654455e4757a15ba31625edf5d4",
+      "method": "GET",
+      "url": "http://127.0.0.1:53622/8a202bbb8970492bbc5730ed160c6e70/month=3/data-1.parquet",
+      "requested_range": "bytes=4-51233",
+      "requested_span": {
+        "start": "4",
+        "end": "51234"
+      },
+      "response_span": {
+        "start": "4",
+        "end": "51234"
+      },
+      "status": 206,
+      "start_ms": 6.10791015625,
+      "duration_ms": 1.0,
+      "declared_body_bytes": "51230",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=4-51233"
+      },
+      "response_headers": {
+        "Content-Length": "51230",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Sun, 01 Nov 2026 20:37:33 GMT",
+        "X-ParquetScope-Request-ID": "2d303654455e4757a15ba31625edf5d4",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1793565451882763316\"",
+        "Content-Range": "bytes 4-51233/215544"
+      },
+      "engine_start_time": "2026-11-01 23:37:33.81511+03",
+      "file_id": "f006",
+      "phase": "select"
+    },
+    {
+      "id": "f89c18bde7d74a83aaf8c59779855f3e",
+      "method": "GET",
+      "url": "http://127.0.0.1:53622/8a202bbb8970492bbc5730ed160c6e70/month=3/data-1.parquet",
+      "requested_range": "bytes=106482-157481",
+      "requested_span": {
+        "start": "106482",
+        "end": "157482"
+      },
+      "response_span": {
+        "start": "106482",
+        "end": "157482"
+      },
+      "status": 206,
+      "start_ms": 6.46484375,
+      "duration_ms": 1.0,
+      "declared_body_bytes": "51000",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=106482-157481"
+      },
+      "response_headers": {
+        "Content-Length": "51000",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Sun, 01 Nov 2026 20:37:33 GMT",
+        "X-ParquetScope-Request-ID": "f89c18bde7d74a83aaf8c59779855f3e",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1793565451882763316\"",
+        "Content-Range": "bytes 106482-157481/215544"
+      },
+      "engine_start_time": "2026-11-01 23:37:33.815467+03",
+      "file_id": "f006",
+      "phase": "select"
+    },
+    {
+      "id": "3a98ee2963c34a4586e3b92b3b137608",
+      "method": "GET",
+      "url": "http://127.0.0.1:53622/8a202bbb8970492bbc5730ed160c6e70/month=3/data-1.parquet",
+      "requested_range": "bytes=159487-210590",
+      "requested_span": {
+        "start": "159487",
+        "end": "210591"
+      },
+      "response_span": {
+        "start": "159487",
+        "end": "210591"
+      },
+      "status": 206,
+      "start_ms": 6.7021484375,
+      "duration_ms": 1.0,
+      "declared_body_bytes": "51104",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=159487-210590"
+      },
+      "response_headers": {
+        "Content-Length": "51104",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Sun, 01 Nov 2026 20:37:33 GMT",
+        "X-ParquetScope-Request-ID": "3a98ee2963c34a4586e3b92b3b137608",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1793565451882763316\"",
+        "Content-Range": "bytes 159487-210590/215544"
+      },
+      "engine_start_time": "2026-11-01 23:37:33.815704+03",
+      "file_id": "f006",
+      "phase": "select"
+    }
+  ],
+  "server_observations": [
+    {
+      "id": "98ab2cef386e4e86b6bd6eb0b9527ccd",
+      "method": "HEAD",
+      "requested_range": null,
+      "response_span": null,
+      "status": 200,
+      "start_ms": 209.98866704758257,
+      "duration_ms": 0.18999993335455656,
+      "declared_body_bytes": "0",
+      "written_body_bytes": "0",
+      "complete": true,
+      "error": null,
+      "file_id": "f001"
+    },
+    {
+      "id": "2e88a32ca3824b0aa2b16ec3d5dee4cf",
+      "method": "GET",
+      "requested_range": "bytes=199980-216363",
+      "response_span": {
+        "start": "199980",
+        "end": "216364"
+      },
+      "status": 206,
+      "start_ms": 210.68187500350177,
+      "duration_ms": 0.10887498501688242,
+      "declared_body_bytes": "16384",
+      "written_body_bytes": "16384",
+      "complete": true,
+      "error": null,
+      "file_id": "f001"
+    },
+    {
+      "id": "29f21e4e89c845f7920e5185eae7201c",
+      "method": "HEAD",
+      "requested_range": null,
+      "response_span": null,
+      "status": 200,
+      "start_ms": 211.68608404695988,
+      "duration_ms": 0.06629095878452063,
+      "declared_body_bytes": "0",
+      "written_body_bytes": "0",
+      "complete": true,
+      "error": null,
+      "file_id": "f001"
+    },
+    {
+      "id": "eb95c2cdd6bc40febb63aa77b07f3029",
+      "method": "GET",
+      "requested_range": "bytes=199980-216363",
+      "response_span": {
+        "start": "199980",
+        "end": "216364"
+      },
+      "status": 206,
+      "start_ms": 212.18337502796203,
+      "duration_ms": 0.09420898277312517,
+      "declared_body_bytes": "16384",
+      "written_body_bytes": "16384",
+      "complete": true,
+      "error": null,
+      "file_id": "f001"
+    },
+    {
+      "id": "d8e27e07befe4fb280e3403bcda85d8b",
+      "method": "HEAD",
+      "requested_range": null,
+      "response_span": null,
+      "status": 200,
+      "start_ms": 213.16020900849253,
+      "duration_ms": 0.05720800254493952,
+      "declared_body_bytes": "0",
+      "written_body_bytes": "0",
+      "complete": true,
+      "error": null,
+      "file_id": "f005"
+    },
+    {
+      "id": "929f486546094c498b1c6a1d505c1374",
+      "method": "HEAD",
+      "requested_range": null,
+      "response_span": null,
+      "status": 200,
+      "start_ms": 213.32458406686783,
+      "duration_ms": 0.08316594175994396,
+      "declared_body_bytes": "0",
+      "written_body_bytes": "0",
+      "complete": true,
+      "error": null,
+      "file_id": "f006"
+    },
+    {
+      "id": "7a715b113f834831865c7554a22b5f7c",
+      "method": "GET",
+      "requested_range": "bytes=199160-215543",
+      "response_span": {
+        "start": "199160",
+        "end": "215544"
+      },
+      "status": 206,
+      "start_ms": 213.85491697583348,
+      "duration_ms": 0.09950005915015936,
+      "declared_body_bytes": "16384",
+      "written_body_bytes": "16384",
+      "complete": true,
+      "error": null,
+      "file_id": "f006"
+    },
+    {
+      "id": "1b71178bdd81417a8e0379d2f90ba886",
+      "method": "GET",
+      "requested_range": "bytes=198976-215359",
+      "response_span": {
+        "start": "198976",
+        "end": "215360"
+      },
+      "status": 206,
+      "start_ms": 213.67520897183567,
+      "duration_ms": 0.32479106448590755,
+      "declared_body_bytes": "16384",
+      "written_body_bytes": "16384",
+      "complete": true,
+      "error": null,
+      "file_id": "f005"
+    },
+    {
+      "id": "e00c8bc314dd430c94dce145f7ef260a",
+      "method": "GET",
+      "requested_range": "bytes=4-51312",
+      "response_span": {
+        "start": "4",
+        "end": "51313"
+      },
+      "status": 206,
+      "start_ms": 214.51904205605388,
+      "duration_ms": 0.21199998445808887,
+      "declared_body_bytes": "51309",
+      "written_body_bytes": "51309",
+      "complete": true,
+      "error": null,
+      "file_id": "f005"
+    },
+    {
+      "id": "37643ea28b9447ccb4742da0dec2b50b",
+      "method": "GET",
+      "requested_range": "bytes=159256-210406",
+      "response_span": {
+        "start": "159256",
+        "end": "210407"
+      },
+      "status": 206,
+      "start_ms": 214.63879197835922,
+      "duration_ms": 0.1812080154195428,
+      "declared_body_bytes": "51151",
+      "written_body_bytes": "51151",
+      "complete": true,
+      "error": null,
+      "file_id": "f005"
+    },
+    {
+      "id": "7748939704fc43aaac864c149dd02324",
+      "method": "GET",
+      "requested_range": "bytes=106151-157250",
+      "response_span": {
+        "start": "106151",
+        "end": "157251"
+      },
+      "status": 206,
+      "start_ms": 214.92158400360495,
+      "duration_ms": 0.32791600096970797,
+      "declared_body_bytes": "51100",
+      "written_body_bytes": "51100",
+      "complete": true,
+      "error": null,
+      "file_id": "f005"
+    },
+    {
+      "id": "63e70ef3e5e14e6390bf97cda81144ad",
+      "method": "GET",
+      "requested_range": "bytes=53318-104145",
+      "response_span": {
+        "start": "53318",
+        "end": "104146"
+      },
+      "status": 206,
+      "start_ms": 215.10495897382498,
+      "duration_ms": 0.2097910037264228,
+      "declared_body_bytes": "50828",
+      "written_body_bytes": "50828",
+      "complete": true,
+      "error": null,
+      "file_id": "f005"
+    },
+    {
+      "id": "2d303654455e4757a15ba31625edf5d4",
+      "method": "GET",
+      "requested_range": "bytes=4-51233",
+      "response_span": {
+        "start": "4",
+        "end": "51234"
+      },
+      "status": 206,
+      "start_ms": 215.59999999590218,
+      "duration_ms": 0.4105840343981981,
+      "declared_body_bytes": "51230",
+      "written_body_bytes": "51230",
+      "complete": true,
+      "error": null,
+      "file_id": "f006"
+    },
+    {
+      "id": "79899f0a7a96493d91a0393687f83032",
+      "method": "GET",
+      "requested_range": "bytes=53239-104476",
+      "response_span": {
+        "start": "53239",
+        "end": "104477"
+      },
+      "status": 206,
+      "start_ms": 215.69104201626033,
+      "duration_ms": 0.36800000816583633,
+      "declared_body_bytes": "51238",
+      "written_body_bytes": "51238",
+      "complete": true,
+      "error": null,
+      "file_id": "f006"
+    },
+    {
+      "id": "f89c18bde7d74a83aaf8c59779855f3e",
+      "method": "GET",
+      "requested_range": "bytes=106482-157481",
+      "response_span": {
+        "start": "106482",
+        "end": "157482"
+      },
+      "status": 206,
+      "start_ms": 215.98716697189957,
+      "duration_ms": 0.35075005143880844,
+      "declared_body_bytes": "51000",
+      "written_body_bytes": "51000",
+      "complete": true,
+      "error": null,
+      "file_id": "f006"
+    },
+    {
+      "id": "3a98ee2963c34a4586e3b92b3b137608",
+      "method": "GET",
+      "requested_range": "bytes=159487-210590",
+      "response_span": {
+        "start": "159487",
+        "end": "210591"
+      },
+      "status": 206,
+      "start_ms": 216.28004196099937,
+      "duration_ms": 0.17304206266999245,
+      "declared_body_bytes": "51104",
+      "written_body_bytes": "51104",
+      "complete": true,
+      "error": null,
+      "file_id": "f006"
+    }
+  ],
+  "capture": {
+    "complete": true,
+    "reason": null,
+    "reconciled": true,
+    "scope": "View creation (input binding) and one fully consumed SELECT over a fixed file set; app preparation (hashing, footer reads) excluded."
+  },
+  "metrics": {
+    "files_without_observed_access": 9,
+    "files_head_only": 0,
+    "files_with_get": 3,
+    "get_count": 12,
+    "head_count": 4,
+    "requested_range_bytes": "474496",
+    "confirmed_range_bytes": "474496",
+    "declared_body_bytes": "474496",
+    "server_written_bytes": "474496",
+    "unique_coverage_bytes": "435250",
+    "repeated_coverage_bytes": "39246",
+    "totals_scope": "complete",
+    "unknown_reasons": [],
+    "files": [
+      {
+        "file_id": "f001",
+        "observed_access": "get",
+        "get_count": 2,
+        "head_count": 2,
+        "requested_range_bytes": "32768",
+        "confirmed_range_bytes": "32768",
+        "declared_body_bytes": "32768",
+        "server_written_bytes": "32768",
+        "unique_coverage_bytes": "16384",
+        "repeated_coverage_bytes": "16384",
+        "coverage": [
+          {
+            "start": "199980",
+            "end": "216364"
+          }
+        ],
+        "unknown_reasons": []
+      },
+      {
+        "file_id": "f002",
+        "observed_access": "none",
+        "get_count": 0,
+        "head_count": 0,
+        "requested_range_bytes": "0",
+        "confirmed_range_bytes": "0",
+        "declared_body_bytes": "0",
+        "server_written_bytes": "0",
+        "unique_coverage_bytes": "0",
+        "repeated_coverage_bytes": "0",
+        "coverage": [],
+        "unknown_reasons": []
+      },
+      {
+        "file_id": "f003",
+        "observed_access": "none",
+        "get_count": 0,
+        "head_count": 0,
+        "requested_range_bytes": "0",
+        "confirmed_range_bytes": "0",
+        "declared_body_bytes": "0",
+        "server_written_bytes": "0",
+        "unique_coverage_bytes": "0",
+        "repeated_coverage_bytes": "0",
+        "coverage": [],
+        "unknown_reasons": []
+      },
+      {
+        "file_id": "f004",
+        "observed_access": "none",
+        "get_count": 0,
+        "head_count": 0,
+        "requested_range_bytes": "0",
+        "confirmed_range_bytes": "0",
+        "declared_body_bytes": "0",
+        "server_written_bytes": "0",
+        "unique_coverage_bytes": "0",
+        "repeated_coverage_bytes": "0",
+        "coverage": [],
+        "unknown_reasons": []
+      },
+      {
+        "file_id": "f005",
+        "observed_access": "get",
+        "get_count": 5,
+        "head_count": 1,
+        "requested_range_bytes": "220772",
+        "confirmed_range_bytes": "220772",
+        "declared_body_bytes": "220772",
+        "server_written_bytes": "220772",
+        "unique_coverage_bytes": "209341",
+        "repeated_coverage_bytes": "11431",
+        "coverage": [
+          {
+            "start": "4",
+            "end": "51313"
+          },
+          {
+            "start": "53318",
+            "end": "104146"
+          },
+          {
+            "start": "106151",
+            "end": "157251"
+          },
+          {
+            "start": "159256",
+            "end": "215360"
+          }
+        ],
+        "unknown_reasons": []
+      },
+      {
+        "file_id": "f006",
+        "observed_access": "get",
+        "get_count": 5,
+        "head_count": 1,
+        "requested_range_bytes": "220956",
+        "confirmed_range_bytes": "220956",
+        "declared_body_bytes": "220956",
+        "server_written_bytes": "220956",
+        "unique_coverage_bytes": "209525",
+        "repeated_coverage_bytes": "11431",
+        "coverage": [
+          {
+            "start": "4",
+            "end": "51234"
+          },
+          {
+            "start": "53239",
+            "end": "104477"
+          },
+          {
+            "start": "106482",
+            "end": "157482"
+          },
+          {
+            "start": "159487",
+            "end": "215544"
+          }
+        ],
+        "unknown_reasons": []
+      },
+      {
+        "file_id": "f007",
+        "observed_access": "none",
+        "get_count": 0,
+        "head_count": 0,
+        "requested_range_bytes": "0",
+        "confirmed_range_bytes": "0",
+        "declared_body_bytes": "0",
+        "server_written_bytes": "0",
+        "unique_coverage_bytes": "0",
+        "repeated_coverage_bytes": "0",
+        "coverage": [],
+        "unknown_reasons": []
+      },
+      {
+        "file_id": "f008",
+        "observed_access": "none",
+        "get_count": 0,
+        "head_count": 0,
+        "requested_range_bytes": "0",
+        "confirmed_range_bytes": "0",
+        "declared_body_bytes": "0",
+        "server_written_bytes": "0",
+        "unique_coverage_bytes": "0",
+        "repeated_coverage_bytes": "0",
+        "coverage": [],
+        "unknown_reasons": []
+      },
+      {
+        "file_id": "f009",
+        "observed_access": "none",
+        "get_count": 0,
+        "head_count": 0,
+        "requested_range_bytes": "0",
+        "confirmed_range_bytes": "0",
+        "declared_body_bytes": "0",
+        "server_written_bytes": "0",
+        "unique_coverage_bytes": "0",
+        "repeated_coverage_bytes": "0",
+        "coverage": [],
+        "unknown_reasons": []
+      },
+      {
+        "file_id": "f010",
+        "observed_access": "none",
+        "get_count": 0,
+        "head_count": 0,
+        "requested_range_bytes": "0",
+        "confirmed_range_bytes": "0",
+        "declared_body_bytes": "0",
+        "server_written_bytes": "0",
+        "unique_coverage_bytes": "0",
+        "repeated_coverage_bytes": "0",
+        "coverage": [],
+        "unknown_reasons": []
+      },
+      {
+        "file_id": "f011",
+        "observed_access": "none",
+        "get_count": 0,
+        "head_count": 0,
+        "requested_range_bytes": "0",
+        "confirmed_range_bytes": "0",
+        "declared_body_bytes": "0",
+        "server_written_bytes": "0",
+        "unique_coverage_bytes": "0",
+        "repeated_coverage_bytes": "0",
+        "coverage": [],
+        "unknown_reasons": []
+      },
+      {
+        "file_id": "f012",
+        "observed_access": "none",
+        "get_count": 0,
+        "head_count": 0,
+        "requested_range_bytes": "0",
+        "confirmed_range_bytes": "0",
+        "declared_body_bytes": "0",
+        "server_written_bytes": "0",
+        "unique_coverage_bytes": "0",
+        "repeated_coverage_bytes": "0",
+        "coverage": [],
+        "unknown_reasons": []
+      }
+    ]
+  },
+  "errors": [],
+  "limitations": [
+    "Loopback HTTP measurement of an explicit URL list; not S3, listing or globbing, physical disk or client-received bytes.",
+    "Response intersections do not prove decoding, use or wasted work.",
+    "A file without observed requests is not proof of no access when the trace is partial.",
+    "Server-written bytes are not bytes DuckDB confirmed or used.",
+    "Fresh worker means cold client only; OS and disk caches are uncontrolled.",
+    "A request's phase is where it started relative to wall-clock boundaries recorded around view creation and the SELECT; others are unattributed.",
+    "Query duration excludes view creation; elapsed includes worker setup and cleanup.",
+    "Relative paths and partition values are exported and may be sensitive.",
+    "Preview is runtime-only and omitted from exported artifacts."
+  ]
+}

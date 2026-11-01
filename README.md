@@ -2,15 +2,15 @@
 
 # ParquetScope
 
-See how DuckDB reads a Parquet file over HTTP: requests, byte ranges, column chunks, and the effect of a different file layout.
+See how DuckDB reads Parquet over HTTP: requests, byte ranges, column chunks, which files of a set it touches, and the effect of a different file layout.
 
-[![Version](https://img.shields.io/badge/version-0.1.0-16775c)](https://github.com/0then0/parquetscope/releases/tag/v0.1.0)
+[![Version](https://img.shields.io/badge/version-0.2.0-16775c)](CHANGELOG.md)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776ab?logo=python&logoColor=white)](pyproject.toml)
 [![DuckDB](https://img.shields.io/badge/DuckDB-1.5.6-fff000?logo=duckdb&logoColor=black)](pyproject.toml)
 [![CI](https://github.com/0then0/parquetscope/actions/workflows/ci.yml/badge.svg)](https://github.com/0then0/parquetscope/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 
-ParquetScope captures one SELECT against one local Parquet file, serves that file through a controlled HTTP endpoint, and maps the observed reads to its physical structure. Compare queries or file layouts, inspect linked requests and chunks, and share a capture that others can open without the source data.
+ParquetScope captures one SELECT against one local Parquet file, or against an explicit, bounded set of files, serves them through a controlled HTTP endpoint, and maps the observed reads to each file's physical structure. Compare queries or file layouts, inspect linked requests and chunks, and share a capture that others can open without the source data.
 
 ![Range lab showing real HTTP requests and the selected customer_id chunk](docs/range-inspector.png)
 
@@ -25,7 +25,7 @@ parquetscope setup
 parquetscope serve --demo
 ```
 
-Open **http://127.0.0.1:8400** and choose **Run layout demo**. The demo creates two equivalent Parquet layouts and measures the same query against both.
+This installs the released v0.1.0. File sets (v0.2) are available from source, below, until a v0.2.0 wheel is published. Open **http://127.0.0.1:8400** and choose **Run layout demo**. The demo creates two equivalent Parquet layouts and measures the same query against both.
 
 Python 3.10+ is required. The wheel includes the browser UI; Node.js is needed only for frontend development. `setup` downloads the signed httpfs extension for DuckDB 1.5.6 once. Subsequent local captures and offline viewing need no external internet, account, or cloud credentials.
 
@@ -56,6 +56,20 @@ In **Range lab**, select a GET to see its response interval, server writes, and 
 
 The source file is read-only. Each capture uses a fresh worker and executes one fully consumed SELECT. ParquetScope is a local diagnostic tool for trusted files and SQL, rather than a sandbox for hostile workloads.
 
+## Inspect a set of files
+
+List the files in a [manifest](docs/manifest.md) and give it to `serve` or `capture`:
+
+```sh
+parquetscope serve --manifest hive.manifest.json
+parquetscope capture --manifest hive.manifest.json \
+  --sql 'SELECT count(*) FROM input WHERE month = 3' --output set.parquetscope.json
+```
+
+The **Files** view lists every file by its location and partition segments with its requests, bytes and observed access (GET, HEAD only, or no observed requests). **Inspect** opens that file in Range lab. Offsets always belong to one file. **Compare runs** matches files by content hash, so two layouts of identical bytes line up row by row, and lists read options, versions and the limits of the comparison. Binding the view is part of the capture. Requests are labelled by the phase in which they started.
+
+The manifest is explicit: no directory walking, globbing or discovery, a fixed budget (256 files, 16 GiB) and one schema per set. See the [partition-pruning lab](docs/pruning-lab/README.md) for a recorded flat versus Hive comparison of identical bytes.
+
 ## Save and share
 
 ```sh
@@ -67,7 +81,7 @@ parquetscope serve --artifact run.parquetscope.json
 parquetscope viewer run.parquetscope.json --output run.viewer.html
 ```
 
-A capture contains the query, file identity, layout, HTTP observations, and derived metrics. It omits result preview rows and the original source path. SQL, column names, and headers remain visible, so check the contents before sharing.
+A capture contains the query, file identity, layout, HTTP observations, and derived metrics. It omits result preview rows and the original source path. SQL, column names, and headers remain visible, as are the relative paths and partition values of a file set, so check the contents before sharing.
 
 The standalone HTML viewer opens directly as a file, without Python, a server, or network access. It can import additional captures and compare them offline. The UI's **Export JSON** and **Offline viewer** buttons provide the same exports.
 
@@ -103,7 +117,8 @@ See [Understanding measurements](docs/measurements.md) for definitions and limit
 
 - [User guide](docs/usage.md): CLI workflows, the viewer, settings, and troubleshooting.
 - [Documentation index](docs/README.md): user and developer references.
-- [Artifact format](docs/artifacts.md): portable captures and validation rules.
+- [Artifact formats](docs/artifacts.md): portable v1 and v2 captures and validation rules.
+- [File-set manifest](docs/manifest.md) and the [partition-pruning lab](docs/pruning-lab/README.md).
 - [NYC TLC case study](docs/real-data/README.md): results, downloads, and reproduction.
 - [Contributing](CONTRIBUTING.md): development environment, architecture, and checks.
 - [Testing and compatibility](docs/validation.md) and [release guide](docs/releasing.md).
@@ -117,4 +132,4 @@ feature requests, and documentation issues. Participation follows the
 in [SECURITY.md](SECURITY.md), and see [CHANGELOG.md](CHANGELOG.md) for release history
 and changes on `main`.
 
-ParquetScope currently supports DuckDB 1.5.6 and one file per run. It does not capture production S3 traffic, run multiple query engines, or predict query costs. The project is licensed under [Apache-2.0](LICENSE).
+ParquetScope currently supports DuckDB 1.5.6, one file or one explicit set of identically structured files per run. It does not capture production S3 traffic or listing/globbing, merge schemas, run multiple query engines, or predict query costs. The project is licensed under [Apache-2.0](LICENSE).

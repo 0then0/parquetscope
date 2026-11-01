@@ -39,14 +39,14 @@ Open the URL printed by Vite. Its development proxy forwards API calls to the Py
 
 ## Project structure
 
-- `src/parquetscope/metadata.py` reads the file identity and Parquet layout before capture.
-- `range_server.py` serves the selected file over loopback HTTP and records independent stream observations.
-- `capture.py` owns the listener and a fresh `worker.py` subprocess. The worker executes one SELECT, fully consumes its results, and collects DuckDB HTTP logs.
-- `analysis.py` derives metrics; `models.py` validates the portable artifact.
+- `metadata.py` reads the file identity and Parquet layout before capture. `manifest.py` validates a file-set manifest and resolves it (hashes, footers, schema compatibility) before any listener or worker exists.
+- `range_server.py` serves the prepared files over loopback HTTP, one exact route per file, and records independent stream observations keyed by file.
+- `capture.py` owns the listener and a fresh `worker.py` subprocess. The worker executes one SELECT, fully consumes its results, and collects DuckDB HTTP logs. `capture` produces v1 artifacts; `capture_set` produces v2.
+- `analysis.py` derives metrics (per file and per set); `models.py` (v1) and `models_v2.py` (v2) validate the portable artifacts.
 - `app.py` and `cli.py` expose the local browser session and command-line workflows.
-- `frontend/src/` contains the viewer, artifact validation, interval geometry, and static-lab adapter.
+- `frontend/src/` contains the viewer, artifact validation for both versions (`model.ts` normalizes them to one file-list model), the Files overview, comparison logic, interval geometry, and static-lab adapter.
 - `src/parquetscope/static/` contains the generated UI shipped in the wheel.
-- `scripts/` contains schema, package, and real-data experiment tools.
+- `scripts/` contains schema, package, partition-pruning lab, browser fixture, and real-data experiment tools.
 - `tests/` and `frontend/tests/` contain backend and browser tests.
 
 The application has no database or cloud service dependency. Browser sessions use bounded in-memory state.
@@ -70,7 +70,7 @@ uv build
 uv run python scripts/check_dist.py
 ```
 
-Backend integration tests use the real DuckDB engine and a disposable loopback server. Prepare httpfs explicitly before running them. Browser tests start their own local servers on ports 8411 and 8418; stop other processes on those ports first.
+Backend integration tests use the real DuckDB engine and a disposable loopback server. Prepare httpfs explicitly before running them. Browser tests start their own local servers on ports 8411 (single files), 8412 (file sets) and 8418 (static lab); stop other processes on those ports first. They need the httpfs extension: run `parquetscope setup` with the same `PARQUETSCOPE_HOME` you pass to the tests (default `.runtime`). Without it, worker runs fail and the tests see empty captures.
 
 Normal CI and PR tests use small generated fixtures or the checked-in captures. They do not download the NYC TLC source dataset. The [real-data experiment](docs/real-data/README.md#reproduce-the-experiment) is a separate, optional run.
 
@@ -84,7 +84,9 @@ After changing artifact models, run:
 uv run python scripts/generate_schema.py
 ```
 
-Review the generated schema and the Python/browser validation paths together. Byte offsets and potentially large counters must remain decimal strings, and displayed metrics must agree with the underlying observations. See the [artifact reference](docs/artifacts.md).
+This writes one schema per artifact version (`artifact-schema.json`, `artifact-schema-v2.json`). The v1 schema must not change. Review the generated schema and the Python/browser validation paths together. Byte offsets and potentially large counters must remain decimal strings, and displayed metrics must agree with the underlying observations. See the [artifact reference](docs/artifacts.md).
+
+The partition-pruning lab evidence under `docs/pruning-lab/` (manifests, captures, standalone viewers, report, `SHA256SUMS.txt`) is produced by `uv run python scripts/pruning_lab.py`. Its Parquet files are regenerated each run and ignored by Git. Regenerate the evidence after changing capture behavior or the frontend, because the viewers embed the built UI; `tests/test_pruning_lab.py` checks the recorded checksums.
 
 Build the static case study with `pnpm --dir frontend build:lab`. Its output is under `.runtime/pages/parquetscope/` and is ignored by Git. Keep source Parquet files, dependency caches, virtual environments, and test output out of commits.
 

@@ -1,4 +1,7 @@
-"""Portable v1 artifact. Byte quantities use decimal strings, never JSON numbers."""
+"""Portable v1 (single file) artifact. Byte quantities use decimal strings, never JSON numbers.
+
+v2 file-set artifacts live in `models_v2.py`; `load_artifact` opens either version.
+"""
 
 import json
 from pathlib import Path
@@ -165,14 +168,24 @@ class Run(Model):
         return self
 
 
-def load_artifact(data: bytes) -> Run:
+def load_artifact(data: bytes):
+    """Validate a v1 `Run` or v2 `SetRun` and recompute its derived metrics."""
     if len(data) > MAX_ARTIFACT_BYTES:
         raise ValueError("Artifact exceeds 32 MiB limit")
     try:
-        run = Run.model_validate_json(data)
-        from .analysis import derive_metrics
+        from pydantic import TypeAdapter
 
-        expected = derive_metrics(run.observations, run.server_observations, run.capture)
+        from .analysis import derive_metrics, derive_set_metrics
+        from .models_v2 import SetRun
+
+        adapter = TypeAdapter(Annotated[Run | SetRun, Field(discriminator="schema_version")])
+        run = adapter.validate_json(data)
+        if isinstance(run, SetRun):
+            expected = derive_set_metrics(
+                run.file_set.files, run.observations, run.server_observations, run.capture
+            )
+        else:
+            expected = derive_metrics(run.observations, run.server_observations, run.capture)
         if run.metrics != expected:
             raise ValueError("Artifact metrics disagree with observations")
         return run
@@ -180,14 +193,14 @@ def load_artifact(data: bytes) -> Run:
         raise ValueError(f"Invalid or unsupported ParquetScope artifact: {error}") from error
 
 
-def save_artifact(run: Run, path: Path):
+def save_artifact(run, path: Path):
     data = run.model_dump_json(indent=2).encode()
     if len(data) > MAX_ARTIFACT_BYTES:
         raise ValueError("Artifact exceeds 32 MiB limit")
     path.write_bytes(data)
 
 
-def load_artifact_file(path: Path) -> Run:
+def load_artifact_file(path: Path):
     # Reject huge files without first allocating their complete contents.
     with path.open("rb") as source:
         return load_artifact(source.read(MAX_ARTIFACT_BYTES + 1))

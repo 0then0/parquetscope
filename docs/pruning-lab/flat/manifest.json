@@ -1,0 +1,69 @@
+{
+  "manifest_version": "1",
+  "label": "pruning-lab-flat",
+  "read": {
+    "hive_partitioning": false
+  },
+  "files": [
+    {
+      "path": "m01-data-0.parquet",
+      "size": "216364",
+      "sha256": "55ff2853ef004a97a43953b6f6ea68b257884c1467ec421198fecb18afa633e1"
+    },
+    {
+      "path": "m01-data-1.parquet",
+      "size": "216230",
+      "sha256": "1daafc52a0ed1cd47a7a99ff9095a0469ed2aa8630ad7ef5d81f0ed991f8cd03"
+    },
+    {
+      "path": "m02-data-0.parquet",
+      "size": "216135",
+      "sha256": "bfa7d410e8093a834715aca1d93d1d426f5dbb9c0f2d5789244b27792e3c17fb"
+    },
+    {
+      "path": "m02-data-1.parquet",
+      "size": "215415",
+      "sha256": "88e48e760d0e1ccb88580aebdcb6dcf6ab744462f297073ad1d5ed82cee8df19"
+    },
+    {
+      "path": "m03-data-0.parquet",
+      "size": "215360",
+      "sha256": "74a3bdd80abd10cdbc72031741c3a846db725f634a14caabd6b06eea08a9269c"
+    },
+    {
+      "path": "m03-data-1.parquet",
+      "size": "215544",
+      "sha256": "fc2bf4f55dbdfe20b5ad883299ba0010f8ac85353001bc0155cd094108add297"
+    },
+    {
+      "path": "m04-data-0.parquet",
+      "size": "216085",
+      "sha256": "c5c23cc93326008e8284394dbdc159995f18ca72f0a4641b9acea0109931d2ab"
+    },
+    {
+      "path": "m04-data-1.parquet",
+      "size": "215467",
+      "sha256": "bd107c9f96c1006116f3ce9afed491984cb2cafd3a9ed04ae0bc71148d9a797f"
+    },
+    {
+      "path": "m05-data-0.parquet",
+      "size": "215792",
+      "sha256": "fe38423e6ab7e21de46f79d82d9018c1032c77b41fb59d7336cb594728847ac5"
+    },
+    {
+      "path": "m05-data-1.parquet",
+      "size": "215654",
+      "sha256": "3b9a683eb8c568a9b038188e172e5eb082dc8d94fbfbb4095e62b4570d239cf4"
+    },
+    {
+      "path": "m06-data-0.parquet",
+      "size": "216307",
+      "sha256": "e6a60440d71a08f68dfebdd21e0b0f962a48b4a7345c5465ffef7acb314054ff"
+    },
+    {
+      "path": "m06-data-1.parquet",
+      "size": "216104",
+      "sha256": "65839dfd1e4a3e85b0f81e09483ba10c4fc141b3183f6be8499262616ce1071e"
+    }
+  ]
+}

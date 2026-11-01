@@ -8,6 +8,9 @@ import time
 import urllib.request
 from pathlib import Path
 
+import pyarrow as pa
+import pyarrow.parquet as pq
+
 import parquetscope
 from parquetscope.models import load_artifact
 from parquetscope.offline import STATIC, viewer_html
@@ -20,6 +23,39 @@ root = Path(sys.argv[1])
 subprocess.run(
     [sys.executable, "-m", "parquetscope.cli", "demo", "--output", str(root)], check=True
 )
+# A real two-file Hive set through the installed wheel: v2 capture, validation and viewer.
+for month in (1, 2):
+    part = root / "set" / f"month={month}" / "data.parquet"
+    part.parent.mkdir(parents=True)
+    pq.write_table(pa.table({"id": list(range(100)), "month": [month] * 100}), part)
+(root / "set" / "manifest.json").write_text(
+    json.dumps(
+        {
+            "manifest_version": "1",
+            "read": {"hive_partitioning": True},
+            "files": [{"path": f"month={m}/data.parquet"} for m in (1, 2)],
+        }
+    )
+)
+subprocess.run(
+    [
+        sys.executable,
+        "-m",
+        "parquetscope.cli",
+        "capture",
+        "--manifest",
+        str(root / "set" / "manifest.json"),
+        "--sql",
+        "SELECT count(*) FROM input WHERE month = 2",
+        "--output",
+        str(root / "set.parquetscope.json"),
+    ],
+    check=True,
+)
+set_run = load_artifact((root / "set.parquetscope.json").read_bytes())
+assert set_run.schema_version == "2" and set_run.capture.complete
+assert set_run.metrics.files_without_observed_access >= 0 and len(set_run.file_set.files) == 2
+assert "file_set" in viewer_html(set_run)
 run = load_artifact((root / "sorted.parquetscope.json").read_bytes())
 html = viewer_html(run)
 assert 'type="application/json">null</script>' not in html
@@ -62,6 +98,6 @@ finally:
 with socket.socket() as connection:
     assert connection.connect_ex(("127.0.0.1", 8417)) != 0
 print(
-    "Isolated wheel: real demo, artifact validation, embedded assets, "
+    "Isolated wheel: real demo, file-set capture, artifact validation, embedded assets, "
     "offline HTML and HTTP startup passed"
 )
