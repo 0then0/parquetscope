@@ -53,7 +53,7 @@ subprocess.run(
     check=True,
 )
 set_run = load_artifact((root / "set.parquetscope.json").read_bytes())
-assert set_run.schema_version == "2" and set_run.capture.complete
+assert set_run.schema_version == "3" and set_run.capture.complete
 assert set_run.metrics.files_without_observed_access >= 0 and len(set_run.file_set.files) == 2
 assert "file_set" in viewer_html(set_run)
 run = load_artifact((root / "sorted.parquetscope.json").read_bytes())
