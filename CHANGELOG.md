@@ -2,7 +2,7 @@
 
 User-visible changes are recorded here. Dates use YYYY-MM-DD. Entries under Unreleased describe changes on `main` that are not part of a new package release.
 
-## Unreleased
+## [0.3.0] - 2026-11-07
 
 ### Added
 

@@ -5,13 +5,13 @@ import zipfile
 from pathlib import Path
 
 root = Path(__file__).resolve().parents[1]
-with zipfile.ZipFile(root / "dist/parquetscope-0.2.0-py3-none-any.whl") as wheel:
+with zipfile.ZipFile(root / "dist/parquetscope-0.3.0-py3-none-any.whl") as wheel:
     names = wheel.namelist()
     assert "parquetscope/static/index.html" in names
     assert "parquetscope/static/offline.html" in names
     assert any(n.startswith("parquetscope/static/assets/") and n.endswith(".js") for n in names)
     assert any(n.startswith("parquetscope/static/assets/") and n.endswith(".css") for n in names)
-with tarfile.open(root / "dist/parquetscope-0.2.0.tar.gz") as source:
+with tarfile.open(root / "dist/parquetscope-0.3.0.tar.gz") as source:
     names = source.getnames()
     for required in (
         "frontend/pnpm-lock.yaml",
@@ -45,7 +45,7 @@ with tarfile.open(root / "dist/parquetscope-0.2.0.tar.gz") as source:
         ".github/workflows/ci.yml",
         "uv.lock",
     ):
-        assert f"parquetscope-0.2.0/{required}" in names, f"Missing sdist file: {required}"
+        assert f"parquetscope-0.3.0/{required}" in names, f"Missing sdist file: {required}"
     assert not any(
         part in name
         for name in names

@@ -2,7 +2,7 @@
 
 ## Supported versions
 
-Security fixes target the latest released ParquetScope version, currently **0.2.0**, and the `main` branch. Older releases have no separate security backport commitment. Use the pinned DuckDB version, **1.5.6**; other engine versions are outside the validated capture contract.
+Security fixes target the latest released ParquetScope version, currently **0.3.0**, and the `main` branch. Older releases have no separate security backport commitment. Validated DuckDB versions are **1.5.6** and **2.0.0**; other versions are outside the validated capture contract.
 
 ## Report a vulnerability
 

@@ -9,13 +9,19 @@ ParquetScope ships a Python wheel with a bundled browser UI and a source distrib
 3. Run `uv build` and `uv run python scripts/check_dist.py`. The archive check verifies the bundled UI, offline template, source files, lockfiles, and exclusion of local caches.
 4. Install the wheel into a fresh environment outside the checkout. Run `parquetscope setup`, then run `python /path/to/checkout/scripts/smoke_wheel.py /tmp/parquetscope-wheel-demo` with that environment's Python. This checks real captures, artifact validation, standalone export, the bundled frontend, and listener shutdown without Node.js.
 5. Run the browser checks, including standalone viewers with networking disabled. Review the supported platforms and [validation record](validation.md), and document material changes to execution or artifact compatibility.
-6. Move the relevant **Unreleased** entries in [CHANGELOG.md](../CHANGELOG.md) into a dated version section and review the supported version in [SECURITY.md](../SECURITY.md). Create a versioned GitHub release and attach the verified wheel and source distribution. The current release is [v0.2.0](https://github.com/0then0/parquetscope/releases/tag/v0.2.0). Installation instructions use this release wheel.
+6. Move the relevant **Unreleased** entries in [CHANGELOG.md](../CHANGELOG.md) into a dated version section and review the supported version in [SECURITY.md](../SECURITY.md). Create a versioned GitHub release and attach the verified wheel and source distribution. The current release is [v0.3.0](https://github.com/0then0/parquetscope/releases/tag/v0.3.0); publishing the release uploads it to PyPI.
 
 The package version and archive names are currently declared in `pyproject.toml`, `src/parquetscope/__init__.py`, and the distribution-check scripts. Update version-specific release links and commands together when preparing another version. Preserve existing experiment provenance and pinned wheel references: they identify the runtime that produced those captures.
 
 ## Continuous integration
 
 The [CI workflow](../.github/workflows/ci.yml) runs on pushes and pull requests. It tests Python 3.10 and 3.13 on Linux x86_64, checks the frontend and static lab, builds the distributions, and runs an isolated wheel smoke test. Build and browser evidence are uploaded as workflow artifacts. CI does not publish packages.
+
+## Publish to PyPI
+
+The [publish workflow](../.github/workflows/publish.yml) uses PyPI Trusted Publishing (OpenID Connect, no stored token). **Actions → Publish package → Run workflow** uploads to TestPyPI (environment `testpypi`); publishing a GitHub release uploads to PyPI (environment `pypi`) after checking that the tag equals `v<package version>`. Both build with `uv build` and run `twine check --strict` first.
+
+One-time setup, as a pending publisher on [pypi.org](https://pypi.org/manage/account/publishing/) and [test.pypi.org](https://test.pypi.org/manage/account/publishing/): project `parquetscope`, owner `0then0`, repository `parquetscope`, workflow `publish.yml`, environment `pypi` (PyPI) or `testpypi` (TestPyPI). Create both environments under repository **Settings → Environments** and require a reviewer on `pypi`. Versions cannot be reused once uploaded: bump the version first and optionally try TestPyPI first.
 
 ## Publish the static lab
 
