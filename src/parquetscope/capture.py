@@ -1,9 +1,7 @@
 import json
-import os
 import platform
 import re
 import subprocess
-import sys
 import tempfile
 import threading
 import time
@@ -15,23 +13,18 @@ import duckdb
 import pyarrow
 
 from . import __version__
+from . import worker as worker_module
 from .analysis import derive_metrics, derive_set_metrics, reconcile, reconcile_set
+from .engines import EngineEnv, extension_directory, project_env, resolve_engine
 from .intervals import requested_range
 from .manifest import SetSpec, resolve_set
 from .metadata import read_metadata
 from .models import Capture, HTTPObservation, Run, Settings, span
-from .models_v2 import (
-    Engine,
-    FileHTTPObservation,
-    FileServerObservation,
-    SetRun,
-)
+from .models_v2 import FileHTTPObservation, FileServerObservation
+from .models_v3 import Engine3, PrefetchEvidence, SetRun3, Settings3
 from .range_server import FileSetServer, RangeServer, ServedFile, encode_route
 
-
-def extension_directory() -> Path:
-    home = Path(os.environ.get("PARQUETSCOPE_HOME", Path.home() / ".cache" / "parquetscope"))
-    return home / "extensions"
+REQUEST_ID = re.compile(r"[0-9a-f]{32}")
 
 
 def setup_httpfs():
@@ -52,6 +45,11 @@ def _epoch_ms(text: str) -> float:
         timestamp,
     )
     return datetime.fromisoformat(timestamp).timestamp() * 1000
+
+
+def _request_id(echoed: str | None, index: int) -> str:
+    """The server's ID if the engine echoed it; DuckDB 2.0 replaces such headers by "redacted"."""
+    return echoed if echoed and REQUEST_ID.fullmatch(echoed) else f"unmatched-{index}"
 
 
 def _fields(log: dict, index: int, size: int, start_ms: float, origin: float) -> dict:
@@ -80,7 +78,7 @@ def _fields(log: dict, index: int, size: int, start_ms: float, origin: float) ->
         response_span = span(0, size)
     declared = sh.get("content-length") if method == "GET" else "0"
     return {
-        "id": sh.get("x-parquetscope-request-id", f"unmatched-{index}"),
+        "id": _request_id(sh.get("x-parquetscope-request-id"), index),
         "method": method,
         "url": req["url"],
         "requested_range": requested,
@@ -136,14 +134,56 @@ def normalize_set(
     return observations
 
 
+def _match_key(o) -> tuple:
+    span_ = o.response_span.pair() if o.response_span else None
+    return (o.file_id, o.method, o.requested_range, o.status, span_, o.declared_body_bytes)
+
+
+def correlate(
+    observations: list[FileHTTPObservation], server: list[FileServerObservation]
+) -> tuple[list[FileHTTPObservation], str]:
+    """Pair engine log rows with server records when the engine did not echo request IDs.
+
+    Returns the observations and how they were correlated. Only when no row carries an echoed
+    ID (DuckDB 2.0 redacts it), rows are
+    grouped by (file, method, requested range, status, response interval, declared length) and
+    paired in start order within a group; every group must have the same size on both sides.
+    Identical requests are interchangeable, so the pairing cannot change any metric. A group
+    mismatch leaves the IDs unresolved and the capture unreconciled.
+    """
+    if any(REQUEST_ID.fullmatch(o.id) for o in observations):
+        # The engine echoed IDs. Whatever they say stands: a mismatch must stay unreconciled
+        # and is never papered over by pairing on content.
+        return observations, "response_header_id"
+    clients: dict[tuple, list[FileHTTPObservation]] = {}
+    servers: dict[tuple, list[FileServerObservation]] = {}
+    for o in observations:
+        clients.setdefault(_match_key(o), []).append(o)
+    for s in server:
+        servers.setdefault(_match_key(s), []).append(s)
+    if clients.keys() != servers.keys() or any(len(clients[k]) != len(servers[k]) for k in clients):
+        return observations, "ordered_tuple_match"
+    paired = {}
+    for key, group in clients.items():
+        group = sorted(group, key=lambda o: o.start_ms)
+        for o, s in zip(group, sorted(servers[key], key=lambda s: s.start_ms), strict=True):
+            paired[id(o)] = s.id
+    return (
+        [o.model_copy(update={"id": paired[id(o)]}) for o in observations],
+        "ordered_tuple_match",
+    )
+
+
 def _execute(
     server: FileSetServer,
     config: dict,
     settings: Settings,
     cancel: threading.Event,
     started: float,
+    env: EngineEnv | None = None,
 ) -> dict:
     """Run one fresh worker under the deadline; the listener outlives it and records alone."""
+    env = env or project_env()
     result = {"errors": [], "logs": [], "status": "failed"}
     with tempfile.TemporaryDirectory(prefix="parquetscope-") as temp:
         result_path = Path(temp) / "result.json"
@@ -153,13 +193,21 @@ def _execute(
                 {
                     **config,
                     "settings": settings.model_dump(),
-                    "extension_dir": str(extension_directory()),
+                    "extension_dir": str(env.extension_dir),
+                    "expected_duckdb_version": env.version,
                 }
             )
         )
         with (Path(temp) / "stderr.txt").open("w+") as stderr:
             process = subprocess.Popen(
-                [sys.executable, "-m", "parquetscope.worker", str(config_path), str(result_path)],
+                # -I: the worker needs only the engine's own site-packages, not this package.
+                [
+                    str(env.python),
+                    "-I",
+                    worker_module.__file__,
+                    str(config_path),
+                    str(result_path),
+                ],
                 stdin=subprocess.DEVNULL,
                 stdout=subprocess.DEVNULL,
                 stderr=stderr,
@@ -270,14 +318,23 @@ def capture_set(
     sql: str,
     settings: Settings | None = None,
     cancel: threading.Event | None = None,
-) -> tuple[SetRun, dict]:
-    """Capture one SELECT over a manifest-defined file set; produces a v2 artifact."""
-    settings = settings or Settings(
-        threads=4, memory_limit_mb=512, deadline_seconds=30, preview_rows=30
+    engine: str | None = None,
+) -> tuple[SetRun3, dict]:
+    """Capture one SELECT over a manifest-defined file set; produces a v3 artifact.
+
+    `engine` selects a prepared isolated DuckDB version; None runs the project's interpreter.
+    Preparation is a separate step (`parquetscope setup --engine`): nothing is installed here.
+    """
+    settings = Settings3(
+        **(
+            settings
+            or Settings(threads=4, memory_limit_mb=512, deadline_seconds=30, preview_rows=30)
+        ).model_dump()
     )
     cancel = cancel or threading.Event()
     if len(sql) > 65536:
         raise ValueError("SQL exceeds 64 KiB limit")
+    env = resolve_engine(engine) if engine else project_env()
     # Preparation (hashing, footers) is complete before the listener and worker exist.
     resolved = resolve_set(spec, cancel)
     file_set = resolved.file_set()
@@ -290,8 +347,13 @@ def capture_set(
     started = time.monotonic()
     with FileSetServer(served) as server:
         urls = [server.url_for(f) for f in served]
-        config = {"sql": sql, "urls": urls, "read": file_set.read.model_dump()}
-        result = _execute(server, config, settings, cancel, started)
+        config = {
+            "sql": sql,
+            "urls": urls,
+            "read": file_set.read.model_dump(),
+            "disable_parquet_prefetching": settings.disable_parquet_prefetching,
+        }
+        result = _execute(server, config, settings, cancel, started, env)
     errors = result["errors"]
     observations = []
     normalized = True
@@ -304,6 +366,7 @@ def capture_set(
         FileServerObservation(**o.model_dump(), file_id=file_id)
         for o, file_id in zip(server.observations, server.observation_files, strict=True)
     ]
+    observations, correlation = correlate(observations, server_observations)
     reconciled = reconcile_set(observations, server_observations)
     if server.unmatched:
         errors.append(f"{server.unmatched} HTTP requests did not match any file of the set")
@@ -317,10 +380,21 @@ def capture_set(
         changed = ", ".join(sorted(names[i] for i in server.changed_files))
         errors.append(f"Input changed during capture ({changed}); observations are invalid")
         result["status"] = "failed"
+    engine_facts = result.get("engine", {})
+    reported = engine_facts.get("prefetch", {})
+    # The request is ours; the worker contributes only what it read back from the engine.
+    prefetch = PrefetchEvidence(
+        requested=settings.disable_parquet_prefetching,
+        applied=reported.get("applied"),
+        status=reported.get("status", "unverified"),
+    )
+    if prefetch.status == "unverified" and not errors:
+        errors.append("The disable_parquet_prefetching value could not be verified")
     complete = (
         result.get("logs_complete", False)
         and normalized
         and reconciled
+        and prefetch.status != "unverified"
         and not server.changed
         and not server.truncated
         and not server.unmatched
@@ -339,10 +413,10 @@ def capture_set(
             "app preparation (hashing, footer reads) excluded."
         ),
     )
-    engine = result.get("engine", {})
-    run = SetRun(
+    duckdb_version = engine_facts.get("duckdb_version") or env.version or duckdb.__version__
+    run = SetRun3(
         app_version=__version__,
-        duckdb_version=duckdb.__version__,
+        duckdb_version=duckdb_version,
         pyarrow_version=pyarrow.__version__,
         platform=f"{platform.system()} {platform.machine()} Python {platform.python_version()}",
         id=uuid.uuid4().hex,
@@ -350,10 +424,14 @@ def capture_set(
         sql=sql,
         file_set=file_set,
         settings=settings,
-        engine=Engine(
-            httpfs_version=engine.get("httpfs_version"),
-            effective_settings=engine.get("effective_settings", {}),
-            bound_schema=engine.get("bound_schema"),
+        engine=Engine3(
+            httpfs_version=engine_facts.get("httpfs_version"),
+            effective_settings=engine_facts.get("effective_settings", {}),
+            bound_schema=engine_facts.get("bound_schema"),
+            environment="isolated" if env.isolated else "project",
+            python_version=engine_facts.get("python_version") or "unknown",
+            request_correlation=correlation,
+            prefetch=prefetch,
         ),
         sql_status=result["status"],
         query_duration_ms=result.get("query_duration_ms"),
@@ -370,11 +448,14 @@ def capture_set(
             "physical disk or client-received bytes.",
             "Response intersections do not prove decoding, use or wasted work.",
             "A file without observed requests is not proof of no access when the trace is partial.",
-            "Server-written bytes are not bytes DuckDB confirmed or used.",
+            "Server-written bytes are not bytes DuckDB confirmed, received or used.",
             "Fresh worker means cold client only; OS and disk caches are uncontrolled.",
             "A request's phase is where it started relative to wall-clock boundaries recorded "
             "around view creation and the SELECT; others are unattributed.",
             "Query duration excludes view creation; elapsed includes worker setup and cleanup.",
+            "Where DuckDB redacts the request ID header (request_correlation is "
+            "ordered_tuple_match), engine log rows are paired with server records by request "
+            "content, not by an echoed identifier.",
             "Relative paths and partition values are exported and may be sensitive.",
             "Preview is runtime-only and omitted from exported artifacts.",
         ],

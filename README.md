@@ -132,4 +132,4 @@ feature requests, and documentation issues. Participation follows the
 in [SECURITY.md](SECURITY.md), and see [CHANGELOG.md](CHANGELOG.md) for release history
 and changes on `main`.
 
-ParquetScope currently supports DuckDB 1.5.6, one file or one explicit set of identically structured files per run. It does not capture production S3 traffic or listing/globbing, merge schemas, run multiple query engines, or predict query costs. The project is licensed under [Apache-2.0](LICENSE).
+ParquetScope supports DuckDB 1.5.6 (and 2.0.0 for file-set captures, in an isolated environment prepared with `parquetscope setup --engine 2.0.0`), one file or one explicit set of identically structured files per run. It does not capture production S3 traffic or listing/globbing, merge schemas, run engines other than DuckDB, or predict query costs. The project is licensed under [Apache-2.0](LICENSE).

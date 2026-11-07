@@ -6,6 +6,7 @@ import {
   type FileEntry,
   type FileMetrics,
   fileTitle,
+  isSetRun,
   type Run,
 } from "./model";
 import { Pagination } from "./Pagination";
@@ -42,7 +43,7 @@ export function FileOverview({
   const [sort, setSort] = useState<SortKey>("path");
   const [descending, setDescending] = useState(false);
   const [page, setPage] = useState(0);
-  const phased = run.schema_version === "2";
+  const phased = isSetRun(run);
   const rows = useMemo<Row[]>(() => {
     const metrics = new Map(run.file_metrics.map((m) => [m.file_id, m]));
     return run.files.flatMap((file) => {

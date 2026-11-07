@@ -4,7 +4,7 @@ All internal and exported file intervals are nonempty, half-open `[start,end)`. 
 
 ## Sources and formulas
 
-Engine observations come from `CALL enable_logging('HTTP', storage_buffer_size=0)` followed by `duckdb_logs_parsed('HTTP')` in DuckDB 1.5.6. Request fields include method, URL, engine wall-clock start, integer millisecond duration and headers. Response fields include status, reason and headers. The engine does not expose client-received, decoded or SQL-used byte counts. Those quantities remain unavailable.
+Engine observations come from `CALL enable_logging('HTTP', storage_buffer_size=0)` followed by `duckdb_logs_parsed('HTTP')` in DuckDB 1.5.6 and 2.0.0 (logging is enabled before the configuration is locked, which DuckDB 2.0 requires). Request fields include method, URL, engine wall-clock start, integer millisecond duration and headers. Response fields include status, reason and headers. The engine does not expose client-received, decoded or SQL-used byte counts. Those quantities remain unavailable.
 
 The independent server uses a monotonic clock and records each request even if writing fails. Engine start times are normalized relative to the earliest engine request; server times are relative to server creation. The clocks have different origins and should not be equated. Engine durations can be zero because they are integer milliseconds.
 

@@ -31,6 +31,9 @@ jobs:
           version: '0.13.1'
       - run: uv sync --frozen --python ${{ matrix.python }}
       - run: uv run parquetscope setup
+      - run: uv run parquetscope setup --engine 1.5.6
+      - run: uv run parquetscope setup --engine 2.0.0
+        if: matrix.python != '3.10'  # DuckDB 2.0.0 wheels start at CPython 3.11
       - run: uv run ruff check src tests scripts
       - run: uv run ruff format --check src tests scripts
       - run: uv run python scripts/generate_schema.py --check

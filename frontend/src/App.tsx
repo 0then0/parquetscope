@@ -9,19 +9,28 @@ import {
   type FileEntry,
   fileTitle,
   intersects,
+  isSetRun,
   MAX_BYTES,
   parseArtifact,
   parseArtifactValue,
+  prefetchText,
   type Run,
   type Settings,
   type Structure,
 } from "./model";
 import { Pagination } from "./Pagination";
 import { RangeLab } from "./RangeLab";
+import { type PrefetchChoice, runRequest } from "./runRequest";
 
 type InputFile = { id: string; name: string; kind: "file" | "set"; file_count: number };
 type Preview = { columns: string[]; rows: (string | boolean | null)[][] };
-type Session = { inputs: InputFile[]; runs: unknown[]; demo_available: boolean };
+type EngineStatus = { version: string; prepared: boolean };
+type Session = {
+  inputs: InputFile[];
+  runs: unknown[];
+  demo_available: boolean;
+  engines?: EngineStatus[];
+};
 type AnalysisView = "files" | "trace" | "structure" | "compare" | "preview";
 const DEFAULT_SQL = "SELECT *\nFROM input\nWHERE true";
 const DEFAULT_SETTINGS: Settings = {
@@ -161,8 +170,11 @@ export default function App({ lab }: { lab?: LabData }) {
   const [inputId, setInputId] = useState("");
   const [sql, setSql] = useState(embedded?.sql ?? DEFAULT_SQL);
   const [settings, setSettings] = useState(DEFAULT_SETTINGS);
+  const [engine, setEngine] = useState("");
+  const [prefetch, setPrefetch] = useState<PrefetchChoice>("default");
+  const [engines, setEngines] = useState<EngineStatus[]>([]);
   const [view, setView] = useState<AnalysisView>(
-    embedded?.schema_version === "2" ? "files" : "trace",
+    embedded && isSetRun(embedded) ? "files" : "trace",
   );
   const [requestId, setRequestId] = useState<string | null>(null);
   const [chunk, setChunk] = useState<Structure | null>(null);
@@ -173,6 +185,7 @@ export default function App({ lab }: { lab?: LabData }) {
   const [message, setMessage] = useState("");
   const [error, setError] = useState(initial.error);
   const [connected, setConnected] = useState(false);
+  const selectedIsFile = inputs.find((i) => i.id === inputId)?.kind === "file";
   const [demoAvailable, setDemoAvailable] = useState(false);
   const [preview, setPreview] = useState<Record<string, Preview>>({});
   const [theme, setTheme] = useState(() => {
@@ -193,7 +206,7 @@ export default function App({ lab }: { lab?: LabData }) {
   const navigate = useCallback(
     (
       next: Run,
-      nextView: AnalysisView = next.schema_version === "2" ? "files" : "trace",
+      nextView: AnalysisView = isSetRun(next) ? "files" : "trace",
       comparison?: Run,
       updateHistory = true,
     ) => {
@@ -237,6 +250,7 @@ export default function App({ lab }: { lab?: LabData }) {
           if (!mounted.current) return;
           setConnected(true);
           setInputs(s.inputs);
+          setEngines(s.engines ?? []);
           setInputId(s.inputs[0]?.id ?? "");
           const stored = s.runs.flatMap((value) => {
             try {
@@ -248,7 +262,7 @@ export default function App({ lab }: { lab?: LabData }) {
           setRuns(stored);
           setActive(stored[0]?.id ?? "");
           setSql(stored[0]?.sql ?? DEFAULT_SQL);
-          if (stored[0]?.schema_version === "2") setView("files");
+          if (stored[0] && isSetRun(stored[0])) setView("files");
           setDemoAvailable(s.demo_available);
         })
         .catch(() => {});
@@ -304,7 +318,11 @@ export default function App({ lab }: { lab?: LabData }) {
     else setView(nextView);
   }
   async function measure(id: string, query: string) {
-    const job = await api<{ id: string }>("/api/runs", { input_id: id, sql: query, settings });
+    const kind = inputs.find((i) => i.id === id)?.kind;
+    const job = await api<{ id: string }>(
+      "/api/runs",
+      runRequest(id, kind, query, settings, engine, prefetch),
+    );
     setJobId(job.id);
     if (stopped.current) await api(`/api/jobs/${job.id}/cancel`, {});
     for (;;) {
@@ -341,7 +359,7 @@ export default function App({ lab }: { lab?: LabData }) {
     stopped.current = false;
     try {
       const result = await measure(inputId, sql);
-      if (result?.schema_version === "2") setView("files");
+      if (result && isSetRun(result)) setView("files");
       setMessage("Run finished. Select a request to inspect its range.");
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
@@ -652,7 +670,39 @@ export default function App({ lab }: { lab?: LabData }) {
                         }
                       />
                     </label>
+                    <label>
+                      Engine
+                      <select
+                        value={engine}
+                        onChange={(e) => setEngine(e.target.value)}
+                        disabled={selectedIsFile}
+                      >
+                        <option value="">Project interpreter</option>
+                        {engines.map((e) => (
+                          <option key={e.version} value={e.version} disabled={!e.prepared}>
+                            DuckDB {e.version}
+                            {e.prepared ? "" : " (not prepared)"}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label>
+                      Parquet prefetch
+                      <select
+                        value={prefetch}
+                        onChange={(e) => setPrefetch(e.target.value as PrefetchChoice)}
+                        disabled={selectedIsFile}
+                      >
+                        <option value="default">Engine default</option>
+                        <option value="on">Enabled (disable_parquet_prefetching=false)</option>
+                        <option value="off">Disabled (disable_parquet_prefetching=true)</option>
+                      </select>
+                    </label>
                   </div>
+                  <p className="footnote">
+                    Engine and prefetch apply to file sets. Prepare an engine first with{" "}
+                    <code>parquetscope setup --engine 2.0.0</code>.
+                  </p>
                 </details>
                 <span>One SELECT · fresh worker · loopback HTTP</span>
                 {!busy && (
@@ -726,7 +776,7 @@ export default function App({ lab }: { lab?: LabData }) {
               </details>
               <div className="view-tabs">
                 <nav aria-label="Analysis view">
-                  {(run.schema_version === "2"
+                  {(isSetRun(run)
                     ? (["files", "trace", "structure", "compare", "preview"] as const)
                     : (["trace", "structure", "compare", "preview"] as const)
                   ).map((v) => (
@@ -937,6 +987,8 @@ export default function App({ lab }: { lab?: LabData }) {
                       ? `DuckDB ${run.duckdb_version}, httpfs ${run.engine.httpfs_version ?? "unknown"}`
                       : "httpfs version and effective settings not recorded (v1 artifact)"}
                   </dd>
+                  <dt>Parquet prefetch</dt>
+                  <dd>{prefetchText(run)}</dd>
                 </dl>
                 {run.metrics.unknown_reasons.map((reason) => (
                   <p key={reason}>{reason}</p>

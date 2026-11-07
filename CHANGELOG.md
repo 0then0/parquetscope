@@ -2,6 +2,20 @@
 
 User-visible changes are recorded here. Dates use YYYY-MM-DD. Entries under Unreleased describe changes on `main` that are not part of a new package release.
 
+## Unreleased
+
+### Added
+
+- Choice of DuckDB 1.5.6 or 2.0.0 for file-set captures (`capture --engine`, UI **Engine**). Each version runs in an isolated environment with its own httpfs, prepared by the explicit `setup --engine` step; captures never install anything.
+- Typed `disable_parquet_prefetching` setting (`capture --prefetch default|on|off`, UI **Parquet prefetch**). The engine's read-back value is recorded; an unavailable or unconfirmed request fails the run, and an unreadable default makes the capture incomplete.
+- Artifact format v3 records the DuckDB version, environment, prefetch evidence and how requests were correlated. v1 and v2 artifacts open unchanged; new file-set captures are v3. Run comparison shows engine versions, prefetch settings, GET/HEAD, confirmed ranges and server-written bytes.
+- [Prefetch lab](docs/prefetch-lab/README.md): four configurations over a fixed file set shaped after duckdb/duckdb#25704, three interleaved cold-client repetitions each, checked against an independent pyarrow control.
+
+### Changed
+
+- The capture worker is a standalone script that needs only DuckDB, so it can run in any engine environment. It pins the httpfs HTTP options after loading the extension and enables HTTP logging before locking the configuration (DuckDB 2.0 requires it).
+- DuckDB 2.0 redacts the request ID header in its HTTP log; those requests are paired with the server's records by content and the artifact says so.
+
 ## [0.2.0] - 2026-11-02
 
 ### Added

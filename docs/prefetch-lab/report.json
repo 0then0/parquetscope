@@ -1,0 +1,667 @@
+{
+  "schema_version": "1",
+  "seed": 20261107,
+  "dataset": {
+    "description": "One old file with a single large row group plus newer small files.",
+    "page_size_bytes": 32768,
+    "compression": "zstd",
+    "columns": [
+      "id",
+      "ts",
+      "account_id",
+      "category",
+      "amount_cents",
+      "note"
+    ],
+    "files": [
+      {
+        "path": "part-00-old.parquet",
+        "size": 12811863,
+        "sha256": "2d88820e588c22168bf7234d751dc0f6a7c5924880ff8eb7363078ec17108849",
+        "rows": 400000,
+        "row_groups": 1
+      },
+      {
+        "path": "part-01-new.parquet",
+        "size": 1281218,
+        "sha256": "ff3adb3462dbade6df590736f20cc5ed96ac4390b4dade5a767d64ade27c2c68",
+        "rows": 40000,
+        "row_groups": 4
+      },
+      {
+        "path": "part-02-new.parquet",
+        "size": 1282201,
+        "sha256": "0c821fc60d2eeb665ec31bf8a3c586aad1044381c89323ca658ae83ef40cbf46",
+        "rows": 40000,
+        "row_groups": 4
+      },
+      {
+        "path": "part-03-new.parquet",
+        "size": 1286740,
+        "sha256": "8f9d8fb7ea3ff6776b8ef3ee42ccac17a8b8b4b38ce19ccbb6dd40754a8733aa",
+        "rows": 40000,
+        "row_groups": 4
+      },
+      {
+        "path": "part-04-new.parquet",
+        "size": 1281162,
+        "sha256": "8adb48a9bc7a2da3efd369577ce02a0aedd95f47e67f92200c33cde501a92408",
+        "rows": 40000,
+        "row_groups": 4
+      },
+      {
+        "path": "part-05-new.parquet",
+        "size": 1279349,
+        "sha256": "a3a2528b9003a1d1f4f742ada78f985b5fc8be4d18a037f9912b620a488a1f8e",
+        "rows": 40000,
+        "row_groups": 4
+      },
+      {
+        "path": "part-06-new.parquet",
+        "size": 1278170,
+        "sha256": "75299c8b24615b91b0ea83e590a1a53c769f6c0228abca906d0bcc4e1c6015e8",
+        "rows": 40000,
+        "row_groups": 4
+      },
+      {
+        "path": "part-07-new.parquet",
+        "size": 1279974,
+        "sha256": "ec86f5556001e503fda1fc7829d1fb84b0308dd4ee98d484d633d7d867761c07",
+        "rows": 40000,
+        "row_groups": 4
+      }
+    ]
+  },
+  "query": {
+    "sql": "SELECT id, ts, account_id, category, amount_cents, note FROM input WHERE amount_cents >= 5000 AND category <> 'void' ORDER BY ts DESC, id DESC LIMIT 200",
+    "expected": {
+      "rows": 200,
+      "digest": "08b7215b0c8fcfc865e09ce9e84389c9a56d12bbb1985f4962249b83e4739ca8",
+      "first_rows": [
+        [
+          "362718",
+          "999998165",
+          "31228",
+          "wire",
+          "16688",
+          "6b962c7c365ddffade067b8b15e315b20a2eb7ee"
+        ],
+        [
+          "200597",
+          "999995329",
+          "36123",
+          "wire",
+          "92055",
+          "bc4c226d28b0737bd96d1cd8d91f00e5e753696a"
+        ],
+        [
+          "507007",
+          "999995300",
+          "27766",
+          "wire",
+          "55159",
+          "d9c516dd0020d5d1d96da579668ae6be16bebc68"
+        ],
+        [
+          "23414",
+          "999995294",
+          "8717",
+          "card",
+          "14997",
+          "88de9e610f5f02360a4f6eeee530eae408817ecf"
+        ],
+        [
+          "579967",
+          "999995069",
+          "37056",
+          "fee",
+          "74053",
+          "cc38136da35103c362791ddecdef6ada4380753b"
+        ]
+      ],
+      "top_rows_from_old_file": 74,
+      "total_rows": 680000,
+      "row_groups": [
+        1,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ]
+    }
+  },
+  "versions": {
+    "parquetscope": "0.2.0",
+    "pyarrow": "26.0.0",
+    "platform": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+    "engines": {
+      "1.5.6": {
+        "duckdb": "1.5.6",
+        "httpfs": "4bc690d",
+        "python": "3.13.18",
+        "request_correlation": "response_header_id"
+      },
+      "2.0.0": {
+        "duckdb": "2.0.0",
+        "httpfs": "77392a7207",
+        "python": "3.13.18",
+        "request_correlation": "ordered_tuple_match"
+      }
+    }
+  },
+  "fixed_settings": {
+    "memory_limit_mb": 256,
+    "threads": 4,
+    "external_file_cache": false,
+    "compared": [
+      "threads",
+      "memory_limit",
+      "enable_external_file_cache",
+      "enable_http_metadata_cache",
+      "http_keep_alive",
+      "http_retries",
+      "http_timeout",
+      "http_retry_wait_ms",
+      "http_retry_backoff"
+    ],
+    "effective_by_config": {
+      "duckdb-1.5.6-prefetch-on": {
+        "disable_parquet_prefetching": "False",
+        "threads": "4",
+        "memory_limit": "256.0 MiB",
+        "enable_external_file_cache": "False",
+        "enable_http_metadata_cache": "False",
+        "http_keep_alive": "True",
+        "http_retries": "3",
+        "http_timeout": "30",
+        "http_retry_wait_ms": "100",
+        "http_retry_backoff": "4.0"
+      },
+      "duckdb-1.5.6-prefetch-off": {
+        "disable_parquet_prefetching": "True",
+        "threads": "4",
+        "memory_limit": "256.0 MiB",
+        "enable_external_file_cache": "False",
+        "enable_http_metadata_cache": "False",
+        "http_keep_alive": "True",
+        "http_retries": "3",
+        "http_timeout": "30",
+        "http_retry_wait_ms": "100",
+        "http_retry_backoff": "4.0"
+      },
+      "duckdb-2.0.0-prefetch-on": {
+        "disable_parquet_prefetching": "False",
+        "threads": "4",
+        "memory_limit": "256.0 MiB",
+        "enable_external_file_cache": "False",
+        "enable_http_metadata_cache": "False",
+        "http_keep_alive": "True",
+        "http_retries": "3",
+        "http_timeout": "30",
+        "http_retry_wait_ms": "100",
+        "http_retry_backoff": "4.0"
+      },
+      "duckdb-2.0.0-prefetch-off": {
+        "disable_parquet_prefetching": "True",
+        "threads": "4",
+        "memory_limit": "256.0 MiB",
+        "enable_external_file_cache": "False",
+        "enable_http_metadata_cache": "False",
+        "http_keep_alive": "True",
+        "http_retries": "3",
+        "http_timeout": "30",
+        "http_retry_wait_ms": "100",
+        "http_retry_backoff": "4.0"
+      }
+    },
+    "identical_after_numeric_normalization": true
+  },
+  "repetitions": 3,
+  "order": "Configurations rotate by one position each repetition; fresh worker per run.",
+  "runs": [
+    {
+      "config": "duckdb-1.5.6-prefetch-on",
+      "engine": "1.5.6",
+      "prefetch": "on",
+      "repetition": 1,
+      "position_in_round": 1,
+      "capture": "captures/duckdb-1.5.6-prefetch-on-1.parquetscope.json",
+      "get_count": 125,
+      "head_count": 9,
+      "server_get_count": 125,
+      "server_head_count": 9,
+      "requested_range_bytes": "21902809",
+      "confirmed_range_bytes": "21902809",
+      "unique_coverage_bytes": "21780645",
+      "repeated_coverage_bytes": "122164",
+      "server_written_bytes": "21902809",
+      "binding_requests": 2,
+      "files_with_get": 8,
+      "query_duration_ms": 70.628,
+      "elapsed_ms": 349.173
+    },
+    {
+      "config": "duckdb-1.5.6-prefetch-off",
+      "engine": "1.5.6",
+      "prefetch": "off",
+      "repetition": 1,
+      "position_in_round": 2,
+      "capture": "captures/duckdb-1.5.6-prefetch-off-1.parquetscope.json",
+      "get_count": 576,
+      "head_count": 9,
+      "server_get_count": 576,
+      "server_head_count": 9,
+      "requested_range_bytes": "568929588",
+      "confirmed_range_bytes": "568929588",
+      "unique_coverage_bytes": "21780645",
+      "repeated_coverage_bytes": "547148943",
+      "server_written_bytes": "568929588",
+      "binding_requests": 3,
+      "files_with_get": 8,
+      "query_duration_ms": 573.52,
+      "elapsed_ms": 723.7
+    },
+    {
+      "config": "duckdb-2.0.0-prefetch-on",
+      "engine": "2.0.0",
+      "prefetch": "on",
+      "repetition": 1,
+      "position_in_round": 3,
+      "capture": "captures/duckdb-2.0.0-prefetch-on-1.parquetscope.json",
+      "get_count": 44,
+      "head_count": 9,
+      "server_get_count": 44,
+      "server_head_count": 9,
+      "requested_range_bytes": "21902809",
+      "confirmed_range_bytes": "21902809",
+      "unique_coverage_bytes": "21780645",
+      "repeated_coverage_bytes": "122164",
+      "server_written_bytes": "21902809",
+      "binding_requests": 2,
+      "files_with_get": 8,
+      "query_duration_ms": 128.501,
+      "elapsed_ms": 385.344
+    },
+    {
+      "config": "duckdb-2.0.0-prefetch-off",
+      "engine": "2.0.0",
+      "prefetch": "off",
+      "repetition": 1,
+      "position_in_round": 4,
+      "capture": "captures/duckdb-2.0.0-prefetch-off-1.parquetscope.json",
+      "get_count": 2968,
+      "head_count": 9,
+      "server_get_count": 2968,
+      "server_head_count": 9,
+      "requested_range_bytes": "21999481",
+      "confirmed_range_bytes": "21999481",
+      "unique_coverage_bytes": "21747310",
+      "repeated_coverage_bytes": "252171",
+      "server_written_bytes": "21999481",
+      "binding_requests": 3,
+      "files_with_get": 8,
+      "query_duration_ms": 803.994,
+      "elapsed_ms": 1125.009
+    },
+    {
+      "config": "duckdb-1.5.6-prefetch-off",
+      "engine": "1.5.6",
+      "prefetch": "off",
+      "repetition": 2,
+      "position_in_round": 1,
+      "capture": "captures/duckdb-1.5.6-prefetch-off-2.parquetscope.json",
+      "get_count": 574,
+      "head_count": 9,
+      "server_get_count": 574,
+      "server_head_count": 9,
+      "requested_range_bytes": "569146493",
+      "confirmed_range_bytes": "569146493",
+      "unique_coverage_bytes": "21780645",
+      "repeated_coverage_bytes": "547365848",
+      "server_written_bytes": "569146493",
+      "binding_requests": 3,
+      "files_with_get": 8,
+      "query_duration_ms": 591.517,
+      "elapsed_ms": 738.136
+    },
+    {
+      "config": "duckdb-2.0.0-prefetch-on",
+      "engine": "2.0.0",
+      "prefetch": "on",
+      "repetition": 2,
+      "position_in_round": 2,
+      "capture": "captures/duckdb-2.0.0-prefetch-on-2.parquetscope.json",
+      "get_count": 44,
+      "head_count": 9,
+      "server_get_count": 44,
+      "server_head_count": 9,
+      "requested_range_bytes": "21902809",
+      "confirmed_range_bytes": "21902809",
+      "unique_coverage_bytes": "21780645",
+      "repeated_coverage_bytes": "122164",
+      "server_written_bytes": "21902809",
+      "binding_requests": 2,
+      "files_with_get": 8,
+      "query_duration_ms": 101.383,
+      "elapsed_ms": 320.306
+    },
+    {
+      "config": "duckdb-2.0.0-prefetch-off",
+      "engine": "2.0.0",
+      "prefetch": "off",
+      "repetition": 2,
+      "position_in_round": 3,
+      "capture": "captures/duckdb-2.0.0-prefetch-off-2.parquetscope.json",
+      "get_count": 2970,
+      "head_count": 9,
+      "server_get_count": 2970,
+      "server_head_count": 9,
+      "requested_range_bytes": "22033192",
+      "confirmed_range_bytes": "22033192",
+      "unique_coverage_bytes": "21780645",
+      "repeated_coverage_bytes": "252547",
+      "server_written_bytes": "22033192",
+      "binding_requests": 3,
+      "files_with_get": 8,
+      "query_duration_ms": 819.297,
+      "elapsed_ms": 1146.317
+    },
+    {
+      "config": "duckdb-1.5.6-prefetch-on",
+      "engine": "1.5.6",
+      "prefetch": "on",
+      "repetition": 2,
+      "position_in_round": 4,
+      "capture": "captures/duckdb-1.5.6-prefetch-on-2.parquetscope.json",
+      "get_count": 125,
+      "head_count": 9,
+      "server_get_count": 125,
+      "server_head_count": 9,
+      "requested_range_bytes": "21902809",
+      "confirmed_range_bytes": "21902809",
+      "unique_coverage_bytes": "21780645",
+      "repeated_coverage_bytes": "122164",
+      "server_written_bytes": "21902809",
+      "binding_requests": 2,
+      "files_with_get": 8,
+      "query_duration_ms": 68.932,
+      "elapsed_ms": 245.752
+    },
+    {
+      "config": "duckdb-2.0.0-prefetch-on",
+      "engine": "2.0.0",
+      "prefetch": "on",
+      "repetition": 3,
+      "position_in_round": 1,
+      "capture": "captures/duckdb-2.0.0-prefetch-on-3.parquetscope.json",
+      "get_count": 44,
+      "head_count": 9,
+      "server_get_count": 44,
+      "server_head_count": 9,
+      "requested_range_bytes": "21902809",
+      "confirmed_range_bytes": "21902809",
+      "unique_coverage_bytes": "21780645",
+      "repeated_coverage_bytes": "122164",
+      "server_written_bytes": "21902809",
+      "binding_requests": 2,
+      "files_with_get": 8,
+      "query_duration_ms": 117.463,
+      "elapsed_ms": 281.804
+    },
+    {
+      "config": "duckdb-2.0.0-prefetch-off",
+      "engine": "2.0.0",
+      "prefetch": "off",
+      "repetition": 3,
+      "position_in_round": 2,
+      "capture": "captures/duckdb-2.0.0-prefetch-off-3.parquetscope.json",
+      "get_count": 2969,
+      "head_count": 9,
+      "server_get_count": 2969,
+      "server_head_count": 9,
+      "requested_range_bytes": "22016379",
+      "confirmed_range_bytes": "22016379",
+      "unique_coverage_bytes": "21764020",
+      "repeated_coverage_bytes": "252359",
+      "server_written_bytes": "22016379",
+      "binding_requests": 3,
+      "files_with_get": 8,
+      "query_duration_ms": 822.297,
+      "elapsed_ms": 1147.475
+    },
+    {
+      "config": "duckdb-1.5.6-prefetch-on",
+      "engine": "1.5.6",
+      "prefetch": "on",
+      "repetition": 3,
+      "position_in_round": 3,
+      "capture": "captures/duckdb-1.5.6-prefetch-on-3.parquetscope.json",
+      "get_count": 125,
+      "head_count": 9,
+      "server_get_count": 125,
+      "server_head_count": 9,
+      "requested_range_bytes": "21902809",
+      "confirmed_range_bytes": "21902809",
+      "unique_coverage_bytes": "21780645",
+      "repeated_coverage_bytes": "122164",
+      "server_written_bytes": "21902809",
+      "binding_requests": 2,
+      "files_with_get": 8,
+      "query_duration_ms": 70.771,
+      "elapsed_ms": 192.64
+    },
+    {
+      "config": "duckdb-1.5.6-prefetch-off",
+      "engine": "1.5.6",
+      "prefetch": "off",
+      "repetition": 3,
+      "position_in_round": 4,
+      "capture": "captures/duckdb-1.5.6-prefetch-off-3.parquetscope.json",
+      "get_count": 583,
+      "head_count": 9,
+      "server_get_count": 583,
+      "server_head_count": 9,
+      "requested_range_bytes": "570142341",
+      "confirmed_range_bytes": "570142341",
+      "unique_coverage_bytes": "21780645",
+      "repeated_coverage_bytes": "548361696",
+      "server_written_bytes": "570142341",
+      "binding_requests": 3,
+      "files_with_get": 8,
+      "query_duration_ms": 602.911,
+      "elapsed_ms": 752.861
+    }
+  ],
+  "summary": {
+    "duckdb-1.5.6-prefetch-on": {
+      "get_count": {
+        "min": 125.0,
+        "median": 125.0,
+        "max": 125.0
+      },
+      "head_count": {
+        "min": 9.0,
+        "median": 9.0,
+        "max": 9.0
+      },
+      "server_get_count": {
+        "min": 125.0,
+        "median": 125.0,
+        "max": 125.0
+      },
+      "server_head_count": {
+        "min": 9.0,
+        "median": 9.0,
+        "max": 9.0
+      },
+      "server_written_bytes": {
+        "min": 21902809.0,
+        "median": 21902809.0,
+        "max": 21902809.0
+      },
+      "confirmed_range_bytes": {
+        "min": 21902809.0,
+        "median": 21902809.0,
+        "max": 21902809.0
+      },
+      "query_duration_ms": {
+        "min": 68.932,
+        "median": 70.628,
+        "max": 70.771
+      }
+    },
+    "duckdb-1.5.6-prefetch-off": {
+      "get_count": {
+        "min": 574.0,
+        "median": 576.0,
+        "max": 583.0
+      },
+      "head_count": {
+        "min": 9.0,
+        "median": 9.0,
+        "max": 9.0
+      },
+      "server_get_count": {
+        "min": 574.0,
+        "median": 576.0,
+        "max": 583.0
+      },
+      "server_head_count": {
+        "min": 9.0,
+        "median": 9.0,
+        "max": 9.0
+      },
+      "server_written_bytes": {
+        "min": 568929588.0,
+        "median": 569146493.0,
+        "max": 570142341.0
+      },
+      "confirmed_range_bytes": {
+        "min": 568929588.0,
+        "median": 569146493.0,
+        "max": 570142341.0
+      },
+      "query_duration_ms": {
+        "min": 573.52,
+        "median": 591.517,
+        "max": 602.911
+      }
+    },
+    "duckdb-2.0.0-prefetch-on": {
+      "get_count": {
+        "min": 44.0,
+        "median": 44.0,
+        "max": 44.0
+      },
+      "head_count": {
+        "min": 9.0,
+        "median": 9.0,
+        "max": 9.0
+      },
+      "server_get_count": {
+        "min": 44.0,
+        "median": 44.0,
+        "max": 44.0
+      },
+      "server_head_count": {
+        "min": 9.0,
+        "median": 9.0,
+        "max": 9.0
+      },
+      "server_written_bytes": {
+        "min": 21902809.0,
+        "median": 21902809.0,
+        "max": 21902809.0
+      },
+      "confirmed_range_bytes": {
+        "min": 21902809.0,
+        "median": 21902809.0,
+        "max": 21902809.0
+      },
+      "query_duration_ms": {
+        "min": 101.383,
+        "median": 117.463,
+        "max": 128.501
+      }
+    },
+    "duckdb-2.0.0-prefetch-off": {
+      "get_count": {
+        "min": 2968.0,
+        "median": 2969.0,
+        "max": 2970.0
+      },
+      "head_count": {
+        "min": 9.0,
+        "median": 9.0,
+        "max": 9.0
+      },
+      "server_get_count": {
+        "min": 2968.0,
+        "median": 2969.0,
+        "max": 2970.0
+      },
+      "server_head_count": {
+        "min": 9.0,
+        "median": 9.0,
+        "max": 9.0
+      },
+      "server_written_bytes": {
+        "min": 21999481.0,
+        "median": 22016379.0,
+        "max": 22033192.0
+      },
+      "confirmed_range_bytes": {
+        "min": 21999481.0,
+        "median": 22016379.0,
+        "max": 22033192.0
+      },
+      "query_duration_ms": {
+        "min": 803.994,
+        "median": 819.297,
+        "max": 822.297
+      }
+    }
+  },
+  "checks": {
+    "results_match_pyarrow_control": true,
+    "all_captures_complete_and_reconciled": true,
+    "prefetch_setting_confirmed_by_engine_readback": true,
+    "fixed_settings_identical": true
+  },
+  "limitations": [
+    "Loopback HTTP on one machine, not S3: no network latency, no object-store listing.",
+    "The request counts of duckdb/duckdb#25704 (33 vs 1,697 GET) belong to its dataset and S3 environment and are not expected here.",
+    "Server records count requests and bytes written by the local listener. They are not bytes DuckDB received, decoded or used.",
+    "DuckDB 2.0.0 redacts the request ID header; its log rows were paired with server records by request content (ordered_tuple_match).",
+    "Cold client per run; OS and disk caches are uncontrolled. Durations are observed spreads over a few repetitions, not benchmarks.",
+    "Hashing and footer reads for manifest preparation are outside the measurement."
+  ],
+  "memory_calibration": {
+    "ladder": [
+      64,
+      96,
+      128,
+      192,
+      256,
+      384,
+      512,
+      768,
+      1024
+    ],
+    "attempts": [
+      {
+        "memory_limit_mb": 64,
+        "outcomes": {
+          "duckdb-1.5.6-prefetch-on": "ok",
+          "duckdb-1.5.6-prefetch-off": "ok",
+          "duckdb-2.0.0-prefetch-on": "ok",
+          "duckdb-2.0.0-prefetch-off": "ok"
+        }
+      }
+    ],
+    "lowest_passing_mb": 64
+  }
+}

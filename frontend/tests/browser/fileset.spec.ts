@@ -77,7 +77,7 @@ test("file-set capture: overview, per-file inspector, comparison and offline vie
     .click();
   await exportJson(page, hivePath);
   const exported = JSON.parse(await readFile(hivePath, "utf8"));
-  expect(exported.schema_version).toBe("2");
+  expect(exported.schema_version).toBe("3");
   expect(exported.file_set.files).toHaveLength(8);
   expect(exported.preview).toBeUndefined();
   // Paths stay relative to the manifest: no absolute source location is exported.
@@ -177,4 +177,68 @@ test("corrupted file-set artifacts are rejected before display", async ({ page }
     await page.getByLabel("Import artifact").setInputFiles(path);
     await expect(page.getByRole("alert").first(), name).toContainText(message);
   }
+});
+
+test("engine and prefetch selection are captured, recorded and compared", async ({
+  page,
+  request,
+}, testInfo) => {
+  const session = await (await request.get("/api/session")).json();
+  const prepared = (session.engines as { version: string; prepared: boolean }[]).filter(
+    (e) => e.prepared,
+  );
+  test.skip(prepared.length < 2, "Prepare both engines with `parquetscope setup --engine X`");
+  const errors: string[] = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  await page.goto("/");
+  // The selectors apply to file sets only: they stay disabled while a single file is selected.
+  await page.locator(".query-panel").evaluate((node) => node.setAttribute("open", ""));
+  await page.getByLabel("Input file").selectOption({ label: HIVE });
+  for (const [engine, prefetch] of [
+    ["1.5.6", "default"],
+    ["2.0.0", "off"],
+  ]) {
+    await page.locator(".query-panel").evaluate((node) => node.setAttribute("open", ""));
+    await page
+      .locator(".settings")
+      .evaluate((node) => node.closest("details")?.setAttribute("open", ""));
+    await page
+      .locator(".settings label", { hasText: /^Engine/ })
+      .locator("select")
+      .selectOption(engine);
+    await page
+      .locator(".settings label", { hasText: /^Parquet prefetch/ })
+      .locator("select")
+      .selectOption(prefetch);
+    await capture(page, HIVE, SELECTIVE);
+  }
+  await page.getByRole("button", { name: "Compare runs", exact: true }).click();
+  // Earlier tests leave runs in the shared session: compare the two made here: the latest other run is the first engine run.
+  const partner = page.getByLabel("Compare with run");
+  await partner.selectOption({ index: (await partner.locator("option").count()) - 1 });
+  const compare = page.locator(".compare-panel");
+  await expect(compare.locator(".compare-values")).toHaveCount(2);
+  await expect(compare).toContainText("1.5.6 · httpfs");
+  await expect(compare).toContainText("2.0.0 · httpfs");
+  await expect(compare).toContainText("default → false");
+  await expect(compare).toContainText("true → true");
+  await expect(
+    compare.locator(".difference-row.differs", { hasText: "DuckDB" }).first(),
+  ).toBeVisible();
+  await expect(
+    compare.locator(".difference-row.differs", { hasText: "Parquet prefetch" }),
+  ).toBeVisible();
+  await expect(compare.getByText("Server records (GET / HEAD)")).toBeVisible();
+  await page.screenshot({ path: testInfo.outputPath("compare-engines.png"), fullPage: true });
+  const path = testInfo.outputPath("engine.parquetscope.json");
+  await exportJson(page, path);
+  const exported = JSON.parse(await readFile(path, "utf8"));
+  expect(exported.duckdb_version).toBe("2.0.0");
+  expect(exported.settings.disable_parquet_prefetching).toBe(true);
+  expect(exported.engine.prefetch).toEqual({
+    requested: true,
+    applied: "true",
+    status: "verified",
+  });
+  expect(errors).toEqual([]);
 });

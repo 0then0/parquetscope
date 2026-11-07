@@ -1,6 +1,6 @@
 # Artifact formats
 
-ParquetScope writes and reads two versions. **v1** records one Parquet file; **v2** records a manifest-defined file set. Both open in the application and in standalone viewers. v1 files are never rewritten or upgraded, and the UI does not present v1 data as v2 evidence: fields that v1 never recorded (read options, engine settings, request phases, logical paths) show as not recorded. [Format v2](#format-v2-file-sets) follows the v1 reference.
+ParquetScope writes and reads three versions. **v1** records one Parquet file; **v2** and **v3** record a manifest-defined file set. All open in the application and in standalone viewers. New file-set captures are v3; v1 and v2 files remain readable and are never rewritten. v1 files are never rewritten or upgraded, and the UI does not present v1 data as v2 evidence: fields that v1 never recorded (read options, engine settings, request phases, logical paths) show as not recorded. [Format v2](#format-v2-file-sets) follows the v1 reference.
 
 ## Format v1
 
@@ -54,3 +54,14 @@ Loading rejects: unsupported `schema_version`; unknown fields; duplicate or non-
 
 Relative paths and partition values can disclose sensitive information. Standalone HTML escapes `<` and `>` in the embedded JSON, but the content is still visible to anyone who has the file.
 
+## Format v3: engine and prefetch evidence
+
+A v2 file-set capture that also records which DuckDB ran and what it did with `disable_parquet_prefetching`. `schema_version: "3"`; the schema is generated from `src/parquetscope/models_v3.py` into [frontend/src/artifact-schema-v3.json](../frontend/src/artifact-schema-v3.json). A v2 reader rejects it, and a v3 reader rejects v2 data relabeled as v3. Everything not listed here is as in v2, including the validation rules.
+
+- `duckdb_version`: `"1.5.6"` or `"2.0.0"`, the version the worker reported. v1 and v2 admit only 1.5.6.
+- `settings.disable_parquet_prefetching`: `true`, `false`, or `null` when the capture left the engine's value alone.
+- `engine.environment`: `isolated` (a prepared environment from `setup --engine`) or `project` (the project's interpreter). `engine.python_version` is the worker's Python.
+- `engine.prefetch`: `requested` (the request, equal to the setting), `applied` (`"true"` or `"false"`, read back from the engine after the SET, or null) and `status`: `verified` (a requested value the engine confirmed), `engine_default` (nothing requested; the engine's value read back) or `unverified` (could not be read back). A complete capture cannot be `unverified`, and `verified` requires `applied` to equal the request. The value read back also appears in `engine.effective_settings`.
+- `engine.request_correlation`: `response_header_id` when the engine echoed the server's `X-ParquetScope-Request-ID`, or `ordered_tuple_match` when it did not. DuckDB 2.0 replaces that header by `"redacted"` in its HTTP log, so each log row is paired with a server record by file, method, requested range, status, response interval and declared length, in start order within identical requests. Every group must match in size on both sides, otherwise the capture is not reconciled. The paired ID is written into the observation, and the original headers stay as logged.
+
+Server records stay separate from engine observations: `server_written_bytes` is what the loopback listener wrote, not what DuckDB received or used.

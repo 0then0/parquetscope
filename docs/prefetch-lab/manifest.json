@@ -1,0 +1,49 @@
+{
+  "manifest_version": "1",
+  "label": "prefetch-lab",
+  "read": {
+    "hive_partitioning": false
+  },
+  "files": [
+    {
+      "path": "part-00-old.parquet",
+      "size": "12811863",
+      "sha256": "2d88820e588c22168bf7234d751dc0f6a7c5924880ff8eb7363078ec17108849"
+    },
+    {
+      "path": "part-01-new.parquet",
+      "size": "1281218",
+      "sha256": "ff3adb3462dbade6df590736f20cc5ed96ac4390b4dade5a767d64ade27c2c68"
+    },
+    {
+      "path": "part-02-new.parquet",
+      "size": "1282201",
+      "sha256": "0c821fc60d2eeb665ec31bf8a3c586aad1044381c89323ca658ae83ef40cbf46"
+    },
+    {
+      "path": "part-03-new.parquet",
+      "size": "1286740",
+      "sha256": "8f9d8fb7ea3ff6776b8ef3ee42ccac17a8b8b4b38ce19ccbb6dd40754a8733aa"
+    },
+    {
+      "path": "part-04-new.parquet",
+      "size": "1281162",
+      "sha256": "8adb48a9bc7a2da3efd369577ce02a0aedd95f47e67f92200c33cde501a92408"
+    },
+    {
+      "path": "part-05-new.parquet",
+      "size": "1279349",
+      "sha256": "a3a2528b9003a1d1f4f742ada78f985b5fc8be4d18a037f9912b620a488a1f8e"
+    },
+    {
+      "path": "part-06-new.parquet",
+      "size": "1278170",
+      "sha256": "75299c8b24615b91b0ea83e590a1a53c769f6c0228abca906d0bcc4e1c6015e8"
+    },
+    {
+      "path": "part-07-new.parquet",
+      "size": "1279974",
+      "sha256": "ec86f5556001e503fda1fc7829d1fb84b0308dd4ee98d484d633d7d867761c07"
+    }
+  ]
+}

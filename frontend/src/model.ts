@@ -1,6 +1,7 @@
 import Ajv from "ajv";
 import schema1 from "./artifact-schema.json";
 import schema2 from "./artifact-schema-v2.json";
+import schema3 from "./artifact-schema-v3.json";
 
 export type Span = { start: string; end: string };
 export type Structure = {
@@ -58,6 +59,8 @@ export type Settings = {
   preview_bytes: number;
   external_file_cache: boolean;
   cold_client: boolean;
+  /** v3 only. Null: not set by the capture, the engine default applied. Absent before v3. */
+  disable_parquet_prefetching?: boolean | null;
 };
 export type PartitionSegment = { key: string; value: string };
 export type FileEntry = {
@@ -104,10 +107,21 @@ export type Totals = {
   files_head_only: number;
   files_with_get: number;
 };
+export type Prefetch = {
+  requested: boolean | null;
+  /** Read back from the engine after the SET; null when it could not be read. */
+  applied: "true" | "false" | null;
+  status: "engine_default" | "verified" | "unverified";
+};
 export type Engine = {
   httpfs_version: string | null;
   effective_settings: Record<string, string>;
   bound_schema: { name: string; type: string }[] | null;
+  /** The next four are recorded by v3 artifacts only. */
+  environment?: "project" | "isolated";
+  python_version?: string;
+  request_correlation?: "response_header_id" | "ordered_tuple_match";
+  prefetch?: Prefetch;
 };
 export type Capture = {
   complete: boolean;
@@ -117,7 +131,7 @@ export type Capture = {
 };
 /** One validated run of either artifact version, normalized to a file list. */
 export type Run = {
-  schema_version: "1" | "2";
+  schema_version: "1" | "2" | "3";
   /** The validated artifact exactly as imported; exports use this, never the normalized view. */
   artifact: unknown;
   app_version: string;
@@ -184,6 +198,9 @@ const MAX_STRUCTURES = 100000;
 const ajv = new Ajv({ strict: false, allErrors: false });
 const validate1 = ajv.compile(schema1);
 const validate2 = ajv.compile(schema2);
+const validate3 = ajv.compile(schema3);
+/** v2 and v3 artifacts are file sets; v1 holds exactly one file. */
+export const isSetRun = (run: { schema_version: string }) => run.schema_version !== "1";
 export const intersects = (a: Span | null, b: Span | null) =>
   a !== null && b !== null && BigInt(a.start) < BigInt(b.end) && BigInt(b.start) < BigInt(a.end);
 export function union(spans: Span[]): Span[] {
@@ -421,7 +438,22 @@ export function deriveSetTotals(
   };
 }
 
-function normalizeV2(value: Raw2): Run {
+/** Mirrors the v3 validators of models_v3.py. */
+function checkPrefetch(value: Raw2) {
+  const p = value.engine.prefetch;
+  if (!p) throw new Error("Missing prefetch evidence");
+  // Absent means null, as in the backend model where the field defaults to null.
+  if ((value.settings.disable_parquet_prefetching ?? null) !== p.requested)
+    throw new Error("Settings and engine evidence disagree about the prefetch request");
+  if (p.status !== "unverified") {
+    if (p.applied === null) throw new Error("A verified or default prefetch setting needs a value");
+    if (p.status === "verified" && p.applied !== String(p.requested))
+      throw new Error("Verified prefetch setting disagrees with the request");
+    if (p.status === "engine_default" && p.requested !== null)
+      throw new Error("A requested prefetch setting is verified or unverified");
+  } else if (value.capture.complete) throw new Error("Complete capture needs a verified prefetch");
+}
+function normalizeSet(value: Raw2, version: "2" | "3"): Run {
   const files = value.file_set.files;
   if (files.some((f, i) => f.id !== `f${String(i + 1).padStart(3, "0")}`))
     throw new Error("File IDs must be f001, f002, … in set order");
@@ -437,6 +469,7 @@ function normalizeV2(value: Raw2): Run {
   }
   const observations = value.observations;
   const server = value.server_observations;
+  if (version === "3") checkPrefetch(value);
   checkIntervals(files, observations, server);
   checkReconciled(value.capture, observations, server);
   const byFile = groupByFile(
@@ -462,7 +495,7 @@ function normalizeV2(value: Raw2): Run {
   return {
     ...value,
     artifact: value,
-    schema_version: "2",
+    schema_version: version,
     label: value.file_set.label ?? "File set",
     files,
     read: value.file_set.read,
@@ -474,14 +507,17 @@ function normalizeV2(value: Raw2): Run {
 
 export function parseArtifactValue(value: unknown): Run {
   const version = (value as { schema_version?: unknown } | null)?.schema_version;
-  const check = version === "2" ? validate2 : version === "1" ? validate1 : null;
+  const check =
+    version === "3" ? validate3 : version === "2" ? validate2 : version === "1" ? validate1 : null;
   if (!check)
     throw new Error(`Invalid or unsupported artifact: schema_version ${JSON.stringify(version)}`);
   if (!check(value))
     throw new Error(
       `Invalid or unsupported artifact: ${check.errors?.[0]?.instancePath} ${check.errors?.[0]?.message}`,
     );
-  return version === "2" ? normalizeV2(value as unknown as Raw2) : normalizeV1(value as Raw1);
+  return version === "1"
+    ? normalizeV1(value as Raw1)
+    : normalizeSet(value as unknown as Raw2, version as "2" | "3");
 }
 export function parseArtifact(text: string): Run {
   if (new TextEncoder().encode(text).length > MAX_BYTES)
@@ -514,3 +550,13 @@ export const percent = (offset: string, size: string) =>
   Number((BigInt(offset) * 1000000n) / (BigInt(size) || 1n)) / 10000;
 export const rangeText = (s: Span | null) =>
   s ? `[${s.start}, ${s.end})` : "Unknown / no file body";
+
+/** Plain statement of the prefetch evidence an artifact holds. */
+export function prefetchText(run: Run): string {
+  const p = run.engine?.prefetch;
+  if (!p) return "Not recorded (v1 and v2 artifacts)";
+  const requested =
+    p.requested === null ? "not set (engine default)" : `set to ${String(p.requested)}`;
+  const applied = p.applied === null ? "could not be read back" : `engine reports ${p.applied}`;
+  return `disable_parquet_prefetching ${requested}; ${applied}; ${p.status.replace("_", " ")}`;
+}

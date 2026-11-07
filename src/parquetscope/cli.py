@@ -2,13 +2,24 @@ import argparse
 import json
 from pathlib import Path
 
+from .engines import SUPPORTED_ENGINES
+
 
 def main():
     parser = argparse.ArgumentParser(
         prog="parquetscope", description="Inspect real Parquet HTTP reads"
     )
     sub = parser.add_subparsers(dest="command", required=True)
-    sub.add_parser("setup", help="Install the pinned DuckDB httpfs extension (requires internet)")
+    setup = sub.add_parser(
+        "setup",
+        help="Install the pinned DuckDB httpfs extension, or prepare an isolated engine "
+        "(requires internet)",
+    )
+    setup.add_argument(
+        "--engine",
+        choices=SUPPORTED_ENGINES,
+        help="Prepare an isolated environment with this DuckDB version and its httpfs",
+    )
     serve = sub.add_parser(
         "serve", help="Open local files and/or saved artifacts in the browser UI"
     )
@@ -31,19 +42,41 @@ def main():
     capture.add_argument("--sql", required=True)
     capture.add_argument("--output", required=True, type=Path)
     capture.add_argument("--deadline", type=float, default=30)
+    capture.add_argument(
+        "--engine",
+        choices=SUPPORTED_ENGINES,
+        help="Run in the prepared isolated environment of this DuckDB version "
+        "(--manifest only; prepare it with `setup --engine`)",
+    )
+    capture.add_argument(
+        "--prefetch",
+        choices=("default", "on", "off"),
+        default="default",
+        help="'off' sets disable_parquet_prefetching=true, 'on' sets it to false, "
+        "'default' leaves the engine's value (--manifest only)",
+    )
     viewer = sub.add_parser("viewer", help="Create a self-contained offline HTML viewer")
     viewer.add_argument("artifact", type=Path)
     viewer.add_argument("--output", required=True, type=Path)
     args = parser.parse_args()
     try:
         if args.command == "setup":
-            from .capture import setup_httpfs
+            if args.engine:
+                from .engines import engine_root, prepare_engine
 
-            try:
-                directory = setup_httpfs()
-            except Exception as error:
-                raise RuntimeError(f"httpfs setup failed: {error}") from error
-            print(f"DuckDB 1.5.6 httpfs ready: {directory}")
+                facts = prepare_engine(args.engine)
+                print(
+                    f"DuckDB {facts['duckdb_version']} with httpfs {facts['httpfs_version']} "
+                    f"ready: {engine_root(args.engine)}"
+                )
+            else:
+                from .capture import setup_httpfs
+
+                try:
+                    directory = setup_httpfs()
+                except Exception as error:
+                    raise RuntimeError(f"httpfs setup failed: {error}") from error
+                print(f"DuckDB 1.5.6 httpfs ready: {directory}")
         elif args.command == "serve":
             import tempfile
 
@@ -71,14 +104,20 @@ def main():
             print(json.dumps(report, indent=2))
         elif args.command == "capture":
             from .models import Settings, save_artifact
+            from .models_v3 import Settings3
 
             if (args.file is None) == (args.manifest is None):
                 raise ValueError("Give exactly one input: a Parquet file or --manifest")
-            settings = Settings(
+            if args.file is not None and (args.engine or args.prefetch != "default"):
+                raise ValueError("--engine and --prefetch need a file set (--manifest)")
+            settings = Settings3(
                 threads=4,
                 memory_limit_mb=512,
                 deadline_seconds=args.deadline,
                 preview_rows=30,
+                disable_parquet_prefetching={"default": None, "on": False, "off": True}[
+                    args.prefetch
+                ],
             )
             if args.manifest:
                 from .capture import capture_set
@@ -88,14 +127,18 @@ def main():
                 protected = [args.manifest, *(e.source for e in spec.entries)]
                 if args.output.exists() and any(args.output.samefile(p) for p in protected):
                     raise ValueError("Output must not refer to the manifest or an input file")
-                run, _ = capture_set(spec, args.sql, settings)
+                run, _ = capture_set(spec, args.sql, settings, engine=args.engine)
             else:
                 if args.output.exists() and args.output.samefile(args.file):
                     raise ValueError("Output must not refer to the input Parquet file")
 
                 from .capture import capture
 
-                run, _ = capture(args.file, args.sql, settings)
+                run, _ = capture(
+                    args.file,
+                    args.sql,
+                    Settings(**settings.model_dump(exclude={"disable_parquet_prefetching"})),
+                )
             save_artifact(run, args.output)
             print(f"SQL {run.sql_status}; capture complete={run.capture.complete}; {args.output}")
             if run.errors or not run.capture.complete:

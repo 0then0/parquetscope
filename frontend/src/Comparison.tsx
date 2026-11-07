@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { comparabilityNotes, compareComposition, readDifferences } from "./compare";
-import { bytes, exact, fileTitle, type Run, rangeText } from "./model";
+import { bytes, exact, fileTitle, isSetRun, type Run, rangeText } from "./model";
 import { Pagination } from "./Pagination";
 
 const PAGE = 20;
@@ -18,26 +18,35 @@ export function Comparison({
   const composition = useMemo(() => compareComposition(a, b), [a, b]);
   const differences = useMemo(() => readDifferences(a, b), [a, b]);
   const notes = useMemo(() => comparabilityNotes(a, b, composition), [a, b, composition]);
-  const sets = a.schema_version === "2" || b.schema_version === "2";
+  const sets = isSetRun(a) || isSetRun(b);
   const labels = [
+    "DuckDB engine",
+    "Prefetch disabled (requested → engine)",
     "GET requests",
     "HEAD requests",
     "Confirmed ranges",
     "Unique coverage",
     "Repeated coverage",
     "Server wrote",
+    "Server records (GET / HEAD)",
     "SELECT duration",
     "Files with GET",
     "Files HEAD only",
     "Files without observed requests",
   ];
+  const serverGets = (r: Run) => r.server_observations.filter((s) => s.method === "GET").length;
   const values = (r: Run) => [
+    `${r.duckdb_version} · httpfs ${r.engine?.httpfs_version ?? "unknown"}`,
+    r.engine?.prefetch
+      ? `${r.engine.prefetch.requested === null ? "default" : String(r.engine.prefetch.requested)} → ${r.engine.prefetch.applied ?? "unread"}`
+      : "Not recorded",
     String(r.metrics.get_count),
     String(r.metrics.head_count),
     bytes(r.metrics.confirmed_range_bytes),
     bytes(r.metrics.unique_coverage_bytes),
     bytes(r.metrics.repeated_coverage_bytes),
     bytes(r.metrics.server_written_bytes),
+    `${serverGets(r)} / ${r.server_observations.length - serverGets(r)}`,
     r.query_duration_ms === null ? "Unknown" : `${r.query_duration_ms.toFixed(1)} ms`,
     `${r.metrics.files_with_get} of ${r.files.length}`,
     String(r.metrics.files_head_only),
@@ -208,9 +217,11 @@ export function Comparison({
         ))}
       </div>
       <p className="footnote">
-        Byte positions belong to their own file. Different layouts are compared by measured totals,
-        not by matching offsets. Overlap is not automatically wasted work. Metrics from partial
-        captures describe observed subsets.
+        Server wrote and server records come from the loopback listener: they are bytes written to
+        the socket and requests it saw, not bytes DuckDB received or used. Confirmed ranges come
+        from the engine's own log. Byte positions belong to their own file. Different layouts are
+        compared by measured totals, not by matching offsets. Overlap is not automatically wasted
+        work. Metrics from partial captures describe observed subsets.
       </p>
     </section>
   );

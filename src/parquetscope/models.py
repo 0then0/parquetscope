@@ -1,9 +1,9 @@
 """Portable v1 (single file) artifact. Byte quantities use decimal strings, never JSON numbers.
 
-v2 file-set artifacts live in `models_v2.py`; `load_artifact` opens either version.
+v2 file-set artifacts live in `models_v2.py` and v3 (engine and prefetch evidence) in
+`models_v3.py`; `load_artifact` opens every version.
 """
 
-import json
 from pathlib import Path
 from typing import Annotated, Literal
 
@@ -177,8 +177,11 @@ def load_artifact(data: bytes):
 
         from .analysis import derive_metrics, derive_set_metrics
         from .models_v2 import SetRun
+        from .models_v3 import SetRun3
 
-        adapter = TypeAdapter(Annotated[Run | SetRun, Field(discriminator="schema_version")])
+        adapter = TypeAdapter(
+            Annotated[Run | SetRun | SetRun3, Field(discriminator="schema_version")]
+        )
         run = adapter.validate_json(data)
         if isinstance(run, SetRun):
             expected = derive_set_metrics(
@@ -208,12 +211,3 @@ def load_artifact_file(path: Path):
 
 def span(start: int, end: int) -> Span:
     return Span(start=str(start), end=str(end))
-
-
-def json_value(value):
-    """For runtime preview only; strings preserve decimals, integers and binary values."""
-    if value is None or isinstance(value, bool):
-        return value
-    if isinstance(value, (str, int, float)):
-        return str(value)
-    return json.dumps(value, default=str, ensure_ascii=False)

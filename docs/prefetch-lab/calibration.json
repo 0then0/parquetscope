@@ -1,0 +1,25 @@
+{
+  "ladder": [
+    64,
+    96,
+    128,
+    192,
+    256,
+    384,
+    512,
+    768,
+    1024
+  ],
+  "attempts": [
+    {
+      "memory_limit_mb": 64,
+      "outcomes": {
+        "duckdb-1.5.6-prefetch-on": "ok",
+        "duckdb-1.5.6-prefetch-off": "ok",
+        "duckdb-2.0.0-prefetch-on": "ok",
+        "duckdb-2.0.0-prefetch-off": "ok"
+      }
+    }
+  ],
+  "lowest_passing_mb": 64
+}

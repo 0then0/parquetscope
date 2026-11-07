@@ -13,7 +13,7 @@ from parquetscope.models import (
     save_artifact,
     span,
 )
-from parquetscope.models_v2 import SetRun
+from parquetscope.models_v3 import SetRun3
 from parquetscope.offline import viewer_html
 
 REAL_V1 = Path(__file__).parents[1] / "docs/real-data/captures/A-1.parquetscope.json"
@@ -47,7 +47,7 @@ def test_v1_artifacts_keep_opening_unchanged():
     assert "file_set" not in run.model_dump() and "phase" not in run.model_dump_json()
 
 
-@pytest.mark.parametrize("version", ["0", "3", "99", 2, None])
+@pytest.mark.parametrize("version", ["0", "4", "99", 2, None])
 def test_unsupported_versions_are_rejected(set_measured, version):
     data = dump(set_measured[0])
     data["schema_version"] = version
@@ -281,7 +281,7 @@ def test_offline_html_escapes_paths_and_embeds_without_sources(set_measured):
     f["partition"] = [{"key": "x", "value": "<script>alert(1)<!--"}]
     f["name"] = "data.parquet"
     data["sql"] = "SELECT '</script><script>alert(2)</script>'"
-    hostile = SetRun.model_validate(data)
+    hostile = SetRun3.model_validate(data)
     html = viewer_html(hostile)
     assert "</script><script>alert" not in html and "<script>alert(1)" not in html
     assert "x=\\u003cscript\\u003ealert(1)\\u003c!--" in html

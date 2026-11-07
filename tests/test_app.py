@@ -1,9 +1,15 @@
 import json
 import time
+from pathlib import Path
 
 from fastapi.testclient import TestClient
 
 from parquetscope.app import create_app
+from parquetscope.models import load_artifact_file
+
+HISTORICAL_V2 = (
+    Path(__file__).parents[1] / "docs/pruning-lab/captures/hive-selective-1.parquetscope.json"
+)
 
 
 def test_runtime_boundary_and_artifact_import(measured):
@@ -76,7 +82,7 @@ def test_fixed_measurement_settings_cannot_be_misrepresented(parquet):
             assert response.status_code == 422
 
 
-def test_file_set_input_is_listed_and_runs_as_a_v2_job(hive_set, httpfs):
+def test_file_set_input_is_listed_and_runs_as_a_v3_job(hive_set, httpfs):
     from parquetscope.manifest import load_manifest
     from parquetscope.models import load_artifact
 
@@ -99,7 +105,7 @@ def test_file_set_input_is_listed_and_runs_as_a_v2_job(hive_set, httpfs):
             time.sleep(0.05)
         assert value["status"] == "finished", value
         run = value["run"]
-        assert run["schema_version"] == "2" and run["capture"]["complete"]
+        assert run["schema_version"] == "3" and run["capture"]["complete"]
         assert value["preview"]["rows"] == [["3000"]]
         exported = client.get(f"/api/artifact/{run['id']}")
         assert "preview" not in exported.json()
@@ -114,9 +120,11 @@ def test_file_set_input_is_listed_and_runs_as_a_v2_job(hive_set, httpfs):
         )
 
 
-def test_session_serves_v1_and_v2_artifacts_together(set_measured, measured):
-    v2, _ = set_measured
+def test_session_serves_v1_v2_and_v3_artifacts_together(set_measured, measured):
+    v3, _ = set_measured
     v1, _ = measured
-    with TestClient(create_app(artifacts=[v1, v2])) as client:
-        versions = sorted(r["schema_version"] for r in client.get("/api/session").json()["runs"])
-        assert versions == ["1", "2"]
+    v2 = load_artifact_file(HISTORICAL_V2)
+    with TestClient(create_app(artifacts=[v1, v2, v3])) as client:
+        session = client.get("/api/session").json()
+        assert sorted(r["schema_version"] for r in session["runs"]) == ["1", "2", "3"]
+        assert [e["version"] for e in session["engines"]] == ["1.5.6", "2.0.0"]

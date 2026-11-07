@@ -21,7 +21,7 @@ pnpm --dir frontend install --frozen-lockfile
 pnpm --dir frontend exec playwright install chromium
 ```
 
-`setup` installs the pinned DuckDB httpfs extension before integration tests or captures. Set `PARQUETSCOPE_HOME` to an absolute path to keep the extension cache in a custom directory. Do not install extensions inside measured runs.
+`setup` installs the pinned DuckDB httpfs extension before integration tests or captures. Set `PARQUETSCOPE_HOME` to an absolute path to keep the extension cache in a custom directory. Do not install extensions inside measured runs. Engine tests and the prefetch lab also need `uv run parquetscope setup --engine 1.5.6` and `--engine 2.0.0`; tests that need an unprepared engine skip. DuckDB 2.0.0 needs Python 3.11 or newer for its environment.
 
 ## Run the application
 

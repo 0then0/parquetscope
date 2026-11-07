@@ -185,7 +185,7 @@ def test_cancellation_during_preparation_is_an_error_not_a_capture(hive_set, htt
         capture_set(load_manifest(hive_set), SELECTIVE, cancel=cancel)
 
 
-def test_cli_capture_manifest_writes_a_v2_artifact_and_protects_inputs(hive_set, tmp_path, httpfs):
+def test_cli_capture_manifest_writes_a_v3_artifact_and_protects_inputs(hive_set, tmp_path, httpfs):
     out = tmp_path / "set.parquetscope.json"
     base = [sys.executable, "-m", "parquetscope.cli", "capture", "--sql", SELECTIVE]
     ok = subprocess.run(
@@ -196,7 +196,7 @@ def test_cli_capture_manifest_writes_a_v2_artifact_and_protects_inputs(hive_set,
     )
     assert ok.returncode == 0, ok.stderr
     run = load_artifact(out.read_bytes())
-    assert run.schema_version == "2" and run.capture.complete
+    assert run.schema_version == "3" and run.capture.complete
     before = (tmp_path / "month=1" / "data.parquet").read_bytes()
     for target in (hive_set, tmp_path / "month=1" / "data.parquet"):
         bad = subprocess.run(

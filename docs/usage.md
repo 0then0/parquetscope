@@ -14,6 +14,21 @@ This downloads the signed httpfs extension for the supported DuckDB version, 1.5
 
 Opening saved artifacts or standalone HTML does not require extension setup.
 
+### Choose a DuckDB version
+
+File-set captures can run on DuckDB 1.5.6 or 2.0.0, each in its own isolated environment with its own httpfs, so the project's virtual environment is never changed:
+
+```sh
+parquetscope setup --engine 1.5.6
+parquetscope setup --engine 2.0.0
+```
+
+This is a separate, explicit step that needs the network. DuckDB 2.0.0 needs Python 3.11 or newer to host its environment. A capture that selects a version resolves the prepared environment and never installs anything; if it is missing, the capture stops with the exact `setup --engine` command. Without a selection a capture runs in the project's own interpreter (DuckDB 1.5.6), as before.
+
+In the CLI use `capture --manifest m.json --engine 2.0.0 --prefetch off`. In the UI open **Execution settings** and pick **Engine** and **Parquet prefetch**. Engine and prefetch selection apply to file sets only.
+
+`--prefetch off` sets `disable_parquet_prefetching = true`, `on` sets it to `false`, `default` leaves the engine's value. The capture sets the value before configuration is locked, reads it back and records the request and the engine's answer. An explicit request that the engine rejects, or whose read-back differs, fails the run. If even the default cannot be read back the capture is marked incomplete. The setting's effect depends on the engine version and the storage; see the [prefetch lab](prefetch-lab/README.md).
+
 ## Open a local file
 
 ```sh

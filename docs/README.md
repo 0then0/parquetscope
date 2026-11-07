@@ -8,12 +8,13 @@ ParquetScope connects a SQL query to the HTTP requests and Parquet structures it
 - [User guide](usage.md): local files, captures, comparisons, offline viewers, and troubleshooting.
 - [Understanding measurements](measurements.md): metric definitions, completeness, and interpretation.
 - [File-set manifest](manifest.md): explicit file sets, path rules, budgets, and privacy.
-- [Artifact formats](artifacts.md): v1 and v2 JSON fields, exact byte intervals, validation, and sharing.
+- [Artifact formats](artifacts.md): v1, v2 and v3 JSON fields, exact byte intervals, validation, and sharing.
 
 ## Examples and evidence
 
 - [NYC TLC case study](real-data/README.md): three real layouts, nine captures, standalone viewers, and a reproducible experiment.
 - [Partition-pruning lab](pruning-lab/README.md): identical bytes in flat and Hive layouts, with captures, viewers, and observed spread.
+- [Prefetch lab](prefetch-lab/README.md): DuckDB 1.5.6 and 2.0.0 with `disable_parquet_prefetching` off and on over one file set, four configurations with captures and viewers.
 - [Synthetic demo](usage.md#run-the-synthetic-demo): a small, deterministic example you can run locally.
 - [Synthetic demo report](demo-report.json): recorded metrics and conditions.
 - [Testing and compatibility](validation.md): supported environments, test coverage, and published verification records.

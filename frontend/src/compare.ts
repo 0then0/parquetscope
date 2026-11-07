@@ -1,4 +1,4 @@
-import { type FileEntry, fileTitle, type Run } from "./model";
+import { type FileEntry, fileTitle, prefetchText, type Run } from "./model";
 
 export type ContentRow = {
   sha256: string;
@@ -20,6 +20,7 @@ export type Composition = {
 export type Difference = { label: string; a: string; b: string; differs: boolean };
 
 const NOT_RECORDED = "Not recorded (v1 artifact)";
+const NOT_RECORDED_V3 = "Not recorded (artifact before v3)";
 
 function tally(run: Run, files: FileEntry[]) {
   const metrics = new Map(run.file_metrics.map((m) => [m.file_id, m]));
@@ -90,6 +91,22 @@ export function readDifferences(a: Run, b: Run): Difference[] {
       b.engine ? (b.engine.httpfs_version ?? "Unknown") : NOT_RECORDED,
     ],
     [
+      "Engine environment",
+      a.engine?.environment ?? NOT_RECORDED_V3,
+      b.engine?.environment ?? NOT_RECORDED_V3,
+    ],
+    [
+      "Worker Python",
+      a.engine?.python_version ?? NOT_RECORDED_V3,
+      b.engine?.python_version ?? NOT_RECORDED_V3,
+    ],
+    [
+      "Request correlation",
+      a.engine?.request_correlation ?? NOT_RECORDED_V3,
+      b.engine?.request_correlation ?? NOT_RECORDED_V3,
+    ],
+    ["Parquet prefetch", prefetchText(a), prefetchText(b)],
+    [
       "Bound columns",
       a.engine?.bound_schema?.map((c) => `${c.name} ${c.type}`).join(", ") ?? NOT_RECORDED,
       b.engine?.bound_schema?.map((c) => `${c.name} ${c.type}`).join(", ") ?? NOT_RECORDED,
@@ -130,6 +147,14 @@ export function comparabilityNotes(a: Run, b: Run, composition: Composition): st
     a.engine?.httpfs_version !== b.engine?.httpfs_version
   )
     notes.push("DuckDB or httpfs versions differ or are not recorded.");
+  if (a.engine?.prefetch?.requested !== b.engine?.prefetch?.requested)
+    notes.push(
+      "The disable_parquet_prefetching request differs or is not recorded. Its effect depends on the engine version and the storage, and a loopback result does not carry over to S3.",
+    );
+  if (a.engine?.request_correlation !== b.engine?.request_correlation)
+    notes.push(
+      "Engine log rows were matched to server records differently: DuckDB 2.0 redacts the request ID header, so those rows were paired by request content.",
+    );
   if (JSON.stringify(a.settings) !== JSON.stringify(b.settings))
     notes.push("Execution settings differ.");
   if (a.schema_version !== b.schema_version)

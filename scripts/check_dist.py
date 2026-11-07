@@ -38,6 +38,8 @@ with tarfile.open(root / "dist/parquetscope-0.2.0.tar.gz") as source:
         "docs/manifest.md",
         "docs/pruning-lab/README.md",
         "scripts/pruning_lab.py",
+        "scripts/prefetch_lab.py",
+        "docs/prefetch-lab/README.md",
         "scripts/browser_fixture.py",
         "docs/releasing.md",
         ".github/workflows/ci.yml",

@@ -3,6 +3,7 @@ import threading
 import uuid
 from contextlib import asynccontextmanager
 from pathlib import Path
+from typing import Literal
 from urllib.parse import urlparse
 
 from fastapi import FastAPI, HTTPException, Request
@@ -12,23 +13,27 @@ from pydantic import Field
 
 from .capture import capture, capture_set
 from .demo import SQL, generate
+from .engines import SUPPORTED_ENGINES, engine_status
 from .manifest import SetSpec
 from .models import MAX_ARTIFACT_BYTES, Model, Run, Settings, load_artifact
 from .models_v2 import SetRun
+from .models_v3 import Settings3
 from .offline import STATIC, viewer_html
 
 
 class RunRequest(Model):
     input_id: str
     sql: str = Field(min_length=1, max_length=65536)
-    settings: Settings = Field(
-        default_factory=lambda: Settings(
+    settings: Settings3 = Field(
+        default_factory=lambda: Settings3(
             threads=4,
             memory_limit_mb=512,
             deadline_seconds=30,
             preview_rows=30,
         )
     )
+    # None: the project's own interpreter. A version needs `parquetscope setup --engine` first.
+    engine: Literal[SUPPORTED_ENGINES] | None = None
 
 
 def describe_inputs(inputs: dict[str, "Path | SetSpec"]) -> list[dict]:
@@ -83,6 +88,7 @@ def create_app(
             "inputs": describe_inputs(inputs),
             "runs": [r.model_dump() for r in stored.values()],
             "demo_available": demo_directory is not None,
+            "engines": engine_status(),
         }
 
     @app.post("/api/demo")
@@ -99,13 +105,25 @@ def create_app(
         job = jobs[job_id]
         try:
             source = inputs[payload.input_id]
-            run, preview = await asyncio.to_thread(
-                capture_set if isinstance(source, SetSpec) else capture,
-                source,
-                payload.sql,
-                payload.settings,
-                job["cancel"],
-            )
+            if isinstance(source, SetSpec):
+                run, preview = await asyncio.to_thread(
+                    capture_set,
+                    source,
+                    payload.sql,
+                    payload.settings,
+                    job["cancel"],
+                    payload.engine,
+                )
+            else:
+                run, preview = await asyncio.to_thread(
+                    capture,
+                    source,
+                    payload.sql,
+                    Settings(
+                        **payload.settings.model_dump(exclude={"disable_parquet_prefetching"})
+                    ),
+                    job["cancel"],
+                )
             stored[run.id] = run
             job.update(status="finished", run=run.model_dump(), preview=preview)
         except Exception as error:
@@ -115,6 +133,10 @@ def create_app(
     async def start(payload: RunRequest):
         if payload.input_id not in inputs:
             raise HTTPException(404, "Input is not explicitly selected for this session")
+        if not isinstance(inputs[payload.input_id], SetSpec) and (
+            payload.engine or payload.settings.disable_parquet_prefetching is not None
+        ):
+            raise HTTPException(422, "Engine and prefetch selection need a file-set input")
         if any(j["status"] == "running" for j in jobs.values()):
             raise HTTPException(409, "One capture at a time")
         if len(stored) >= 20:

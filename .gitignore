@@ -38,6 +38,8 @@ node_modules/
 !/docs/real-data/captures/*.parquetscope.json
 !/docs/real-data/failed-attempts/**/captures/*.parquetscope.json
 !/docs/real-data/viewers/*.viewer.html
+!/docs/prefetch-lab/captures/*.parquetscope.json
+!/docs/prefetch-lab/viewers/*.viewer.html
 !/docs/pruning-lab/captures/*.parquetscope.json
 !/docs/pruning-lab/viewers/*.viewer.html
 
