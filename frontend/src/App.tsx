@@ -167,6 +167,7 @@ export default function App({ lab }: { lab?: LabData }) {
   const embedded = initial.run;
   const [runs, setRuns] = useState<Run[]>(lab?.runs ?? (embedded ? [embedded] : []));
   const [active, setActive] = useState(lab?.runs[0].id ?? embedded?.id ?? "");
+  const sessionSuperseded = useRef(false);
   const [inputs, setInputs] = useState<InputFile[]>([]);
   const [inputId, setInputId] = useState("");
   const [sql, setSql] = useState(embedded?.sql ?? DEFAULT_SQL);
@@ -270,10 +271,14 @@ export default function App({ lab }: { lab?: LabData }) {
               return [];
             }
           });
-          setRuns(stored);
-          setActive(stored[0]?.id ?? "");
-          setSql(stored[0]?.sql ?? DEFAULT_SQL);
-          if (stored[0] && isSetRun(stored[0])) setView("files");
+          setRuns((old) =>
+            [...stored.filter((r) => !old.some((local) => local.id === r.id)), ...old].slice(-20),
+          );
+          if (!sessionSuperseded.current) {
+            setActive(stored[0]?.id ?? "");
+            setSql(stored[0]?.sql ?? DEFAULT_SQL);
+            if (stored[0] && isSetRun(stored[0])) setView("files");
+          }
           setDemoAvailable(s.demo_available);
         })
         .catch(() => {});
@@ -349,6 +354,11 @@ export default function App({ lab }: { lab?: LabData }) {
         error?: string;
       }>(`/api/jobs/${job.id}`);
       if (state.status === "error") throw new Error(state.error);
+      if (state.status === "cancelled") {
+        setJobId("");
+        setMessage("Run cancelled before HTTP capture started.");
+        return null;
+      }
       if (state.run) {
         const result = parseArtifactValue(state.run);
         setRuns((old) => [...old.filter((r) => r.id !== result.id), result]);
@@ -374,7 +384,7 @@ export default function App({ lab }: { lab?: LabData }) {
     try {
       const result = await measure(inputId, sql);
       if (result && result.files.length > 1) setView("files");
-      setMessage("Run finished. Select a request to inspect its range.");
+      if (result) setMessage("Run finished. Select a request to inspect its range.");
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {
@@ -434,6 +444,7 @@ export default function App({ lab }: { lab?: LabData }) {
     try {
       if (file.size > MAX_BYTES) throw new Error("Artifact exceeds 32 MiB limit");
       const value = parseArtifact(await file.text());
+      sessionSuperseded.current = true;
       setRuns((old) => [...old.filter((r) => r.id !== value.id), value].slice(-20));
       activate(value);
       setMessage("Artifact opened locally. No source file or query execution required.");

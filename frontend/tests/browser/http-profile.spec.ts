@@ -96,6 +96,15 @@ test("HTTP profile controls snapshot a capture and survive offline comparison", 
 });
 
 test("historical artifacts explicitly show an unrecorded HTTP profile", async ({ page }) => {
+  let release: () => void = () => {};
+  const pending = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route("**/api/session", async (route) => {
+    const response = await route.fetch();
+    await pending;
+    await route.fulfill({ response });
+  });
   await page.goto("/");
   await page
     .getByLabel("Import artifact")
@@ -103,4 +112,27 @@ test("historical artifacts explicitly show an unrecorded HTTP profile", async ({
   await expect(page.locator(".http-profile-details > summary")).toContainText(
     "Not recorded (artifact before v4)",
   );
+  const session = page.waitForResponse("**/api/session");
+  release();
+  await session;
+  await expect(page.getByRole("button", { name: "Run layout demo" })).toBeEnabled();
+  await expect(page.locator(".http-profile-details > summary")).toContainText(
+    "Not recorded (artifact before v4)",
+  );
+});
+
+test("cancellation before capture is a terminal state without a run", async ({ page }) => {
+  await page.route("**/api/runs", (route) =>
+    route.fulfill({ json: { id: "preparing" }, status: 202 }),
+  );
+  await page.route("**/api/jobs/preparing", (route) =>
+    route.fulfill({ json: { status: "cancelled", reason: "Preparation cancelled" } }),
+  );
+  await page.goto("/");
+  await page.locator(".query-panel").evaluate((node) => node.setAttribute("open", ""));
+  await expect(page.getByLabel("Input file").locator("option")).not.toHaveCount(0);
+  await page.getByRole("button", { name: "Run query" }).click();
+  await expect(page.getByRole("status")).toContainText("Run cancelled before HTTP capture started");
+  await expect(page.getByRole("button", { name: "Run query" })).toBeEnabled();
+  await expect(page.getByRole("alert")).toHaveCount(0);
 });

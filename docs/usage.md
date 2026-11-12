@@ -43,6 +43,10 @@ Default execution settings are four threads, a 512 MiB DuckDB engine memory limi
 
 Use **Cancel run** to stop a running query. A cancelled or timed-out run may retain partial HTTP evidence; its SQL status and capture completeness are shown separately.
 
+Cancellation during input preparation ends the job without an artifact because file metadata
+and the HTTP capture do not yet exist. Once capture starts, cancellation preserves available
+observations in the usual partial artifact.
+
 ### HTTP profile
 
 In **SQL workspace → HTTP profile**, choose **Response delay (ms)** (integer 0–60,000, default 0)

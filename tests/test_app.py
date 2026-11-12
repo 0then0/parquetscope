@@ -1,4 +1,5 @@
 import json
+import threading
 import time
 from pathlib import Path
 
@@ -50,7 +51,17 @@ def test_real_async_job(parquet, httpfs):
         assert value["preview"]["rows"] == [["199990000"]]
 
 
-def test_backend_shutdown_cancels_active_job(parquet, httpfs):
+def test_backend_shutdown_cancels_active_job(parquet, httpfs, monkeypatch):
+    import parquetscope.capture as pipeline
+
+    executing = threading.Event()
+    original = pipeline._execute
+
+    def execute(*args, **kwargs):
+        executing.set()
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(pipeline, "_execute", execute)
     app = create_app(paths=[parquet])
     with TestClient(app) as client:
         response = client.post(
@@ -58,8 +69,33 @@ def test_backend_shutdown_cancels_active_job(parquet, httpfs):
             json={"input_id": "0", "sql": "SELECT sum(sin(i)) FROM range(10000000000) t(i)"},
         )
         job = response.json()["id"]
+        assert executing.wait(5), "Worker execution was not reached"
     assert app.state.jobs[job]["status"] == "finished"
     assert app.state.jobs[job]["run"]["sql_status"] == "cancelled"
+
+
+def test_shutdown_during_preparation_is_cancelled_without_a_fabricated_capture(
+    parquet, monkeypatch
+):
+    import parquetscope.capture as pipeline
+
+    preparing = threading.Event()
+    original = pipeline.resolve_set
+
+    def resolve(spec, cancel):
+        preparing.set()
+        assert cancel.wait(5), "Shutdown did not cancel preparation"
+        return original(spec, cancel)
+
+    monkeypatch.setattr(pipeline, "resolve_set", resolve)
+    app = create_app(paths=[parquet])
+    with TestClient(app) as client:
+        response = client.post("/api/runs", json={"input_id": "0", "sql": "SELECT 1"})
+        job = response.json()["id"]
+        assert preparing.wait(5)
+    assert app.state.jobs[job]["status"] == "cancelled"
+    assert "preparing" in app.state.jobs[job]["reason"]
+    assert "run" not in app.state.jobs[job]
 
 
 def test_fixed_measurement_settings_cannot_be_misrepresented(parquet):

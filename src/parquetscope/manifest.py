@@ -36,6 +36,10 @@ MAX_SET_BYTES = 16 * 1024**3
 HIVE_KEY = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
 
 
+class PreparationCancelled(ValueError):
+    """Preparation stopped before metadata was complete and a capture could exist."""
+
+
 class ManifestFile(Model):
     path: str = Field(max_length=2048)
     size: ByteInt | None = None
@@ -193,7 +197,7 @@ def resolve_set(spec: SetSpec, cancel: threading.Event | None = None) -> Resolve
     reference = None
     for index, entry in enumerate(spec.entries):
         if cancel is not None and cancel.is_set():
-            raise ValueError("Run cancelled while preparing the file set")
+            raise PreparationCancelled("Run cancelled while preparing the file set")
         try:
             prepared, file_identity = read_metadata(entry.source)
         except (OSError, ValueError) as error:

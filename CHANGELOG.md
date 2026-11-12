@@ -4,6 +4,10 @@ User-visible changes are recorded here. Dates use YYYY-MM-DD. Entries under Unre
 
 ## Unreleased
 
+### Fixed
+
+- Cancellation during input preparation ends the job as cancelled without fabricating a capture. Late session loading preserves locally imported artifacts and their profile metadata.
+
 ### Added
 
 - Capture HTTP profiles in CLI and UI: a fixed pre-header response delay and one shared body-write rate across parallel responses and all files, with bounded burst, interruptible waits and the existing execution deadline.

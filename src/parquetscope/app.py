@@ -15,7 +15,7 @@ from .capture import capture, capture_set
 from .demo import SQL, generate
 from .engines import SUPPORTED_ENGINES, engine_status
 from .http_profile import HTTPProfile
-from .manifest import SetSpec
+from .manifest import PreparationCancelled, SetSpec
 from .models import MAX_ARTIFACT_BYTES, Model, Run, Settings, load_artifact
 from .models_v2 import SetRun
 from .models_v3 import Settings3
@@ -130,6 +130,8 @@ def create_app(
                 )
             stored[run.id] = run
             job.update(status="finished", run=run.model_dump(), preview=preview)
+        except PreparationCancelled as error:
+            job.update(status="cancelled", reason=str(error))
         except Exception as error:
             job.update(status="error", error=str(error))
 
