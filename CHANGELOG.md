@@ -2,7 +2,7 @@
 
 User-visible changes are recorded here. Dates use YYYY-MM-DD. Entries under Unreleased describe changes on `main` that are not part of a new package release.
 
-## Unreleased
+## [0.4.0] - 2026-11-12
 
 ### Fixed
 
@@ -69,3 +69,5 @@ Initial release.
 
 [0.2.0]: https://github.com/0then0/parquetscope/releases/tag/v0.2.0
 [0.1.0]: https://github.com/0then0/parquetscope/releases/tag/v0.1.0
+
+[0.4.0]: https://github.com/0then0/parquetscope/releases/tag/v0.4.0

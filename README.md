@@ -4,7 +4,7 @@
 
 See how DuckDB reads Parquet over HTTP: requests, byte ranges, column chunks, which files of a set it touches, and the effect of a different file layout.
 
-[![Version](https://img.shields.io/badge/version-0.3.0-16775c)](https://github.com/0then0/parquetscope/releases/tag/v0.3.0)
+[![Version](https://img.shields.io/badge/version-0.4.0-16775c)](https://github.com/0then0/parquetscope/releases/tag/v0.4.0)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776ab?logo=python&logoColor=white)](pyproject.toml)
 [![DuckDB](https://img.shields.io/badge/DuckDB-1.5.6-fff000?logo=duckdb&logoColor=black)](pyproject.toml)
 [![CI](https://github.com/0then0/parquetscope/actions/workflows/ci.yml/badge.svg)](https://github.com/0then0/parquetscope/actions/workflows/ci.yml)
@@ -16,7 +16,7 @@ ParquetScope captures one SELECT against one local Parquet file, or against an e
 
 ## Install and run
 
-Install from [PyPI](https://pypi.org/project/parquetscope/) with [uv](https://docs.astral.sh/uv/) (the [release page](https://github.com/0then0/parquetscope/releases/tag/v0.3.0) also carries the wheel):
+Install from [PyPI](https://pypi.org/project/parquetscope/) with [uv](https://docs.astral.sh/uv/) (the [release page](https://github.com/0then0/parquetscope/releases/tag/v0.4.0) also carries the wheel):
 
 ```sh
 uv tool install --python 3.13 parquetscope

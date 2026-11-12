@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "parquetscope"
-version = "0.3.0"
+version = "0.4.0"
 description = "Visualize DuckDB’s Parquet range reads, map them to file structure, and compare query runs."
 readme = "README.md"
 requires-python = ">=3.10"

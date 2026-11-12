@@ -490,7 +490,7 @@ export default function App({ lab }: { lab?: LabData }) {
         <div className="brand">
           <Mark />
           <span>
-            ParquetScope<small>v0.2 / LOCAL INSPECTOR</small>
+            ParquetScope<small>v0.4.0 / LOCAL INSPECTOR</small>
           </span>
         </div>
         <button type="button" className="import-button" onClick={() => fileRef.current?.click()}>
