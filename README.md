@@ -55,6 +55,29 @@ In **Range lab**, select a GET to see its response interval, server writes, and 
 
 The source file is read-only. Each capture uses a fresh worker and executes one fully consumed SELECT. ParquetScope is a local diagnostic tool for trusted files and SQL, rather than a sandbox for hostile workloads.
 
+## Compare HTTP server profiles
+
+Use **SQL workspace → HTTP profile** or explicit CLI options to compare fewer requests
+against additional bytes under controlled server conditions:
+
+```sh
+parquetscope capture events.parquet --sql 'SELECT sum(amount_cents) FROM input' \
+  --response-delay-ms 40 --body-bytes-per-second 2097152 --deadline 60 \
+  --output shaped.parquetscope.json
+```
+
+The default is zero delay and unrestricted body writes. Delay applies once before each
+prepared HEAD/GET response's headers. The body rate is shared by all GET responses and all
+files in one capture. A token bucket permits `max(1, min(16384, ceil(rate / 10)))` burst bytes.
+Low rates can reach the existing execution deadline. Profile changes apply to the next run.
+Comparison and offline viewers retain requested/effective profiles, burst and timing evidence;
+older artifacts explicitly have no recorded profile.
+
+This models server waits and body writes, not transport RTT or a cloud provider. Successful
+writes mean acceptance into the server response stream, not confirmed DuckDB receipt. See
+the [measurement contract](docs/measurements.md#http-profiles) and the reproducible
+[HTTP profile lab](docs/http-profile-lab/README.md).
+
 ## Inspect a set of files
 
 List the files in a [manifest](docs/manifest.md) and give it to `serve` or `capture`:

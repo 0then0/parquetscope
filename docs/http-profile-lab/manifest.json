@@ -1,0 +1,19 @@
+{
+  "manifest_version": "1",
+  "label": "http-profile-lab",
+  "read": {
+    "hive_partitioning": false
+  },
+  "files": [
+    {
+      "path": "part-00.parquet",
+      "size": "2227392",
+      "sha256": "4fa34c6676dd1bc14db735718a0dfbae1c3f05c73118a6eaf0db4f2f87f74149"
+    },
+    {
+      "path": "part-01.parquet",
+      "size": "2232062",
+      "sha256": "66ca250f1d9d5e4e17f3a2d68ad21645a909859a15f0c2a0c2a59a5b77fef9c5"
+    }
+  ]
+}

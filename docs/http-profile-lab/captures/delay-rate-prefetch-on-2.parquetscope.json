@@ -1,0 +1,2611 @@
+{
+  "schema_version": "4",
+  "app_version": "0.3.0",
+  "duckdb_version": "1.5.6",
+  "pyarrow_version": "26.0.0",
+  "platform": "Darwin arm64 Python 3.13.18",
+  "id": "b364143cb0ca49c1b606c62d21846c06",
+  "created_at": "2026-11-12T16:08:43.528571+00:00",
+  "sql": "SELECT count(*) AS n, sum(amount_cents) AS cents, sum(length(note)) AS note_chars FROM input WHERE category = 'keep' AND id % 7 = 0",
+  "file_set": {
+    "label": "http-profile-lab",
+    "read": {
+      "hive_partitioning": false,
+      "union_by_name": false
+    },
+    "files": [
+      {
+        "name": "part-00.parquet",
+        "sha256": "4fa34c6676dd1bc14db735718a0dfbae1c3f05c73118a6eaf0db4f2f87f74149",
+        "size": "2227392",
+        "rows": "20000",
+        "row_groups": 4,
+        "schema_fields": [
+          "id",
+          "category",
+          "amount_cents",
+          "note",
+          "padding_0",
+          "padding_1",
+          "padding_2",
+          "padding_3"
+        ],
+        "structures": [
+          {
+            "id": "header",
+            "kind": "header",
+            "label": "PAR1 header",
+            "span": {
+              "start": "0",
+              "end": "4"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "footer",
+            "kind": "footer",
+            "label": "Footer + length + magic",
+            "span": {
+              "start": "2222209",
+              "end": "2227392"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "rg0-c0",
+            "kind": "column_chunk",
+            "label": "RG 0 · id",
+            "span": {
+              "start": "4",
+              "end": "5885"
+            },
+            "row_group": 0,
+            "column": "id",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "4",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c1",
+            "kind": "column_chunk",
+            "label": "RG 0 · category",
+            "span": {
+              "start": "5885",
+              "end": "6645"
+            },
+            "row_group": 0,
+            "column": "category",
+            "rows": "5000",
+            "dictionary_offset": "5885",
+            "data_offset": "5924",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c2",
+            "kind": "column_chunk",
+            "label": "RG 0 · amount_cents",
+            "span": {
+              "start": "6645",
+              "end": "20806"
+            },
+            "row_group": 0,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "6645",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c3",
+            "kind": "column_chunk",
+            "label": "RG 0 · note",
+            "span": {
+              "start": "20806",
+              "end": "127612"
+            },
+            "row_group": 0,
+            "column": "note",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "20806",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c4",
+            "kind": "column_chunk",
+            "label": "RG 0 · padding_0",
+            "span": {
+              "start": "127612",
+              "end": "234499"
+            },
+            "row_group": 0,
+            "column": "padding_0",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "127612",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c5",
+            "kind": "column_chunk",
+            "label": "RG 0 · padding_1",
+            "span": {
+              "start": "234499",
+              "end": "341297"
+            },
+            "row_group": 0,
+            "column": "padding_1",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "234499",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c6",
+            "kind": "column_chunk",
+            "label": "RG 0 · padding_2",
+            "span": {
+              "start": "341297",
+              "end": "448285"
+            },
+            "row_group": 0,
+            "column": "padding_2",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "341297",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c7",
+            "kind": "column_chunk",
+            "label": "RG 0 · padding_3",
+            "span": {
+              "start": "448285",
+              "end": "554983"
+            },
+            "row_group": 0,
+            "column": "padding_3",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "448285",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c0",
+            "kind": "column_chunk",
+            "label": "RG 1 · id",
+            "span": {
+              "start": "554983",
+              "end": "560295"
+            },
+            "row_group": 1,
+            "column": "id",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "554983",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c1",
+            "kind": "column_chunk",
+            "label": "RG 1 · category",
+            "span": {
+              "start": "560295",
+              "end": "561049"
+            },
+            "row_group": 1,
+            "column": "category",
+            "rows": "5000",
+            "dictionary_offset": "560295",
+            "data_offset": "560334",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c2",
+            "kind": "column_chunk",
+            "label": "RG 1 · amount_cents",
+            "span": {
+              "start": "561049",
+              "end": "575165"
+            },
+            "row_group": 1,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "561049",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c3",
+            "kind": "column_chunk",
+            "label": "RG 1 · note",
+            "span": {
+              "start": "575165",
+              "end": "681958"
+            },
+            "row_group": 1,
+            "column": "note",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "575165",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c4",
+            "kind": "column_chunk",
+            "label": "RG 1 · padding_0",
+            "span": {
+              "start": "681958",
+              "end": "788561"
+            },
+            "row_group": 1,
+            "column": "padding_0",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "681958",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c5",
+            "kind": "column_chunk",
+            "label": "RG 1 · padding_1",
+            "span": {
+              "start": "788561",
+              "end": "895956"
+            },
+            "row_group": 1,
+            "column": "padding_1",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "788561",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c6",
+            "kind": "column_chunk",
+            "label": "RG 1 · padding_2",
+            "span": {
+              "start": "895956",
+              "end": "1003272"
+            },
+            "row_group": 1,
+            "column": "padding_2",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "895956",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c7",
+            "kind": "column_chunk",
+            "label": "RG 1 · padding_3",
+            "span": {
+              "start": "1003272",
+              "end": "1109998"
+            },
+            "row_group": 1,
+            "column": "padding_3",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1003272",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c0",
+            "kind": "column_chunk",
+            "label": "RG 2 · id",
+            "span": {
+              "start": "1109998",
+              "end": "1115308"
+            },
+            "row_group": 2,
+            "column": "id",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1109998",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c1",
+            "kind": "column_chunk",
+            "label": "RG 2 · category",
+            "span": {
+              "start": "1115308",
+              "end": "1116065"
+            },
+            "row_group": 2,
+            "column": "category",
+            "rows": "5000",
+            "dictionary_offset": "1115308",
+            "data_offset": "1115347",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c2",
+            "kind": "column_chunk",
+            "label": "RG 2 · amount_cents",
+            "span": {
+              "start": "1116065",
+              "end": "1130396"
+            },
+            "row_group": 2,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1116065",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c3",
+            "kind": "column_chunk",
+            "label": "RG 2 · note",
+            "span": {
+              "start": "1130396",
+              "end": "1237145"
+            },
+            "row_group": 2,
+            "column": "note",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1130396",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c4",
+            "kind": "column_chunk",
+            "label": "RG 2 · padding_0",
+            "span": {
+              "start": "1237145",
+              "end": "1344189"
+            },
+            "row_group": 2,
+            "column": "padding_0",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1237145",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c5",
+            "kind": "column_chunk",
+            "label": "RG 2 · padding_1",
+            "span": {
+              "start": "1344189",
+              "end": "1452204"
+            },
+            "row_group": 2,
+            "column": "padding_1",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1344189",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c6",
+            "kind": "column_chunk",
+            "label": "RG 2 · padding_2",
+            "span": {
+              "start": "1452204",
+              "end": "1558997"
+            },
+            "row_group": 2,
+            "column": "padding_2",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1452204",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c7",
+            "kind": "column_chunk",
+            "label": "RG 2 · padding_3",
+            "span": {
+              "start": "1558997",
+              "end": "1665940"
+            },
+            "row_group": 2,
+            "column": "padding_3",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1558997",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c0",
+            "kind": "column_chunk",
+            "label": "RG 3 · id",
+            "span": {
+              "start": "1665940",
+              "end": "1671252"
+            },
+            "row_group": 3,
+            "column": "id",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1665940",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c1",
+            "kind": "column_chunk",
+            "label": "RG 3 · category",
+            "span": {
+              "start": "1671252",
+              "end": "1672001"
+            },
+            "row_group": 3,
+            "column": "category",
+            "rows": "5000",
+            "dictionary_offset": "1671252",
+            "data_offset": "1671291",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c2",
+            "kind": "column_chunk",
+            "label": "RG 3 · amount_cents",
+            "span": {
+              "start": "1672001",
+              "end": "1686572"
+            },
+            "row_group": 3,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1672001",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c3",
+            "kind": "column_chunk",
+            "label": "RG 3 · note",
+            "span": {
+              "start": "1686572",
+              "end": "1793663"
+            },
+            "row_group": 3,
+            "column": "note",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1686572",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c4",
+            "kind": "column_chunk",
+            "label": "RG 3 · padding_0",
+            "span": {
+              "start": "1793663",
+              "end": "1901129"
+            },
+            "row_group": 3,
+            "column": "padding_0",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1793663",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c5",
+            "kind": "column_chunk",
+            "label": "RG 3 · padding_1",
+            "span": {
+              "start": "1901129",
+              "end": "2008736"
+            },
+            "row_group": 3,
+            "column": "padding_1",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1901129",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c6",
+            "kind": "column_chunk",
+            "label": "RG 3 · padding_2",
+            "span": {
+              "start": "2008736",
+              "end": "2115369"
+            },
+            "row_group": 3,
+            "column": "padding_2",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "2008736",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c7",
+            "kind": "column_chunk",
+            "label": "RG 3 · padding_3",
+            "span": {
+              "start": "2115369",
+              "end": "2222209"
+            },
+            "row_group": 3,
+            "column": "padding_3",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "2115369",
+            "compression": "ZSTD"
+          }
+        ],
+        "id": "f001",
+        "logical_path": "part-00.parquet",
+        "partition": []
+      },
+      {
+        "name": "part-01.parquet",
+        "sha256": "66ca250f1d9d5e4e17f3a2d68ad21645a909859a15f0c2a0c2a59a5b77fef9c5",
+        "size": "2232062",
+        "rows": "20000",
+        "row_groups": 4,
+        "schema_fields": [
+          "id",
+          "category",
+          "amount_cents",
+          "note",
+          "padding_0",
+          "padding_1",
+          "padding_2",
+          "padding_3"
+        ],
+        "structures": [
+          {
+            "id": "header",
+            "kind": "header",
+            "label": "PAR1 header",
+            "span": {
+              "start": "0",
+              "end": "4"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "footer",
+            "kind": "footer",
+            "label": "Footer + length + magic",
+            "span": {
+              "start": "2226879",
+              "end": "2232062"
+            },
+            "row_group": null,
+            "column": null,
+            "rows": null,
+            "dictionary_offset": null,
+            "data_offset": null,
+            "compression": null
+          },
+          {
+            "id": "rg0-c0",
+            "kind": "column_chunk",
+            "label": "RG 0 · id",
+            "span": {
+              "start": "4",
+              "end": "5313"
+            },
+            "row_group": 0,
+            "column": "id",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "4",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c1",
+            "kind": "column_chunk",
+            "label": "RG 0 · category",
+            "span": {
+              "start": "5313",
+              "end": "6057"
+            },
+            "row_group": 0,
+            "column": "category",
+            "rows": "5000",
+            "dictionary_offset": "5313",
+            "data_offset": "5352",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c2",
+            "kind": "column_chunk",
+            "label": "RG 0 · amount_cents",
+            "span": {
+              "start": "6057",
+              "end": "20727"
+            },
+            "row_group": 0,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "6057",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c3",
+            "kind": "column_chunk",
+            "label": "RG 0 · note",
+            "span": {
+              "start": "20727",
+              "end": "127264"
+            },
+            "row_group": 0,
+            "column": "note",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "20727",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c4",
+            "kind": "column_chunk",
+            "label": "RG 0 · padding_0",
+            "span": {
+              "start": "127264",
+              "end": "234148"
+            },
+            "row_group": 0,
+            "column": "padding_0",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "127264",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c5",
+            "kind": "column_chunk",
+            "label": "RG 0 · padding_1",
+            "span": {
+              "start": "234148",
+              "end": "341108"
+            },
+            "row_group": 0,
+            "column": "padding_1",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "234148",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c6",
+            "kind": "column_chunk",
+            "label": "RG 0 · padding_2",
+            "span": {
+              "start": "341108",
+              "end": "448856"
+            },
+            "row_group": 0,
+            "column": "padding_2",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "341108",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg0-c7",
+            "kind": "column_chunk",
+            "label": "RG 0 · padding_3",
+            "span": {
+              "start": "448856",
+              "end": "555299"
+            },
+            "row_group": 0,
+            "column": "padding_3",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "448856",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c0",
+            "kind": "column_chunk",
+            "label": "RG 1 · id",
+            "span": {
+              "start": "555299",
+              "end": "560611"
+            },
+            "row_group": 1,
+            "column": "id",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "555299",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c1",
+            "kind": "column_chunk",
+            "label": "RG 1 · category",
+            "span": {
+              "start": "560611",
+              "end": "561372"
+            },
+            "row_group": 1,
+            "column": "category",
+            "rows": "5000",
+            "dictionary_offset": "560611",
+            "data_offset": "560650",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c2",
+            "kind": "column_chunk",
+            "label": "RG 1 · amount_cents",
+            "span": {
+              "start": "561372",
+              "end": "575637"
+            },
+            "row_group": 1,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "561372",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c3",
+            "kind": "column_chunk",
+            "label": "RG 1 · note",
+            "span": {
+              "start": "575637",
+              "end": "682586"
+            },
+            "row_group": 1,
+            "column": "note",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "575637",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c4",
+            "kind": "column_chunk",
+            "label": "RG 1 · padding_0",
+            "span": {
+              "start": "682586",
+              "end": "789215"
+            },
+            "row_group": 1,
+            "column": "padding_0",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "682586",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c5",
+            "kind": "column_chunk",
+            "label": "RG 1 · padding_1",
+            "span": {
+              "start": "789215",
+              "end": "899089"
+            },
+            "row_group": 1,
+            "column": "padding_1",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "789215",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c6",
+            "kind": "column_chunk",
+            "label": "RG 1 · padding_2",
+            "span": {
+              "start": "899089",
+              "end": "1005916"
+            },
+            "row_group": 1,
+            "column": "padding_2",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "899089",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg1-c7",
+            "kind": "column_chunk",
+            "label": "RG 1 · padding_3",
+            "span": {
+              "start": "1005916",
+              "end": "1113383"
+            },
+            "row_group": 1,
+            "column": "padding_3",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1005916",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c0",
+            "kind": "column_chunk",
+            "label": "RG 2 · id",
+            "span": {
+              "start": "1113383",
+              "end": "1118692"
+            },
+            "row_group": 2,
+            "column": "id",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1113383",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c1",
+            "kind": "column_chunk",
+            "label": "RG 2 · category",
+            "span": {
+              "start": "1118692",
+              "end": "1119452"
+            },
+            "row_group": 2,
+            "column": "category",
+            "rows": "5000",
+            "dictionary_offset": "1118692",
+            "data_offset": "1118731",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c2",
+            "kind": "column_chunk",
+            "label": "RG 2 · amount_cents",
+            "span": {
+              "start": "1119452",
+              "end": "1133966"
+            },
+            "row_group": 2,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1119452",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c3",
+            "kind": "column_chunk",
+            "label": "RG 2 · note",
+            "span": {
+              "start": "1133966",
+              "end": "1240774"
+            },
+            "row_group": 2,
+            "column": "note",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1133966",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c4",
+            "kind": "column_chunk",
+            "label": "RG 2 · padding_0",
+            "span": {
+              "start": "1240774",
+              "end": "1347310"
+            },
+            "row_group": 2,
+            "column": "padding_0",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1240774",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c5",
+            "kind": "column_chunk",
+            "label": "RG 2 · padding_1",
+            "span": {
+              "start": "1347310",
+              "end": "1454682"
+            },
+            "row_group": 2,
+            "column": "padding_1",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1347310",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c6",
+            "kind": "column_chunk",
+            "label": "RG 2 · padding_2",
+            "span": {
+              "start": "1454682",
+              "end": "1562044"
+            },
+            "row_group": 2,
+            "column": "padding_2",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1454682",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg2-c7",
+            "kind": "column_chunk",
+            "label": "RG 2 · padding_3",
+            "span": {
+              "start": "1562044",
+              "end": "1669204"
+            },
+            "row_group": 2,
+            "column": "padding_3",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1562044",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c0",
+            "kind": "column_chunk",
+            "label": "RG 3 · id",
+            "span": {
+              "start": "1669204",
+              "end": "1674516"
+            },
+            "row_group": 3,
+            "column": "id",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1669204",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c1",
+            "kind": "column_chunk",
+            "label": "RG 3 · category",
+            "span": {
+              "start": "1674516",
+              "end": "1675261"
+            },
+            "row_group": 3,
+            "column": "category",
+            "rows": "5000",
+            "dictionary_offset": "1674516",
+            "data_offset": "1674555",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c2",
+            "kind": "column_chunk",
+            "label": "RG 3 · amount_cents",
+            "span": {
+              "start": "1675261",
+              "end": "1689949"
+            },
+            "row_group": 3,
+            "column": "amount_cents",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1675261",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c3",
+            "kind": "column_chunk",
+            "label": "RG 3 · note",
+            "span": {
+              "start": "1689949",
+              "end": "1796665"
+            },
+            "row_group": 3,
+            "column": "note",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1689949",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c4",
+            "kind": "column_chunk",
+            "label": "RG 3 · padding_0",
+            "span": {
+              "start": "1796665",
+              "end": "1905325"
+            },
+            "row_group": 3,
+            "column": "padding_0",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1796665",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c5",
+            "kind": "column_chunk",
+            "label": "RG 3 · padding_1",
+            "span": {
+              "start": "1905325",
+              "end": "2012422"
+            },
+            "row_group": 3,
+            "column": "padding_1",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "1905325",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c6",
+            "kind": "column_chunk",
+            "label": "RG 3 · padding_2",
+            "span": {
+              "start": "2012422",
+              "end": "2119019"
+            },
+            "row_group": 3,
+            "column": "padding_2",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "2012422",
+            "compression": "ZSTD"
+          },
+          {
+            "id": "rg3-c7",
+            "kind": "column_chunk",
+            "label": "RG 3 · padding_3",
+            "span": {
+              "start": "2119019",
+              "end": "2226879"
+            },
+            "row_group": 3,
+            "column": "padding_3",
+            "rows": "5000",
+            "dictionary_offset": null,
+            "data_offset": "2119019",
+            "compression": "ZSTD"
+          }
+        ],
+        "id": "f002",
+        "logical_path": "part-01.parquet",
+        "partition": []
+      }
+    ]
+  },
+  "settings": {
+    "threads": 4,
+    "memory_limit_mb": 256,
+    "deadline_seconds": 30.0,
+    "preview_rows": 1,
+    "preview_bytes": 65536,
+    "external_file_cache": false,
+    "cold_client": true,
+    "disable_parquet_prefetching": false
+  },
+  "engine": {
+    "httpfs_version": "4bc690d",
+    "effective_settings": {
+      "disable_parquet_prefetching": "False",
+      "threads": "4",
+      "memory_limit": "256.0 MiB",
+      "enable_external_file_cache": "False",
+      "enable_http_metadata_cache": "False",
+      "http_keep_alive": "True",
+      "http_retries": "3",
+      "http_timeout": "30",
+      "http_retry_wait_ms": "100",
+      "http_retry_backoff": "4.0"
+    },
+    "bound_schema": [
+      {
+        "name": "id",
+        "type": "BIGINT"
+      },
+      {
+        "name": "category",
+        "type": "VARCHAR"
+      },
+      {
+        "name": "amount_cents",
+        "type": "BIGINT"
+      },
+      {
+        "name": "note",
+        "type": "VARCHAR"
+      },
+      {
+        "name": "padding_0",
+        "type": "VARCHAR"
+      },
+      {
+        "name": "padding_1",
+        "type": "VARCHAR"
+      },
+      {
+        "name": "padding_2",
+        "type": "VARCHAR"
+      },
+      {
+        "name": "padding_3",
+        "type": "VARCHAR"
+      }
+    ],
+    "environment": "isolated",
+    "python_version": "3.13.18",
+    "request_correlation": "response_header_id",
+    "prefetch": {
+      "requested": false,
+      "applied": "false",
+      "status": "verified"
+    }
+  },
+  "sql_status": "succeeded",
+  "query_duration_ms": 777.8655830043135,
+  "elapsed_ms": 1027.0982919901144,
+  "result_rows": "1",
+  "result_digest": "e63689a2105bb3210407911e1d3e6945d2f4f07c0878e4f9f99cf28cb1b58421",
+  "observations": [
+    {
+      "id": "45dae27edde241a58ce5ea20bda99d9a",
+      "method": "HEAD",
+      "url": "http://127.0.0.1:52404/666d1d622aa64905a7375718b19a0663/part-00.parquet",
+      "requested_range": null,
+      "requested_span": null,
+      "response_span": null,
+      "status": 200,
+      "start_ms": 0.0,
+      "duration_ms": 46.0,
+      "declared_body_bytes": "0",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5"
+      },
+      "response_headers": {
+        "Content-Length": "2227392",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "X-ParquetScope-Request-ID": "45dae27edde241a58ce5ea20bda99d9a",
+        "Date": "Thu, 12 Nov 2026 16:08:42 GMT",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1794499698765141481\""
+      },
+      "engine_start_time": "2026-11-12 19:08:42.59249+03",
+      "file_id": "f001",
+      "phase": "view_creation"
+    },
+    {
+      "id": "79c2687910e343758fc455ec69f90539",
+      "method": "GET",
+      "url": "http://127.0.0.1:52404/666d1d622aa64905a7375718b19a0663/part-00.parquet",
+      "requested_range": "bytes=2211008-2227391",
+      "requested_span": {
+        "start": "2211008",
+        "end": "2227392"
+      },
+      "response_span": {
+        "start": "2211008",
+        "end": "2227392"
+      },
+      "status": 206,
+      "start_ms": 46.44287109375,
+      "duration_ms": 44.0,
+      "declared_body_bytes": "16384",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=2211008-2227391"
+      },
+      "response_headers": {
+        "Content-Length": "16384",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Thu, 12 Nov 2026 16:08:42 GMT",
+        "X-ParquetScope-Request-ID": "79c2687910e343758fc455ec69f90539",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1794499698765141481\"",
+        "Content-Range": "bytes 2211008-2227391/2227392"
+      },
+      "engine_start_time": "2026-11-12 19:08:42.638933+03",
+      "file_id": "f001",
+      "phase": "view_creation"
+    },
+    {
+      "id": "b538bcdf0e4f4b93873d780241be0e3b",
+      "method": "HEAD",
+      "url": "http://127.0.0.1:52404/666d1d622aa64905a7375718b19a0663/part-00.parquet",
+      "requested_range": null,
+      "requested_span": null,
+      "response_span": null,
+      "status": 200,
+      "start_ms": 90.72802734375,
+      "duration_ms": 45.0,
+      "declared_body_bytes": "0",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5"
+      },
+      "response_headers": {
+        "Content-Length": "2227392",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "X-ParquetScope-Request-ID": "b538bcdf0e4f4b93873d780241be0e3b",
+        "Date": "Thu, 12 Nov 2026 16:08:42 GMT",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1794499698765141481\""
+      },
+      "engine_start_time": "2026-11-12 19:08:42.683218+03",
+      "file_id": "f001",
+      "phase": "select"
+    },
+    {
+      "id": "10d66c6f439842be906c716d1c75a49e",
+      "method": "GET",
+      "url": "http://127.0.0.1:52404/666d1d622aa64905a7375718b19a0663/part-00.parquet",
+      "requested_range": "bytes=2211008-2227391",
+      "requested_span": {
+        "start": "2211008",
+        "end": "2227392"
+      },
+      "response_span": {
+        "start": "2211008",
+        "end": "2227392"
+      },
+      "status": 206,
+      "start_ms": 136.64111328125,
+      "duration_ms": 45.0,
+      "declared_body_bytes": "16384",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=2211008-2227391"
+      },
+      "response_headers": {
+        "Content-Length": "16384",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Thu, 12 Nov 2026 16:08:42 GMT",
+        "X-ParquetScope-Request-ID": "10d66c6f439842be906c716d1c75a49e",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1794499698765141481\"",
+        "Content-Range": "bytes 2211008-2227391/2227392"
+      },
+      "engine_start_time": "2026-11-12 19:08:42.729131+03",
+      "file_id": "f001",
+      "phase": "select"
+    },
+    {
+      "id": "a2ac20e87f754253812fbd1cdc8329cc",
+      "method": "GET",
+      "url": "http://127.0.0.1:52404/666d1d622aa64905a7375718b19a0663/part-00.parquet",
+      "requested_range": "bytes=560295-561048",
+      "requested_span": {
+        "start": "560295",
+        "end": "561049"
+      },
+      "response_span": {
+        "start": "560295",
+        "end": "561049"
+      },
+      "status": 206,
+      "start_ms": 183.467041015625,
+      "duration_ms": 47.0,
+      "declared_body_bytes": "754",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=560295-561048"
+      },
+      "response_headers": {
+        "Content-Length": "754",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Thu, 12 Nov 2026 16:08:42 GMT",
+        "X-ParquetScope-Request-ID": "a2ac20e87f754253812fbd1cdc8329cc",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1794499698765141481\"",
+        "Content-Range": "bytes 560295-561048/2227392"
+      },
+      "engine_start_time": "2026-11-12 19:08:42.775957+03",
+      "file_id": "f001",
+      "phase": "select"
+    },
+    {
+      "id": "874952104a1047d0a666bc201e7ee37f",
+      "method": "GET",
+      "url": "http://127.0.0.1:52404/666d1d622aa64905a7375718b19a0663/part-00.parquet",
+      "requested_range": "bytes=1115308-1116064",
+      "requested_span": {
+        "start": "1115308",
+        "end": "1116065"
+      },
+      "response_span": {
+        "start": "1115308",
+        "end": "1116065"
+      },
+      "status": 206,
+      "start_ms": 183.458984375,
+      "duration_ms": 47.0,
+      "declared_body_bytes": "757",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=1115308-1116064"
+      },
+      "response_headers": {
+        "Content-Length": "757",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Thu, 12 Nov 2026 16:08:42 GMT",
+        "X-ParquetScope-Request-ID": "874952104a1047d0a666bc201e7ee37f",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1794499698765141481\"",
+        "Content-Range": "bytes 1115308-1116064/2227392"
+      },
+      "engine_start_time": "2026-11-12 19:08:42.775949+03",
+      "file_id": "f001",
+      "phase": "select"
+    },
+    {
+      "id": "13cc602d70c740b7bd7103f01b379825",
+      "method": "GET",
+      "url": "http://127.0.0.1:52404/666d1d622aa64905a7375718b19a0663/part-00.parquet",
+      "requested_range": "bytes=5885-6644",
+      "requested_span": {
+        "start": "5885",
+        "end": "6645"
+      },
+      "response_span": {
+        "start": "5885",
+        "end": "6645"
+      },
+      "status": 206,
+      "start_ms": 183.458984375,
+      "duration_ms": 102.0,
+      "declared_body_bytes": "760",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=5885-6644"
+      },
+      "response_headers": {
+        "Content-Length": "760",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Thu, 12 Nov 2026 16:08:42 GMT",
+        "X-ParquetScope-Request-ID": "13cc602d70c740b7bd7103f01b379825",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1794499698765141481\"",
+        "Content-Range": "bytes 5885-6644/2227392"
+      },
+      "engine_start_time": "2026-11-12 19:08:42.775949+03",
+      "file_id": "f001",
+      "phase": "select"
+    },
+    {
+      "id": "c7c0a81d01c0441197a35b721c84c08b",
+      "method": "GET",
+      "url": "http://127.0.0.1:52404/666d1d622aa64905a7375718b19a0663/part-00.parquet",
+      "requested_range": "bytes=554983-681957",
+      "requested_span": {
+        "start": "554983",
+        "end": "681958"
+      },
+      "response_span": {
+        "start": "554983",
+        "end": "681958"
+      },
+      "status": 206,
+      "start_ms": 229.907958984375,
+      "duration_ms": 107.0,
+      "declared_body_bytes": "126975",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=554983-681957"
+      },
+      "response_headers": {
+        "Content-Length": "126975",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Thu, 12 Nov 2026 16:08:42 GMT",
+        "X-ParquetScope-Request-ID": "c7c0a81d01c0441197a35b721c84c08b",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1794499698765141481\"",
+        "Content-Range": "bytes 554983-681957/2227392"
+      },
+      "engine_start_time": "2026-11-12 19:08:42.822398+03",
+      "file_id": "f001",
+      "phase": "select"
+    },
+    {
+      "id": "4457c5362b034ead916edf4272a62961",
+      "method": "GET",
+      "url": "http://127.0.0.1:52404/666d1d622aa64905a7375718b19a0663/part-00.parquet",
+      "requested_range": "bytes=1671252-1672000",
+      "requested_span": {
+        "start": "1671252",
+        "end": "1672001"
+      },
+      "response_span": {
+        "start": "1671252",
+        "end": "1672001"
+      },
+      "status": 206,
+      "start_ms": 183.462158203125,
+      "duration_ms": 156.0,
+      "declared_body_bytes": "749",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=1671252-1672000"
+      },
+      "response_headers": {
+        "Content-Length": "749",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Thu, 12 Nov 2026 16:08:42 GMT",
+        "X-ParquetScope-Request-ID": "4457c5362b034ead916edf4272a62961",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1794499698765141481\"",
+        "Content-Range": "bytes 1671252-1672000/2227392"
+      },
+      "engine_start_time": "2026-11-12 19:08:42.775952+03",
+      "file_id": "f001",
+      "phase": "select"
+    },
+    {
+      "id": "6b124f7a8a9245228c03fe3bd0dcdd91",
+      "method": "HEAD",
+      "url": "http://127.0.0.1:52404/666d1d622aa64905a7375718b19a0663/part-01.parquet",
+      "requested_range": null,
+      "requested_span": null,
+      "response_span": null,
+      "status": 200,
+      "start_ms": 338.458984375,
+      "duration_ms": 45.0,
+      "declared_body_bytes": "0",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5"
+      },
+      "response_headers": {
+        "Content-Length": "2232062",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "X-ParquetScope-Request-ID": "6b124f7a8a9245228c03fe3bd0dcdd91",
+        "Date": "Thu, 12 Nov 2026 16:08:42 GMT",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1794499698812228301\""
+      },
+      "engine_start_time": "2026-11-12 19:08:42.930949+03",
+      "file_id": "f002",
+      "phase": "select"
+    },
+    {
+      "id": "3482554a933e43e28e4054ace910c16b",
+      "method": "GET",
+      "url": "http://127.0.0.1:52404/666d1d622aa64905a7375718b19a0663/part-00.parquet",
+      "requested_range": "bytes=1109998-1237144",
+      "requested_span": {
+        "start": "1109998",
+        "end": "1237145"
+      },
+      "response_span": {
+        "start": "1109998",
+        "end": "1237145"
+      },
+      "status": 206,
+      "start_ms": 230.075927734375,
+      "duration_ms": 198.0,
+      "declared_body_bytes": "127147",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=1109998-1237144"
+      },
+      "response_headers": {
+        "Content-Length": "127147",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Thu, 12 Nov 2026 16:08:42 GMT",
+        "X-ParquetScope-Request-ID": "3482554a933e43e28e4054ace910c16b",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1794499698765141481\"",
+        "Content-Range": "bytes 1109998-1237144/2227392"
+      },
+      "engine_start_time": "2026-11-12 19:08:42.822566+03",
+      "file_id": "f001",
+      "phase": "select"
+    },
+    {
+      "id": "686fbec0d22b4ceb87a9c082256fa801",
+      "method": "GET",
+      "url": "http://127.0.0.1:52404/666d1d622aa64905a7375718b19a0663/part-01.parquet",
+      "requested_range": "bytes=2215678-2232061",
+      "requested_span": {
+        "start": "2215678",
+        "end": "2232062"
+      },
+      "response_span": {
+        "start": "2215678",
+        "end": "2232062"
+      },
+      "status": 206,
+      "start_ms": 383.4130859375,
+      "duration_ms": 52.0,
+      "declared_body_bytes": "16384",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=2215678-2232061"
+      },
+      "response_headers": {
+        "Content-Length": "16384",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Thu, 12 Nov 2026 16:08:43 GMT",
+        "X-ParquetScope-Request-ID": "686fbec0d22b4ceb87a9c082256fa801",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1794499698812228301\"",
+        "Content-Range": "bytes 2215678-2232061/2232062"
+      },
+      "engine_start_time": "2026-11-12 19:08:42.975903+03",
+      "file_id": "f002",
+      "phase": "select"
+    },
+    {
+      "id": "d72815c809c64b8a899c0a503bf4ca57",
+      "method": "GET",
+      "url": "http://127.0.0.1:52404/666d1d622aa64905a7375718b19a0663/part-01.parquet",
+      "requested_range": "bytes=560611-561371",
+      "requested_span": {
+        "start": "560611",
+        "end": "561372"
+      },
+      "response_span": {
+        "start": "560611",
+        "end": "561372"
+      },
+      "status": 206,
+      "start_ms": 436.385986328125,
+      "duration_ms": 43.0,
+      "declared_body_bytes": "761",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=560611-561371"
+      },
+      "response_headers": {
+        "Content-Length": "761",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Thu, 12 Nov 2026 16:08:43 GMT",
+        "X-ParquetScope-Request-ID": "d72815c809c64b8a899c0a503bf4ca57",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1794499698812228301\"",
+        "Content-Range": "bytes 560611-561371/2232062"
+      },
+      "engine_start_time": "2026-11-12 19:08:43.028876+03",
+      "file_id": "f002",
+      "phase": "select"
+    },
+    {
+      "id": "68ee4232d54749d088eace924d5ebf5c",
+      "method": "GET",
+      "url": "http://127.0.0.1:52404/666d1d622aa64905a7375718b19a0663/part-01.parquet",
+      "requested_range": "bytes=5313-6056",
+      "requested_span": {
+        "start": "5313",
+        "end": "6057"
+      },
+      "response_span": {
+        "start": "5313",
+        "end": "6057"
+      },
+      "status": 206,
+      "start_ms": 436.385986328125,
+      "duration_ms": 45.0,
+      "declared_body_bytes": "744",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=5313-6056"
+      },
+      "response_headers": {
+        "Content-Length": "744",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Thu, 12 Nov 2026 16:08:43 GMT",
+        "X-ParquetScope-Request-ID": "68ee4232d54749d088eace924d5ebf5c",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1794499698812228301\"",
+        "Content-Range": "bytes 5313-6056/2232062"
+      },
+      "engine_start_time": "2026-11-12 19:08:43.028876+03",
+      "file_id": "f002",
+      "phase": "select"
+    },
+    {
+      "id": "8f5b8a870f0342c39ed30c1280cc2240",
+      "method": "GET",
+      "url": "http://127.0.0.1:52404/666d1d622aa64905a7375718b19a0663/part-00.parquet",
+      "requested_range": "bytes=1665940-1793662",
+      "requested_span": {
+        "start": "1665940",
+        "end": "1793663"
+      },
+      "response_span": {
+        "start": "1665940",
+        "end": "1793663"
+      },
+      "status": 206,
+      "start_ms": 339.203125,
+      "duration_ms": 171.0,
+      "declared_body_bytes": "127723",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=1665940-1793662"
+      },
+      "response_headers": {
+        "Content-Length": "127723",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Thu, 12 Nov 2026 16:08:42 GMT",
+        "X-ParquetScope-Request-ID": "8f5b8a870f0342c39ed30c1280cc2240",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1794499698765141481\"",
+        "Content-Range": "bytes 1665940-1793662/2227392"
+      },
+      "engine_start_time": "2026-11-12 19:08:42.931693+03",
+      "file_id": "f001",
+      "phase": "select"
+    },
+    {
+      "id": "4489113e6e3041ecafee73f0987b3db2",
+      "method": "GET",
+      "url": "http://127.0.0.1:52404/666d1d622aa64905a7375718b19a0663/part-01.parquet",
+      "requested_range": "bytes=1118692-1119451",
+      "requested_span": {
+        "start": "1118692",
+        "end": "1119452"
+      },
+      "response_span": {
+        "start": "1118692",
+        "end": "1119452"
+      },
+      "status": 206,
+      "start_ms": 512.27197265625,
+      "duration_ms": 47.0,
+      "declared_body_bytes": "760",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=1118692-1119451"
+      },
+      "response_headers": {
+        "Content-Length": "760",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Thu, 12 Nov 2026 16:08:43 GMT",
+        "X-ParquetScope-Request-ID": "4489113e6e3041ecafee73f0987b3db2",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1794499698812228301\"",
+        "Content-Range": "bytes 1118692-1119451/2232062"
+      },
+      "engine_start_time": "2026-11-12 19:08:43.104762+03",
+      "file_id": "f002",
+      "phase": "select"
+    },
+    {
+      "id": "758abec69a9343c7b4ffd04fca788431",
+      "method": "GET",
+      "url": "http://127.0.0.1:52404/666d1d622aa64905a7375718b19a0663/part-00.parquet",
+      "requested_range": "bytes=4-127611",
+      "requested_span": {
+        "start": "4",
+        "end": "127612"
+      },
+      "response_span": {
+        "start": "4",
+        "end": "127612"
+      },
+      "status": 206,
+      "start_ms": 285.205078125,
+      "duration_ms": 293.0,
+      "declared_body_bytes": "127608",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=4-127611"
+      },
+      "response_headers": {
+        "Content-Length": "127608",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Thu, 12 Nov 2026 16:08:42 GMT",
+        "X-ParquetScope-Request-ID": "758abec69a9343c7b4ffd04fca788431",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1794499698765141481\"",
+        "Content-Range": "bytes 4-127611/2227392"
+      },
+      "engine_start_time": "2026-11-12 19:08:42.877695+03",
+      "file_id": "f001",
+      "phase": "select"
+    },
+    {
+      "id": "3ec72186d1c44afbb641d2cc02ba9f24",
+      "method": "GET",
+      "url": "http://127.0.0.1:52404/666d1d622aa64905a7375718b19a0663/part-01.parquet",
+      "requested_range": "bytes=1674516-1675260",
+      "requested_span": {
+        "start": "1674516",
+        "end": "1675261"
+      },
+      "response_span": {
+        "start": "1674516",
+        "end": "1675261"
+      },
+      "status": 206,
+      "start_ms": 580.748046875,
+      "duration_ms": 47.0,
+      "declared_body_bytes": "745",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=1674516-1675260"
+      },
+      "response_headers": {
+        "Content-Length": "745",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Thu, 12 Nov 2026 16:08:43 GMT",
+        "X-ParquetScope-Request-ID": "3ec72186d1c44afbb641d2cc02ba9f24",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1794499698812228301\"",
+        "Content-Range": "bytes 1674516-1675260/2232062"
+      },
+      "engine_start_time": "2026-11-12 19:08:43.173238+03",
+      "file_id": "f002",
+      "phase": "select"
+    },
+    {
+      "id": "99350977a5a842a3b6799d7a8d334cdf",
+      "method": "GET",
+      "url": "http://127.0.0.1:52404/666d1d622aa64905a7375718b19a0663/part-01.parquet",
+      "requested_range": "bytes=555299-682585",
+      "requested_span": {
+        "start": "555299",
+        "end": "682586"
+      },
+      "response_span": {
+        "start": "555299",
+        "end": "682586"
+      },
+      "status": 206,
+      "start_ms": 479.114990234375,
+      "duration_ms": 226.0,
+      "declared_body_bytes": "127287",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=555299-682585"
+      },
+      "response_headers": {
+        "Content-Length": "127287",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Thu, 12 Nov 2026 16:08:43 GMT",
+        "X-ParquetScope-Request-ID": "99350977a5a842a3b6799d7a8d334cdf",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1794499698812228301\"",
+        "Content-Range": "bytes 555299-682585/2232062"
+      },
+      "engine_start_time": "2026-11-12 19:08:43.071605+03",
+      "file_id": "f002",
+      "phase": "select"
+    },
+    {
+      "id": "d533c029d03e49a3897f7d5550723747",
+      "method": "GET",
+      "url": "http://127.0.0.1:52404/666d1d622aa64905a7375718b19a0663/part-01.parquet",
+      "requested_range": "bytes=1113383-1240773",
+      "requested_span": {
+        "start": "1113383",
+        "end": "1240774"
+      },
+      "response_span": {
+        "start": "1113383",
+        "end": "1240774"
+      },
+      "status": 206,
+      "start_ms": 559.5380859375,
+      "duration_ms": 184.0,
+      "declared_body_bytes": "127391",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=1113383-1240773"
+      },
+      "response_headers": {
+        "Content-Length": "127391",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Thu, 12 Nov 2026 16:08:43 GMT",
+        "X-ParquetScope-Request-ID": "d533c029d03e49a3897f7d5550723747",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1794499698812228301\"",
+        "Content-Range": "bytes 1113383-1240773/2232062"
+      },
+      "engine_start_time": "2026-11-12 19:08:43.152028+03",
+      "file_id": "f002",
+      "phase": "select"
+    },
+    {
+      "id": "c40fc81319a2435ca4b32f69538e9d76",
+      "method": "GET",
+      "url": "http://127.0.0.1:52404/666d1d622aa64905a7375718b19a0663/part-01.parquet",
+      "requested_range": "bytes=1669204-1796664",
+      "requested_span": {
+        "start": "1669204",
+        "end": "1796665"
+      },
+      "response_span": {
+        "start": "1669204",
+        "end": "1796665"
+      },
+      "status": 206,
+      "start_ms": 628.426025390625,
+      "duration_ms": 179.0,
+      "declared_body_bytes": "127461",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=1669204-1796664"
+      },
+      "response_headers": {
+        "Content-Length": "127461",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Thu, 12 Nov 2026 16:08:43 GMT",
+        "X-ParquetScope-Request-ID": "c40fc81319a2435ca4b32f69538e9d76",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1794499698812228301\"",
+        "Content-Range": "bytes 1669204-1796664/2232062"
+      },
+      "engine_start_time": "2026-11-12 19:08:43.220916+03",
+      "file_id": "f002",
+      "phase": "select"
+    },
+    {
+      "id": "b5716c47562a424d9d2c8cfb1af0c6c6",
+      "method": "GET",
+      "url": "http://127.0.0.1:52404/666d1d622aa64905a7375718b19a0663/part-01.parquet",
+      "requested_range": "bytes=4-127263",
+      "requested_span": {
+        "start": "4",
+        "end": "127264"
+      },
+      "response_span": {
+        "start": "4",
+        "end": "127264"
+      },
+      "status": 206,
+      "start_ms": 481.071044921875,
+      "duration_ms": 376.0,
+      "declared_body_bytes": "127260",
+      "request_headers": {
+        "User-Agent": "duckdb/v1.5.6(osx_arm64) python/3.13 069cc9f9b5",
+        "Range": "bytes=4-127263"
+      },
+      "response_headers": {
+        "Content-Length": "127260",
+        "Content-Type": "application/octet-stream",
+        "Connection": "close",
+        "Date": "Thu, 12 Nov 2026 16:08:43 GMT",
+        "X-ParquetScope-Request-ID": "b5716c47562a424d9d2c8cfb1af0c6c6",
+        "Server": "BaseHTTP/0.6 Python/3.13.18",
+        "Accept-Ranges": "bytes",
+        "ETag": "\"1794499698812228301\"",
+        "Content-Range": "bytes 4-127263/2232062"
+      },
+      "engine_start_time": "2026-11-12 19:08:43.073561+03",
+      "file_id": "f002",
+      "phase": "select"
+    }
+  ],
+  "server_observations": [
+    {
+      "id": "45dae27edde241a58ce5ea20bda99d9a",
+      "method": "HEAD",
+      "requested_range": null,
+      "response_span": null,
+      "status": 200,
+      "start_ms": 91.79908299120143,
+      "duration_ms": 45.233459008159116,
+      "declared_body_bytes": "0",
+      "written_body_bytes": "0",
+      "complete": true,
+      "error": null,
+      "profile_delay_started_ms": 91.89208300085738,
+      "profile_delay_ms": 45.03133399703074,
+      "headers_sent_ms": 137.0232500048587,
+      "body_budget_wait_ms": 0.0,
+      "body_write_started_ms": null,
+      "body_write_finished_ms": null,
+      "body_write_ms": 0.0,
+      "reserved_body_bytes": "0",
+      "termination": "completed",
+      "file_id": "f001"
+    },
+    {
+      "id": "79c2687910e343758fc455ec69f90539",
+      "method": "GET",
+      "requested_range": "bytes=2211008-2227391",
+      "response_span": {
+        "start": "2211008",
+        "end": "2227392"
+      },
+      "status": 206,
+      "start_ms": 137.75829199585132,
+      "duration_ms": 43.1319580093259,
+      "declared_body_bytes": "16384",
+      "written_body_bytes": "16384",
+      "complete": true,
+      "error": null,
+      "profile_delay_started_ms": 137.87512500130106,
+      "profile_delay_ms": 42.856749991187826,
+      "headers_sent_ms": 180.813582992414,
+      "body_budget_wait_ms": 0.009707990102469921,
+      "body_write_started_ms": 180.8706669980893,
+      "body_write_finished_ms": 180.88262500532437,
+      "body_write_ms": 0.011958007235080004,
+      "reserved_body_bytes": "16384",
+      "termination": "completed",
+      "file_id": "f001"
+    },
+    {
+      "id": "b538bcdf0e4f4b93873d780241be0e3b",
+      "method": "HEAD",
+      "requested_range": null,
+      "response_span": null,
+      "status": 200,
+      "start_ms": 182.04145799973048,
+      "duration_ms": 45.17395899165422,
+      "declared_body_bytes": "0",
+      "written_body_bytes": "0",
+      "complete": true,
+      "error": null,
+      "profile_delay_started_ms": 182.0967919920804,
+      "profile_delay_ms": 45.04208300204482,
+      "headers_sent_ms": 227.21020800236147,
+      "body_budget_wait_ms": 0.0,
+      "body_write_started_ms": null,
+      "body_write_finished_ms": null,
+      "body_write_ms": 0.0,
+      "reserved_body_bytes": "0",
+      "termination": "completed",
+      "file_id": "f001"
+    },
+    {
+      "id": "10d66c6f439842be906c716d1c75a49e",
+      "method": "GET",
+      "requested_range": "bytes=2211008-2227391",
+      "response_span": {
+        "start": "2211008",
+        "end": "2227392"
+      },
+      "status": 206,
+      "start_ms": 227.91716699430253,
+      "duration_ms": 45.3333330078749,
+      "declared_body_bytes": "16384",
+      "written_body_bytes": "16384",
+      "complete": true,
+      "error": null,
+      "profile_delay_started_ms": 227.9863750009099,
+      "profile_delay_ms": 45.06408299494069,
+      "headers_sent_ms": 273.165082995547,
+      "body_budget_wait_ms": 0.011416996130719781,
+      "body_write_started_ms": 273.22683300008066,
+      "body_write_finished_ms": 273.24420800141525,
+      "body_write_ms": 0.01737500133458525,
+      "reserved_body_bytes": "16384",
+      "termination": "completed",
+      "file_id": "f001"
+    },
+    {
+      "id": "a2ac20e87f754253812fbd1cdc8329cc",
+      "method": "GET",
+      "requested_range": "bytes=560295-561048",
+      "response_span": {
+        "start": "560295",
+        "end": "561049"
+      },
+      "status": 206,
+      "start_ms": 275.38512500177603,
+      "duration_ms": 45.15562499000225,
+      "declared_body_bytes": "754",
+      "written_body_bytes": "754",
+      "complete": true,
+      "error": null,
+      "profile_delay_started_ms": 275.5699999979697,
+      "profile_delay_ms": 44.68224999436643,
+      "headers_sent_ms": 320.38966700201854,
+      "body_budget_wait_ms": 0.009625000529922545,
+      "body_write_started_ms": 320.47441699251067,
+      "body_write_finished_ms": 320.53100000484847,
+      "body_write_ms": 0.05658301233779639,
+      "reserved_body_bytes": "754",
+      "termination": "completed",
+      "file_id": "f001"
+    },
+    {
+      "id": "874952104a1047d0a666bc201e7ee37f",
+      "method": "GET",
+      "requested_range": "bytes=1115308-1116064",
+      "response_span": {
+        "start": "1115308",
+        "end": "1116065"
+      },
+      "status": 206,
+      "start_ms": 275.240874994779,
+      "duration_ms": 45.471582998288795,
+      "declared_body_bytes": "757",
+      "written_body_bytes": "757",
+      "complete": true,
+      "error": null,
+      "profile_delay_started_ms": 275.61779199459124,
+      "profile_delay_ms": 45.019041004707105,
+      "headers_sent_ms": 320.66912499431055,
+      "body_budget_wait_ms": 0.005459005478769541,
+      "body_write_started_ms": 320.69783299812116,
+      "body_write_finished_ms": 320.70933299837634,
+      "body_write_ms": 0.011500000255182385,
+      "reserved_body_bytes": "757",
+      "termination": "completed",
+      "file_id": "f001"
+    },
+    {
+      "id": "13cc602d70c740b7bd7103f01b379825",
+      "method": "GET",
+      "requested_range": "bytes=5885-6644",
+      "response_span": {
+        "start": "5885",
+        "end": "6645"
+      },
+      "status": 206,
+      "start_ms": 275.50904199597426,
+      "duration_ms": 100.0895000033779,
+      "declared_body_bytes": "760",
+      "written_body_bytes": "760",
+      "complete": true,
+      "error": null,
+      "profile_delay_started_ms": 275.6558330002008,
+      "profile_delay_ms": 44.67841699079145,
+      "headers_sent_ms": 320.4055419919314,
+      "body_budget_wait_ms": 55.058375000953674,
+      "body_write_started_ms": 375.56458299513906,
+      "body_write_finished_ms": 375.5914999928791,
+      "body_write_ms": 0.02691699774004519,
+      "reserved_body_bytes": "760",
+      "termination": "completed",
+      "file_id": "f001"
+    },
+    {
+      "id": "c7c0a81d01c0441197a35b721c84c08b",
+      "method": "GET",
+      "requested_range": "bytes=554983-681957",
+      "response_span": {
+        "start": "554983",
+        "end": "681958"
+      },
+      "status": 206,
+      "start_ms": 321.1612500017509,
+      "duration_ms": 106.28399999404792,
+      "declared_body_bytes": "126975",
+      "written_body_bytes": "126975",
+      "complete": true,
+      "error": null,
+      "profile_delay_started_ms": 321.4279169915244,
+      "profile_delay_ms": 41.409249999560416,
+      "headers_sent_ms": 362.90641699451953,
+      "body_budget_wait_ms": 63.799126000958495,
+      "body_write_started_ms": 362.94474999886006,
+      "body_write_finished_ms": 427.4272500042571,
+      "body_write_ms": 0.3657490306068212,
+      "reserved_body_bytes": "126975",
+      "termination": "completed",
+      "file_id": "f001"
+    },
+    {
+      "id": "4457c5362b034ead916edf4272a62961",
+      "method": "GET",
+      "requested_range": "bytes=1671252-1672000",
+      "response_span": {
+        "start": "1671252",
+        "end": "1672001"
+      },
+      "status": 206,
+      "start_ms": 274.99958299449645,
+      "duration_ms": 154.567917008535,
+      "declared_body_bytes": "749",
+      "written_body_bytes": "749",
+      "complete": true,
+      "error": null,
+      "profile_delay_started_ms": 275.1298749935813,
+      "profile_delay_ms": 45.02441700606141,
+      "headers_sent_ms": 320.3171249915613,
+      "body_budget_wait_ms": 109.03654199501034,
+      "body_write_started_ms": 429.5252919982886,
+      "body_write_finished_ms": 429.5591669942951,
+      "body_write_ms": 0.0338749960064888,
+      "reserved_body_bytes": "749",
+      "termination": "completed",
+      "file_id": "f001"
+    },
+    {
+      "id": "6b124f7a8a9245228c03fe3bd0dcdd91",
+      "method": "HEAD",
+      "requested_range": null,
+      "response_span": null,
+      "status": 200,
+      "start_ms": 430.39095800486393,
+      "duration_ms": 43.40979199332651,
+      "declared_body_bytes": "0",
+      "written_body_bytes": "0",
+      "complete": true,
+      "error": null,
+      "profile_delay_started_ms": 430.89120800141245,
+      "profile_delay_ms": 42.500875002588145,
+      "headers_sent_ms": 473.69366699422244,
+      "body_budget_wait_ms": 0.0,
+      "body_write_started_ms": null,
+      "body_write_finished_ms": null,
+      "body_write_ms": 0.0,
+      "reserved_body_bytes": "0",
+      "termination": "completed",
+      "file_id": "f002"
+    },
+    {
+      "id": "3482554a933e43e28e4054ace910c16b",
+      "method": "GET",
+      "requested_range": "bytes=1109998-1237144",
+      "response_span": {
+        "start": "1109998",
+        "end": "1237145"
+      },
+      "status": 206,
+      "start_ms": 321.3737079931889,
+      "duration_ms": 197.05866700678598,
+      "declared_body_bytes": "127147",
+      "written_body_bytes": "127147",
+      "complete": true,
+      "error": null,
+      "profile_delay_started_ms": 321.4759169932222,
+      "profile_delay_ms": 45.02229100035038,
+      "headers_sent_ms": 366.5452919958625,
+      "body_budget_wait_ms": 150.58850099740084,
+      "body_write_started_ms": 436.350832998869,
+      "body_write_finished_ms": 518.4061670006486,
+      "body_write_ms": 0.5502510030055419,
+      "reserved_body_bytes": "127147",
+      "termination": "completed",
+      "file_id": "f001"
+    },
+    {
+      "id": "686fbec0d22b4ceb87a9c082256fa801",
+      "method": "GET",
+      "requested_range": "bytes=2215678-2232061",
+      "response_span": {
+        "start": "2215678",
+        "end": "2232062"
+      },
+      "status": 206,
+      "start_ms": 475.5582079960732,
+      "duration_ms": 50.199709003209136,
+      "declared_body_bytes": "16384",
+      "written_body_bytes": "16384",
+      "complete": true,
+      "error": null,
+      "profile_delay_started_ms": 475.85395799251273,
+      "profile_delay_ms": 44.89987500710413,
+      "headers_sent_ms": 520.9460000041872,
+      "body_budget_wait_ms": 4.615166995790787,
+      "body_write_started_ms": 525.6802920048358,
+      "body_write_finished_ms": 525.7366669975454,
+      "body_write_ms": 0.056374992709606886,
+      "reserved_body_bytes": "16384",
+      "termination": "completed",
+      "file_id": "f002"
+    },
+    {
+      "id": "d72815c809c64b8a899c0a503bf4ca57",
+      "method": "GET",
+      "requested_range": "bytes=560611-561371",
+      "response_span": {
+        "start": "560611",
+        "end": "561372"
+      },
+      "status": 206,
+      "start_ms": 528.6711670050863,
+      "duration_ms": 40.94562499085441,
+      "declared_body_bytes": "761",
+      "written_body_bytes": "761",
+      "complete": true,
+      "error": null,
+      "profile_delay_started_ms": 529.33145800489,
+      "profile_delay_ms": 40.10770899185445,
+      "headers_sent_ms": 569.5387080049841,
+      "body_budget_wait_ms": 0.010540999937802553,
+      "body_write_started_ms": 569.5901250001043,
+      "body_write_finished_ms": 569.6092500002123,
+      "body_write_ms": 0.01912500010803342,
+      "reserved_body_bytes": "761",
+      "termination": "completed",
+      "file_id": "f002"
+    },
+    {
+      "id": "68ee4232d54749d088eace924d5ebf5c",
+      "method": "GET",
+      "requested_range": "bytes=5313-6056",
+      "response_span": {
+        "start": "5313",
+        "end": "6057"
+      },
+      "status": 206,
+      "start_ms": 529.0103750012349,
+      "duration_ms": 42.583542002830654,
+      "declared_body_bytes": "744",
+      "written_body_bytes": "744",
+      "complete": true,
+      "error": null,
+      "profile_delay_started_ms": 529.4108749949373,
+      "profile_delay_ms": 42.02079199603759,
+      "headers_sent_ms": 571.5240830031689,
+      "body_budget_wait_ms": 0.00883299799170345,
+      "body_write_started_ms": 571.565666992683,
+      "body_write_finished_ms": 571.5877500042552,
+      "body_write_ms": 0.022083011572249234,
+      "reserved_body_bytes": "744",
+      "termination": "completed",
+      "file_id": "f002"
+    },
+    {
+      "id": "8f5b8a870f0342c39ed30c1280cc2240",
+      "method": "GET",
+      "requested_range": "bytes=1665940-1793662",
+      "response_span": {
+        "start": "1665940",
+        "end": "1793663"
+      },
+      "status": 206,
+      "start_ms": 430.79362499702256,
+      "duration_ms": 170.05787500238512,
+      "declared_body_bytes": "127723",
+      "written_body_bytes": "127723",
+      "complete": true,
+      "error": null,
+      "profile_delay_started_ms": 431.02387500402983,
+      "profile_delay_ms": 42.531332990620285,
+      "headers_sent_ms": 473.67020799720194,
+      "body_budget_wait_ms": 126.08100200304762,
+      "body_write_started_ms": 473.9895829989109,
+      "body_write_finished_ms": 600.8405419997871,
+      "body_write_ms": 0.3522929910104722,
+      "reserved_body_bytes": "127723",
+      "termination": "completed",
+      "file_id": "f001"
+    },
+    {
+      "id": "4489113e6e3041ecafee73f0987b3db2",
+      "method": "GET",
+      "requested_range": "bytes=1118692-1119451",
+      "response_span": {
+        "start": "1118692",
+        "end": "1119452"
+      },
+      "status": 206,
+      "start_ms": 604.0866669936804,
+      "duration_ms": 45.55429100582842,
+      "declared_body_bytes": "760",
+      "written_body_bytes": "760",
+      "complete": true,
+      "error": null,
+      "profile_delay_started_ms": 604.2474169953493,
+      "profile_delay_ms": 45.049499996821396,
+      "headers_sent_ms": 649.489707997418,
+      "body_budget_wait_ms": 0.015124998753890395,
+      "body_write_started_ms": 649.5853749947855,
+      "body_write_finished_ms": 649.6211670018965,
+      "body_write_ms": 0.035792007111012936,
+      "reserved_body_bytes": "760",
+      "termination": "completed",
+      "file_id": "f002"
+    },
+    {
+      "id": "758abec69a9343c7b4ffd04fca788431",
+      "method": "GET",
+      "requested_range": "bytes=4-127611",
+      "response_span": {
+        "start": "4",
+        "end": "127612"
+      },
+      "status": 206,
+      "start_ms": 376.68495799880475,
+      "duration_ms": 292.2603750048438,
+      "declared_body_bytes": "127608",
+      "written_body_bytes": "127608",
+      "complete": true,
+      "error": null,
+      "profile_delay_started_ms": 376.8011670035776,
+      "profile_delay_ms": 44.271624996326864,
+      "headers_sent_ms": 421.1672079982236,
+      "body_budget_wait_ms": 246.54170997382607,
+      "body_write_started_ms": 491.340874999878,
+      "body_write_finished_ms": 668.9200419932604,
+      "body_write_ms": 0.4369579837657511,
+      "reserved_body_bytes": "127608",
+      "termination": "completed",
+      "file_id": "f001"
+    },
+    {
+      "id": "3ec72186d1c44afbb641d2cc02ba9f24",
+      "method": "GET",
+      "requested_range": "bytes=1674516-1675260",
+      "response_span": {
+        "start": "1674516",
+        "end": "1675261"
+      },
+      "status": 206,
+      "start_ms": 672.7999169961549,
+      "duration_ms": 45.66329100634903,
+      "declared_body_bytes": "745",
+      "written_body_bytes": "745",
+      "complete": true,
+      "error": null,
+      "profile_delay_started_ms": 673.1494169944199,
+      "profile_delay_ms": 45.061333003104664,
+      "headers_sent_ms": 718.3309999963967,
+      "body_budget_wait_ms": 0.013791999663226306,
+      "body_write_started_ms": 718.4075419936562,
+      "body_write_finished_ms": 718.4421249985462,
+      "body_write_ms": 0.03458300489000976,
+      "reserved_body_bytes": "745",
+      "termination": "completed",
+      "file_id": "f002"
+    },
+    {
+      "id": "99350977a5a842a3b6799d7a8d334cdf",
+      "method": "GET",
+      "requested_range": "bytes=555299-682585",
+      "response_span": {
+        "start": "555299",
+        "end": "682586"
+      },
+      "status": 206,
+      "start_ms": 570.75425000221,
+      "duration_ms": 225.03995799343102,
+      "declared_body_bytes": "127287",
+      "written_body_bytes": "127287",
+      "complete": true,
+      "error": null,
+      "profile_delay_started_ms": 570.9014579915674,
+      "profile_delay_ms": 43.348959006834775,
+      "headers_sent_ms": 614.4603330030804,
+      "body_budget_wait_ms": 180.11416798981372,
+      "body_write_started_ms": 614.6138750045793,
+      "body_write_finished_ms": 795.7684169959975,
+      "body_write_ms": 0.4890420095762238,
+      "reserved_body_bytes": "127287",
+      "termination": "completed",
+      "file_id": "f002"
+    },
+    {
+      "id": "d533c029d03e49a3897f7d5550723747",
+      "method": "GET",
+      "requested_range": "bytes=1113383-1240773",
+      "response_span": {
+        "start": "1113383",
+        "end": "1240774"
+      },
+      "status": 206,
+      "start_ms": 651.6447920002975,
+      "duration_ms": 182.87045799661428,
+      "declared_body_bytes": "127391",
+      "written_body_bytes": "127391",
+      "complete": true,
+      "error": null,
+      "profile_delay_started_ms": 651.9127079955069,
+      "profile_delay_ms": 44.87937499652617,
+      "headers_sent_ms": 696.9447500014212,
+      "body_budget_wait_ms": 136.1654989887029,
+      "body_write_started_ms": 704.0969999943627,
+      "body_write_finished_ms": 834.4850419962313,
+      "body_write_ms": 0.513956998474896,
+      "reserved_body_bytes": "127391",
+      "termination": "completed",
+      "file_id": "f002"
+    },
+    {
+      "id": "c40fc81319a2435ca4b32f69538e9d76",
+      "method": "GET",
+      "requested_range": "bytes=1669204-1796664",
+      "response_span": {
+        "start": "1669204",
+        "end": "1796665"
+      },
+      "status": 206,
+      "start_ms": 720.6658749928465,
+      "duration_ms": 176.61875000339933,
+      "declared_body_bytes": "127461",
+      "written_body_bytes": "127461",
+      "complete": true,
+      "error": null,
+      "profile_delay_started_ms": 720.9810829954222,
+      "profile_delay_ms": 45.07308400934562,
+      "headers_sent_ms": 766.3102920050733,
+      "body_budget_wait_ms": 129.93679399369285,
+      "body_write_started_ms": 768.6131670052418,
+      "body_write_finished_ms": 897.2517499933019,
+      "body_write_ms": 0.415165995946154,
+      "reserved_body_bytes": "127461",
+      "termination": "completed",
+      "file_id": "f002"
+    },
+    {
+      "id": "b5716c47562a424d9d2c8cfb1af0c6c6",
+      "method": "GET",
+      "requested_range": "bytes=4-127263",
+      "response_span": {
+        "start": "4",
+        "end": "127264"
+      },
+      "status": 206,
+      "start_ms": 572.6098330051173,
+      "duration_ms": 375.22412498947233,
+      "declared_body_bytes": "127260",
+      "written_body_bytes": "127260",
+      "complete": true,
+      "error": null,
+      "profile_delay_started_ms": 572.731374995783,
+      "profile_delay_ms": 41.63237499597017,
+      "headers_sent_ms": 614.496499998495,
+      "body_budget_wait_ms": 332.3567499901401,
+      "body_write_started_ms": 732.3712499928661,
+      "body_write_finished_ms": 947.822707996238,
+      "body_write_ms": 0.3630839928518981,
+      "reserved_body_bytes": "127260",
+      "termination": "completed",
+      "file_id": "f002"
+    }
+  ],
+  "capture": {
+    "complete": true,
+    "reason": null,
+    "reconciled": true,
+    "scope": "View creation (input binding) and one fully consumed SELECT over a fixed file set; app preparation (hashing, footer reads) excluded."
+  },
+  "metrics": {
+    "files_without_observed_access": 0,
+    "files_head_only": 0,
+    "files_with_get": 2,
+    "get_count": 19,
+    "head_count": 3,
+    "requested_range_bytes": "1074034",
+    "confirmed_range_bytes": "1074034",
+    "declared_body_bytes": "1074034",
+    "server_written_bytes": "1074034",
+    "unique_coverage_bytes": "1051620",
+    "repeated_coverage_bytes": "22414",
+    "totals_scope": "complete",
+    "unknown_reasons": [],
+    "files": [
+      {
+        "file_id": "f001",
+        "observed_access": "get",
+        "get_count": 10,
+        "head_count": 2,
+        "requested_range_bytes": "545241",
+        "confirmed_range_bytes": "545241",
+        "declared_body_bytes": "545241",
+        "server_written_bytes": "545241",
+        "unique_coverage_bytes": "525837",
+        "repeated_coverage_bytes": "19404",
+        "coverage": [
+          {
+            "start": "4",
+            "end": "127612"
+          },
+          {
+            "start": "554983",
+            "end": "681958"
+          },
+          {
+            "start": "1109998",
+            "end": "1237145"
+          },
+          {
+            "start": "1665940",
+            "end": "1793663"
+          },
+          {
+            "start": "2211008",
+            "end": "2227392"
+          }
+        ],
+        "unknown_reasons": []
+      },
+      {
+        "file_id": "f002",
+        "observed_access": "get",
+        "get_count": 9,
+        "head_count": 1,
+        "requested_range_bytes": "528793",
+        "confirmed_range_bytes": "528793",
+        "declared_body_bytes": "528793",
+        "server_written_bytes": "528793",
+        "unique_coverage_bytes": "525783",
+        "repeated_coverage_bytes": "3010",
+        "coverage": [
+          {
+            "start": "4",
+            "end": "127264"
+          },
+          {
+            "start": "555299",
+            "end": "682586"
+          },
+          {
+            "start": "1113383",
+            "end": "1240774"
+          },
+          {
+            "start": "1669204",
+            "end": "1796665"
+          },
+          {
+            "start": "2215678",
+            "end": "2232062"
+          }
+        ],
+        "unknown_reasons": []
+      }
+    ]
+  },
+  "errors": [],
+  "limitations": [
+    "Loopback HTTP measurement of an explicit URL list; not S3, listing or globbing, physical disk or client-received bytes.",
+    "Response intersections do not prove decoding, use or wasted work.",
+    "A file without observed requests is not proof of no access when the trace is partial.",
+    "Server-written bytes are not bytes DuckDB confirmed, received or used.",
+    "HTTP profile models this server's pre-header wait and shared body write budget; it does not model transport RTT, congestion, packet loss or a cloud provider.",
+    "Per-request delay, budget wait and write durations can overlap across requests; their sums are not query wall time.",
+    "Fresh worker means cold client only; OS and disk caches are uncontrolled.",
+    "A request's phase is where it started relative to wall-clock boundaries recorded around view creation and the SELECT; others are unattributed.",
+    "Query duration excludes view creation; elapsed includes worker setup and cleanup.",
+    "Where DuckDB redacts the request ID header (request_correlation is ordered_tuple_match), engine log rows are paired with server records by request content, not by an echoed identifier.",
+    "Relative paths and partition values are exported and may be sensitive.",
+    "Preview is runtime-only and omitted from exported artifacts."
+  ],
+  "http_profile": {
+    "requested": {
+      "response_delay_ms": 40,
+      "body_bytes_per_second": 2097152
+    },
+    "effective": {
+      "response_delay_ms": 40,
+      "body_bytes_per_second": 2097152
+    },
+    "semantics": "capture_shared_token_bucket_v1",
+    "burst_bytes": "16384",
+    "write_chunk_bytes": 16384
+  }
+}

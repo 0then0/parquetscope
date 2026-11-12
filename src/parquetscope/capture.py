@@ -16,12 +16,14 @@ from . import __version__
 from . import worker as worker_module
 from .analysis import derive_metrics, derive_set_metrics, reconcile, reconcile_set
 from .engines import EngineEnv, extension_directory, project_env, resolve_engine
+from .http_profile import HTTPProfile
 from .intervals import requested_range
-from .manifest import SetSpec, resolve_set
+from .manifest import SetEntry, SetSpec, resolve_set
 from .metadata import read_metadata
-from .models import Capture, HTTPObservation, Run, Settings, span
-from .models_v2 import FileHTTPObservation, FileServerObservation
-from .models_v3 import Engine3, PrefetchEvidence, SetRun3, Settings3
+from .models import Capture, HTTPObservation, Run, ServerObservation, Settings, span
+from .models_v2 import FileHTTPObservation, FileServerObservation, ReadOptions, split_logical_path
+from .models_v3 import Engine3, PrefetchEvidence, Settings3
+from .models_v4 import FileServerObservation4, SetRun4
 from .range_server import FileSetServer, RangeServer, ServedFile, encode_route
 
 REQUEST_ID = re.compile(r"[0-9a-f]{32}")
@@ -220,10 +222,12 @@ def _execute(
                     if cancel.is_set():
                         result["status"] = "cancelled"
                         result["errors"].append("Run cancelled; worker terminated")
+                        server.cancel("cancelled")
                         break
                     if time.monotonic() - started > settings.deadline_seconds:
                         result["status"] = "timeout"
                         result["errors"].append("Deadline exceeded; worker terminated")
+                        server.cancel("timeout")
                         break
                     time.sleep(0.02)
             finally:
@@ -247,7 +251,27 @@ def capture(
     sql: str,
     settings: Settings | None = None,
     cancel: threading.Event | None = None,
-) -> tuple[Run, dict]:
+    *,
+    http_profile: HTTPProfile | None = None,
+) -> tuple[Run | SetRun4, dict]:
+    # Preserve the legacy Python helper's v1 contract when no profile is supplied.
+    # CLI/UI always supply an explicit profile, including the unrestricted default.
+    if http_profile is not None:
+        source = path.resolve()
+        logical_name = source.name
+        try:
+            split_logical_path(logical_name)
+        except ValueError:
+            # A directly selected filename need not obey the portable manifest path syntax.
+            # Keep its display label and content identity, but use the legacy safe route name.
+            logical_name = "input.parquet"
+        spec = SetSpec(
+            manifest_path=source,
+            label=source.name[:128],
+            read=ReadOptions(hive_partitioning=False),
+            entries=(SetEntry(logical_name, source, source.stat().st_size, None, None),),
+        )
+        return capture_set(spec, sql, settings, cancel, http_profile=http_profile)
     settings = settings or Settings(
         threads=4, memory_limit_mb=512, deadline_seconds=30, preview_rows=30
     )
@@ -256,8 +280,15 @@ def capture(
         raise ValueError("SQL exceeds 64 KiB limit")
     metadata, file_identity = read_metadata(path)
     started = time.monotonic()
-    with RangeServer(path, file_identity) as server:
+    with RangeServer(
+        path, file_identity, cancel=cancel, deadline_at=started + settings.deadline_seconds
+    ) as server:
         result = _execute(server, {"sql": sql, "url": server.url}, settings, cancel, started)
+    # Historical v1 has no HTTP profile/timing fields. Serialize exactly its old contract.
+    server.observations = [
+        ServerObservation(**o.model_dump(include=set(ServerObservation.model_fields)))
+        for o in server.observations
+    ]
     errors = result["errors"]
     observations = []
     normalized = True
@@ -319,8 +350,9 @@ def capture_set(
     settings: Settings | None = None,
     cancel: threading.Event | None = None,
     engine: str | None = None,
-) -> tuple[SetRun3, dict]:
-    """Capture one SELECT over a manifest-defined file set; produces a v3 artifact.
+    http_profile: HTTPProfile | None = None,
+) -> tuple[SetRun4, dict]:
+    """Capture one SELECT over a prepared file set; produces a v4 artifact.
 
     `engine` selects a prepared isolated DuckDB version; None runs the project's interpreter.
     Preparation is a separate step (`parquetscope setup --engine`): nothing is installed here.
@@ -345,7 +377,12 @@ def capture_set(
         for f in resolved.files
     ]
     started = time.monotonic()
-    with FileSetServer(served) as server:
+    with FileSetServer(
+        served,
+        profile=http_profile or HTTPProfile(),
+        cancel=cancel,
+        deadline_at=started + settings.deadline_seconds,
+    ) as server:
         urls = [server.url_for(f) for f in served]
         config = {
             "sql": sql,
@@ -363,7 +400,7 @@ def capture_set(
         normalized = False
         errors.append(f"HTTP log schema error: {error}")
     server_observations = [
-        FileServerObservation(**o.model_dump(), file_id=file_id)
+        FileServerObservation4(**o.model_dump(), file_id=file_id)
         for o, file_id in zip(server.observations, server.observation_files, strict=True)
     ]
     observations, correlation = correlate(observations, server_observations)
@@ -414,7 +451,7 @@ def capture_set(
         ),
     )
     duckdb_version = engine_facts.get("duckdb_version") or env.version or duckdb.__version__
-    run = SetRun3(
+    run = SetRun4(
         app_version=__version__,
         duckdb_version=duckdb_version,
         pyarrow_version=pyarrow.__version__,
@@ -424,6 +461,7 @@ def capture_set(
         sql=sql,
         file_set=file_set,
         settings=settings,
+        http_profile=server.profile_evidence,
         engine=Engine3(
             httpfs_version=engine_facts.get("httpfs_version"),
             effective_settings=engine_facts.get("effective_settings", {}),
@@ -449,6 +487,10 @@ def capture_set(
             "Response intersections do not prove decoding, use or wasted work.",
             "A file without observed requests is not proof of no access when the trace is partial.",
             "Server-written bytes are not bytes DuckDB confirmed, received or used.",
+            "HTTP profile models this server's pre-header wait and shared body write budget; "
+            "it does not model transport RTT, congestion, packet loss or a cloud provider.",
+            "Per-request delay, budget wait and write durations can overlap across requests; "
+            "their sums are not query wall time.",
             "Fresh worker means cold client only; OS and disk caches are uncontrolled.",
             "A request's phase is where it started relative to wall-clock boundaries recorded "
             "around view creation and the SELECT; others are unattributed.",

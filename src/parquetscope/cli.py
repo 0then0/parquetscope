@@ -37,11 +37,23 @@ def main():
     demo = sub.add_parser("demo", help="Generate two layouts, capture and verify both queries")
     demo.add_argument("--output", type=Path, default=Path("demo-output"))
     capture = sub.add_parser("capture", help="Capture one SELECT as an artifact")
-    capture.add_argument("file", nargs="?", type=Path, help="One Parquet file (v1 artifact)")
-    capture.add_argument("--manifest", type=Path, help="A file-set manifest (v2 artifact)")
+    capture.add_argument("file", nargs="?", type=Path, help="One Parquet file (v4 artifact)")
+    capture.add_argument("--manifest", type=Path, help="A file-set manifest (v4 artifact)")
     capture.add_argument("--sql", required=True)
     capture.add_argument("--output", required=True, type=Path)
     capture.add_argument("--deadline", type=float, default=30)
+    capture.add_argument(
+        "--response-delay-ms",
+        type=int,
+        default=0,
+        help="Wait before each prepared HEAD/GET response's headers (0..60000 ms; default 0)",
+    )
+    capture.add_argument(
+        "--body-bytes-per-second",
+        type=int,
+        help="Shared body write limit across this capture (1..1000000000 bytes/s; "
+        "default unrestricted). Low rates may reach --deadline",
+    )
     capture.add_argument(
         "--engine",
         choices=SUPPORTED_ENGINES,
@@ -103,6 +115,7 @@ def main():
             _, report = run_demo(args.output)
             print(json.dumps(report, indent=2))
         elif args.command == "capture":
+            from .http_profile import HTTPProfile
             from .models import Settings, save_artifact
             from .models_v3 import Settings3
 
@@ -119,6 +132,10 @@ def main():
                     args.prefetch
                 ],
             )
+            profile = HTTPProfile(
+                response_delay_ms=args.response_delay_ms,
+                body_bytes_per_second=args.body_bytes_per_second,
+            )
             if args.manifest:
                 from .capture import capture_set
                 from .manifest import load_manifest
@@ -127,7 +144,9 @@ def main():
                 protected = [args.manifest, *(e.source for e in spec.entries)]
                 if args.output.exists() and any(args.output.samefile(p) for p in protected):
                     raise ValueError("Output must not refer to the manifest or an input file")
-                run, _ = capture_set(spec, args.sql, settings, engine=args.engine)
+                run, _ = capture_set(
+                    spec, args.sql, settings, engine=args.engine, http_profile=profile
+                )
             else:
                 if args.output.exists() and args.output.samefile(args.file):
                     raise ValueError("Output must not refer to the input Parquet file")
@@ -138,10 +157,11 @@ def main():
                     args.file,
                     args.sql,
                     Settings(**settings.model_dump(exclude={"disable_parquet_prefetching"})),
+                    http_profile=profile,
                 )
             save_artifact(run, args.output)
             print(f"SQL {run.sql_status}; capture complete={run.capture.complete}; {args.output}")
-            if run.errors or not run.capture.complete:
+            if run.sql_status != "succeeded" or run.errors or not run.capture.complete:
                 raise ValueError("; ".join(run.errors) or run.capture.reason)
         elif args.command == "viewer":
             # Import no execution modules and make no network requests.

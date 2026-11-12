@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import projectIconSvg from "../../docs/icon.svg?raw";
 import { Comparison } from "./Comparison";
 import { FileOverview } from "./FileOverview";
+import { HTTPProfileDetails } from "./HTTPProfileDetails";
 import { type LabData, LabDetails, LabIntro } from "./Lab";
 import {
   bytes,
@@ -172,9 +173,11 @@ export default function App({ lab }: { lab?: LabData }) {
   const [settings, setSettings] = useState(DEFAULT_SETTINGS);
   const [engine, setEngine] = useState("");
   const [prefetch, setPrefetch] = useState<PrefetchChoice>("default");
+  const [responseDelay, setResponseDelay] = useState("0");
+  const [bodyRate, setBodyRate] = useState("");
   const [engines, setEngines] = useState<EngineStatus[]>([]);
   const [view, setView] = useState<AnalysisView>(
-    embedded && isSetRun(embedded) ? "files" : "trace",
+    embedded && embedded.files.length > 1 ? "files" : "trace",
   );
   const [requestId, setRequestId] = useState<string | null>(null);
   const [chunk, setChunk] = useState<Structure | null>(null);
@@ -203,10 +206,18 @@ export default function App({ lab }: { lab?: LabData }) {
   const file = run ? (run.files.find((f) => f.id === fileId) ?? defaultFile(run)) : undefined;
   const other =
     runs.find((r) => r.id === compareId && r.id !== active) ?? runs.find((r) => r.id !== active);
+  const delay = Number(responseDelay);
+  const rate = bodyRate.trim() === "" ? null : Number(bodyRate);
+  const profileValid =
+    responseDelay.trim() !== "" &&
+    Number.isInteger(delay) &&
+    delay >= 0 &&
+    delay <= 60000 &&
+    (rate === null || (Number.isInteger(rate) && rate >= 1 && rate <= 1000000000));
   const navigate = useCallback(
     (
       next: Run,
-      nextView: AnalysisView = isSetRun(next) ? "files" : "trace",
+      nextView: AnalysisView = next.files.length > 1 ? "files" : "trace",
       comparison?: Run,
       updateHistory = true,
     ) => {
@@ -321,7 +332,10 @@ export default function App({ lab }: { lab?: LabData }) {
     const kind = inputs.find((i) => i.id === id)?.kind;
     const job = await api<{ id: string }>(
       "/api/runs",
-      runRequest(id, kind, query, settings, engine, prefetch),
+      runRequest(id, kind, query, settings, engine, prefetch, {
+        response_delay_ms: delay,
+        body_bytes_per_second: rate,
+      }),
     );
     setJobId(job.id);
     if (stopped.current) await api(`/api/jobs/${job.id}/cancel`, {});
@@ -359,7 +373,7 @@ export default function App({ lab }: { lab?: LabData }) {
     stopped.current = false;
     try {
       const result = await measure(inputId, sql);
-      if (result && isSetRun(result)) setView("files");
+      if (result && result.files.length > 1) setView("files");
       setMessage("Run finished. Select a request to inspect its range.");
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
@@ -564,7 +578,7 @@ export default function App({ lab }: { lab?: LabData }) {
             <h1>{lab ? "Measured run explorer" : "Range inspector"}</h1>
             <span>SELECT → HTTP → byte intervals → column chunks</span>
             {connected && demoAvailable && (
-              <button type="button" disabled={busy} onClick={() => void demo()}>
+              <button type="button" disabled={busy || !profileValid} onClick={() => void demo()}>
                 Run layout demo
               </button>
             )}
@@ -623,12 +637,57 @@ export default function App({ lab }: { lab?: LabData }) {
                 onChange={(e) => setSql(e.target.value)}
                 disabled={busy}
                 onKeyDown={(e) => {
-                  if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && !busy && inputId) {
+                  if (
+                    (e.metaKey || e.ctrlKey) &&
+                    e.key === "Enter" &&
+                    !busy &&
+                    inputId &&
+                    profileValid
+                  ) {
                     e.preventDefault();
                     void startRun();
                   }
                 }}
               />
+              <div className="http-profile-controls">
+                <strong>HTTP profile</strong>
+                <label>
+                  Response delay (ms)
+                  <input
+                    type="number"
+                    min="0"
+                    max="60000"
+                    step="1"
+                    value={responseDelay}
+                    aria-describedby="http-profile-help"
+                    onChange={(e) => setResponseDelay(e.target.value)}
+                  />
+                </label>
+                <label>
+                  Shared body rate (B/s)
+                  <input
+                    type="number"
+                    min="1"
+                    max="1000000000"
+                    step="1"
+                    placeholder="Unlimited"
+                    value={bodyRate}
+                    aria-describedby="http-profile-help"
+                    onChange={(e) => setBodyRate(e.target.value)}
+                  />
+                </label>
+                <p id="http-profile-help" className="footnote">
+                  Next capture only. Delay: 0–60,000 ms per HEAD/GET before headers. Body rate:
+                  1–1,000,000,000 B/s across every file and connection; blank is unlimited.
+                  {profileValid &&
+                    rate !== null &&
+                    ` At this rate, 1 MiB takes about ${(1048576 / rate).toFixed(1)} s before overhead; the ${settings.deadline_seconds} s deadline still applies.`}
+                  {profileValid &&
+                    delay >= settings.deadline_seconds * 1000 &&
+                    " The delay alone reaches the execution deadline."}
+                  {!profileValid && " Enter whole numbers within these ranges."}
+                </p>
+              </div>
               <div className="query-footer">
                 <details>
                   <summary>Execution settings</summary>
@@ -709,7 +768,7 @@ export default function App({ lab }: { lab?: LabData }) {
                   <button
                     type="button"
                     className="primary"
-                    disabled={!inputId || !sql.trim()}
+                    disabled={!inputId || !sql.trim() || !profileValid}
                     onClick={() => void startRun()}
                   >
                     Run query <kbd>⌘ ↵</kbd>
@@ -774,6 +833,7 @@ export default function App({ lab }: { lab?: LabData }) {
                 <summary>Captured SELECT</summary>
                 <pre>{run.sql}</pre>
               </details>
+              <HTTPProfileDetails key={run.id} run={run} />
               <div className="view-tabs">
                 <nav aria-label="Analysis view">
                   {(isSetRun(run)

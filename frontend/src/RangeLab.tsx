@@ -12,6 +12,8 @@ import {
 import { position, tick } from "./rangeGeometry";
 
 const PAGE = 12;
+const milliseconds = (value: number | null | undefined) =>
+  value == null ? "Not recorded / not reached" : `${value.toFixed(3)} ms`;
 export function RangeLab({
   run,
   file,
@@ -290,7 +292,48 @@ export function RangeLab({
                 </dd>
                 <dt>Independent server stream</dt>
                 <dd>{server ? (server.complete ? "Completed" : "Interrupted") : "Not matched"}</dd>
+                {server?.termination && (
+                  <>
+                    <dt>Server termination</dt>
+                    <dd>
+                      {server.termination}
+                      {server.error ? `: ${server.error}` : ""}
+                    </dd>
+                    <dt>Server handling start / duration</dt>
+                    <dd>
+                      {milliseconds(server.start_ms)} / {milliseconds(server.duration_ms)}
+                    </dd>
+                    <dt>Profile delay start / actual wait</dt>
+                    <dd>
+                      {milliseconds(server.profile_delay_started_ms)} /{" "}
+                      {milliseconds(server.profile_delay_ms)}
+                    </dd>
+                    <dt>Headers sent</dt>
+                    <dd>{milliseconds(server.headers_sent_ms)}</dd>
+                    <dt>Body budget wait (sum)</dt>
+                    <dd>{milliseconds(server.body_budget_wait_ms)}</dd>
+                    <dt>First / last body write</dt>
+                    <dd>
+                      {milliseconds(server.body_write_started_ms)} /{" "}
+                      {milliseconds(server.body_write_finished_ms)}
+                    </dd>
+                    <dt>Time inside body writes (sum)</dt>
+                    <dd>{milliseconds(server.body_write_ms)}</dd>
+                    <dt>Body bytes reserved / written</dt>
+                    <dd>
+                      {exact(server.reserved_body_bytes ?? null)} /{" "}
+                      {exact(server.written_body_bytes)}
+                    </dd>
+                  </>
+                )}
               </dl>
+              {server?.termination && (
+                <p className="footnote">
+                  Server timestamps use its monotonic origin. First-to-last write includes
+                  intervening budget waits. Actual delay, budget waits and write-call sums belong to
+                  this request; concurrent requests overlap.
+                </p>
+              )}
               <h4>
                 Intersecting file regions <span>{chunks.length}</span>
               </h4>

@@ -169,7 +169,7 @@ class Run(Model):
 
 
 def load_artifact(data: bytes):
-    """Validate a v1 `Run` or v2 `SetRun` and recompute its derived metrics."""
+    """Validate every supported artifact version and recompute its derived metrics."""
     if len(data) > MAX_ARTIFACT_BYTES:
         raise ValueError("Artifact exceeds 32 MiB limit")
     try:
@@ -178,9 +178,10 @@ def load_artifact(data: bytes):
         from .analysis import derive_metrics, derive_set_metrics
         from .models_v2 import SetRun
         from .models_v3 import SetRun3
+        from .models_v4 import SetRun4
 
         adapter = TypeAdapter(
-            Annotated[Run | SetRun | SetRun3, Field(discriminator="schema_version")]
+            Annotated[Run | SetRun | SetRun3 | SetRun4, Field(discriminator="schema_version")]
         )
         run = adapter.validate_json(data)
         if isinstance(run, SetRun):

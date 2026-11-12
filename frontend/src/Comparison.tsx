@@ -22,6 +22,8 @@ export function Comparison({
   const labels = [
     "DuckDB engine",
     "Prefetch disabled (requested → engine)",
+    "HTTP profile (effective)",
+    "SQL outcome / capture",
     "GET requests",
     "HEAD requests",
     "Confirmed ranges",
@@ -40,6 +42,10 @@ export function Comparison({
     r.engine?.prefetch
       ? `${r.engine.prefetch.requested === null ? "default" : String(r.engine.prefetch.requested)} → ${r.engine.prefetch.applied ?? "unread"}`
       : "Not recorded",
+    r.http_profile
+      ? `${r.http_profile.effective.response_delay_ms} ms / ${r.http_profile.effective.body_bytes_per_second?.toLocaleString("en-US") ?? "unlimited"} B/s`
+      : "Not recorded",
+    `${r.sql_status} / ${r.capture.complete ? "complete" : "partial"}`,
     String(r.metrics.get_count),
     String(r.metrics.head_count),
     bytes(r.metrics.confirmed_range_bytes),

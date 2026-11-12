@@ -77,7 +77,7 @@ test("file-set capture: overview, per-file inspector, comparison and offline vie
     .click();
   await exportJson(page, hivePath);
   const exported = JSON.parse(await readFile(hivePath, "utf8"));
-  expect(exported.schema_version).toBe("3");
+  expect(exported.schema_version).toBe("4");
   expect(exported.file_set.files).toHaveLength(8);
   expect(exported.preview).toBeUndefined();
   // Paths stay relative to the manifest: no absolute source location is exported.

@@ -6,6 +6,7 @@ with pread, so open descriptors are bounded by concurrent connections, not by se
 """
 
 import os
+import select
 import socket
 import threading
 import time
@@ -15,10 +16,18 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import quote, unquote, urlsplit
 
+from .http_profile import (
+    POLL_SECONDS,
+    BodyLimiter,
+    HTTPProfile,
+    TransferInterrupted,
+    profile_evidence,
+)
 from .intervals import UnsatisfiableRange, parse_range
 from .metadata import identity
-from .models import ServerObservation, span
+from .models import span
 from .models_v2 import split_logical_path
+from .models_v4 import ServerObservation4
 
 MAX_OBSERVATIONS = 100000
 MAX_CONNECTIONS = 64
@@ -39,7 +48,14 @@ def encode_route(token: str, logical_path: str) -> str:
 
 
 class FileSetServer:
-    def __init__(self, files: list[ServedFile], max_connections: int = MAX_CONNECTIONS):
+    def __init__(
+        self,
+        files: list[ServedFile],
+        max_connections: int = MAX_CONNECTIONS,
+        profile: HTTPProfile | None = None,
+        cancel: threading.Event | None = None,
+        deadline_at: float | None = None,
+    ):
         self.files = list(files)
         # Lookup is by exact decoded route, so '..', encoded slashes and listings never match.
         self.routes = {
@@ -48,7 +64,14 @@ class FileSetServer:
         if len(self.routes) != len(self.files):
             raise ValueError("Duplicate routes")
         self.max_connections = max_connections
-        self.observations: list[ServerObservation] = []
+        self.profile_evidence = profile_evidence((profile or HTTPProfile()).model_copy(deep=True))
+        self._cancel = cancel or threading.Event()
+        self._stopped = threading.Event()
+        self._stop_reason = "cancelled"
+        self.deadline_at = deadline_at
+        rate = self.profile_evidence.effective.body_bytes_per_second
+        self.limiter = BodyLimiter(rate, int(self.profile_evidence.burst_bytes)) if rate else None
+        self.observations: list[ServerObservation4] = []
         self.observation_files: list[str] = []  # file_id of each observation, same index
         self.lock = threading.Lock()
         self.changed = False
@@ -105,6 +128,30 @@ class FileSetServer:
                 status = 200
                 begin, end = 0, size
                 fd = None
+                delay_started = None
+                delay_ms = 0.0
+                headers_sent = None
+                budget_wait_ms = 0.0
+                write_started = None
+                write_finished = None
+                write_ms = 0.0
+                reserved = 0
+                termination = "completed"
+
+                def check():
+                    owner.check_running()
+                    # A TCP reset can interrupt a wait. EOF alone is a valid half-close:
+                    # the client may have finished sending while still reading our response.
+                    readable, _, _ = select.select([self.connection], [], [], 0)
+                    if readable:
+                        try:
+                            self.connection.recv(1, socket.MSG_PEEK)
+                        except OSError as exc:
+                            raise TransferInterrupted("disconnect") from exc
+
+                def wait(seconds):
+                    owner._stopped.wait(seconds)
+
                 try:
                     if owner.verify(file):
                         fd = os.open(file.path, os.O_RDONLY)
@@ -129,6 +176,20 @@ class FileSetServer:
                 if self.command == "GET" and status in (200, 206) and end > begin:
                     response_span = span(begin, end)
                 try:
+                    check()
+                    delay_started = time.monotonic()
+                    try:
+                        delay_end = delay_started + (
+                            owner.profile_evidence.effective.response_delay_ms / 1000
+                        )
+                        while True:
+                            check()
+                            remaining = delay_end - time.monotonic()
+                            if remaining <= 0:
+                                break
+                            wait(min(remaining, POLL_SECONDS))
+                    finally:
+                        delay_ms = (time.monotonic() - delay_started) * 1000
                     self.send_response(status)
                     self.send_header("Accept-Ranges", "bytes")
                     self.send_header("Content-Type", "application/octet-stream")
@@ -141,25 +202,65 @@ class FileSetServer:
                     elif status == 416:
                         self.send_header("Content-Range", f"bytes */{size}")
                     self.end_headers()
+                    headers_sent = time.monotonic()
                     if self.command == "GET" and body_size:
                         cursor = begin
                         while cursor < end:
+                            check()
                             if not owner.verify(file, fd):
                                 raise OSError("Input changed during capture")
-                            block = os.pread(fd, min(65536, end - cursor), cursor)
+                            block = os.pread(
+                                fd,
+                                min(owner.profile_evidence.write_chunk_bytes, end - cursor),
+                                cursor,
+                            )
                             if not block:
                                 raise OSError("Unexpected EOF")
-                            self.wfile.write(block)
-                            written += len(block)
-                            cursor += len(block)
+                            if owner.limiter:
+                                budget_started = time.monotonic()
+                                try:
+                                    owner.limiter.begin_write(len(block), check, wait)
+                                finally:
+                                    budget_wait_ms += (time.monotonic() - budget_started) * 1000
+                            reserved += len(block)
+                            try:
+                                check()
+                                write_start = time.monotonic()
+                                if write_started is None:
+                                    write_started = write_start
+                                try:
+                                    count = owner.write_body(self.wfile, block)
+                                    written += count
+                                    cursor += count
+                                    if count != len(block):
+                                        raise OSError("Short body write")
+                                finally:
+                                    write_finished = time.monotonic()
+                                    write_ms += (write_finished - write_start) * 1000
+                            finally:
+                                if owner.limiter:
+                                    owner.limiter.finish_write()
                         self.wfile.flush()
                     complete = True
+                except TransferInterrupted as exc:
+                    termination = exc.reason
+                    error = str(exc)
                 except (OSError, TimeoutError) as exc:
+                    if owner._stopped.is_set() or owner._cancel.is_set():
+                        termination = owner._stop_reason
+                    elif owner.deadline_at is not None and time.monotonic() >= owner.deadline_at:
+                        termination = "timeout"
+                    elif isinstance(exc, (BrokenPipeError, ConnectionResetError)):
+                        termination = "disconnect"
+                    elif isinstance(exc, TimeoutError):
+                        termination = "timeout"
+                    else:
+                        termination = "write_error"
                     error = str(exc)
                 finally:
                     if fd is not None:
                         os.close(fd)
-                    observation = ServerObservation(
+                    observation = ServerObservation4(
                         id=request_id,
                         method=self.command,
                         requested_range=requested,
@@ -171,6 +272,31 @@ class FileSetServer:
                         written_body_bytes=str(written),
                         complete=complete,
                         error=error,
+                        profile_delay_started_ms=(
+                            (delay_started - owner.started) * 1000
+                            if delay_started is not None
+                            else None
+                        ),
+                        profile_delay_ms=delay_ms,
+                        headers_sent_ms=(
+                            (headers_sent - owner.started) * 1000
+                            if headers_sent is not None
+                            else None
+                        ),
+                        body_budget_wait_ms=budget_wait_ms,
+                        body_write_started_ms=(
+                            (write_started - owner.started) * 1000
+                            if write_started is not None
+                            else None
+                        ),
+                        body_write_finished_ms=(
+                            (write_finished - owner.started) * 1000
+                            if write_finished is not None
+                            else None
+                        ),
+                        body_write_ms=write_ms,
+                        reserved_body_bytes=str(reserved),
+                        termination=termination,
                     )
                     with owner.lock:
                         if len(owner.observations) < MAX_OBSERVATIONS:
@@ -251,18 +377,38 @@ class FileSetServer:
         for file in self.files:
             self.verify(file)
 
+    @staticmethod
+    def write_body(stream, block: bytes) -> int:
+        """Count only completed writes (sendall failures have no known byte prefix)."""
+        return stream.write(block)
+
+    def check_running(self):
+        if self._stopped.is_set():
+            raise TransferInterrupted(self._stop_reason)
+        if self._cancel.is_set():
+            raise TransferInterrupted("cancelled")
+        if self.deadline_at is not None and time.monotonic() >= self.deadline_at:
+            raise TransferInterrupted("timeout")
+
+    def cancel(self, reason: str = "cancelled"):
+        with self.lock:
+            if not self._stopped.is_set():
+                self._stop_reason = reason
+                self._stopped.set()
+            active = list(self.active)
+        for connection in active:
+            try:
+                connection.shutdown(socket.SHUT_RDWR)
+            except OSError:
+                pass
+
     def __enter__(self):
         self.thread.start()
         return self
 
     def __exit__(self, *_args):
+        self.cancel()
         self.server.shutdown()
-        with self.lock:
-            for connection in list(self.active):
-                try:
-                    connection.shutdown(socket.SHUT_RDWR)
-                except OSError:
-                    pass
         self.server.server_close()
         self.thread.join(timeout=3)
         self.verify_all()
@@ -271,11 +417,18 @@ class FileSetServer:
 class RangeServer(FileSetServer):
     """The v1 single-file observer: one route, fixed `input.parquet` name."""
 
-    def __init__(self, path: Path, expected_identity: tuple):
+    def __init__(
+        self,
+        path: Path,
+        expected_identity: tuple,
+        profile: HTTPProfile | None = None,
+        cancel: threading.Event | None = None,
+        deadline_at: float | None = None,
+    ):
         self.path = path
         self.expected_identity = expected_identity
         self.size = expected_identity[2]
         self.route = f"/{uuid.uuid4().hex}/input.parquet"
         file = ServedFile("input", path, expected_identity, self.route)
-        super().__init__([file])
+        super().__init__([file], profile=profile, cancel=cancel, deadline_at=deadline_at)
         self.url = self.url_for(file)

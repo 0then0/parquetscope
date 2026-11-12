@@ -14,6 +14,7 @@ from pydantic import Field
 from .capture import capture, capture_set
 from .demo import SQL, generate
 from .engines import SUPPORTED_ENGINES, engine_status
+from .http_profile import HTTPProfile
 from .manifest import SetSpec
 from .models import MAX_ARTIFACT_BYTES, Model, Run, Settings, load_artifact
 from .models_v2 import SetRun
@@ -34,6 +35,7 @@ class RunRequest(Model):
     )
     # None: the project's own interpreter. A version needs `parquetscope setup --engine` first.
     engine: Literal[SUPPORTED_ENGINES] | None = None
+    http_profile: HTTPProfile = Field(default_factory=HTTPProfile)
 
 
 def describe_inputs(inputs: dict[str, "Path | SetSpec"]) -> list[dict]:
@@ -113,6 +115,7 @@ def create_app(
                     payload.settings,
                     job["cancel"],
                     payload.engine,
+                    payload.http_profile,
                 )
             else:
                 run, preview = await asyncio.to_thread(
@@ -123,6 +126,7 @@ def create_app(
                         **payload.settings.model_dump(exclude={"disable_parquet_prefetching"})
                     ),
                     job["cancel"],
+                    http_profile=payload.http_profile,
                 )
             stored[run.id] = run
             job.update(status="finished", run=run.model_dump(), preview=preview)

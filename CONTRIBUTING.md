@@ -41,8 +41,8 @@ Open the URL printed by Vite. Its development proxy forwards API calls to the Py
 
 - `metadata.py` reads the file identity and Parquet layout before capture. `manifest.py` validates a file-set manifest and resolves it (hashes, footers, schema compatibility) before any listener or worker exists.
 - `range_server.py` serves the prepared files over loopback HTTP, one exact route per file, and records independent stream observations keyed by file.
-- `capture.py` owns the listener and a fresh `worker.py` subprocess. The worker executes one SELECT, fully consumes its results, and collects DuckDB HTTP logs. `capture` produces v1 artifacts; `capture_set` produces v2.
-- `analysis.py` derives metrics (per file and per set); `models.py` (v1) and `models_v2.py` (v2) validate the portable artifacts.
+- `capture.py` owns the listener and a fresh `worker.py` subprocess. The worker executes one SELECT, fully consumes its results, and collects DuckDB HTTP logs. CLI/UI captures and `capture_set` produce v4; the legacy Python `capture` helper without an explicit HTTP profile retains v1.
+- `analysis.py` derives metrics (per file and per set); `models.py` and `models_v2.py` through `models_v4.py` validate the portable artifacts. `http_profile.py` defines shared server pacing and recorded evidence.
 - `app.py` and `cli.py` expose the local browser session and command-line workflows.
 - `frontend/src/` contains the viewer, artifact validation for both versions (`model.ts` normalizes them to one file-list model), the Files overview, comparison logic, interval geometry, and static-lab adapter.
 - `src/parquetscope/static/` contains the generated UI shipped in the wheel.
@@ -84,7 +84,7 @@ After changing artifact models, run:
 uv run python scripts/generate_schema.py
 ```
 
-This writes one schema per artifact version (`artifact-schema.json`, `artifact-schema-v2.json`). The v1 schema must not change. Review the generated schema and the Python/browser validation paths together. Byte offsets and potentially large counters must remain decimal strings, and displayed metrics must agree with the underlying observations. See the [artifact reference](docs/artifacts.md).
+This writes one schema per artifact version (`artifact-schema.json`, `artifact-schema-v2.json`, `artifact-schema-v3.json`, `artifact-schema-v4.json`). Historical schemas must not change. Review the generated schema and the Python/browser validation paths together. Byte offsets and potentially large counters must remain decimal strings, and displayed metrics must agree with the underlying observations. See the [artifact reference](docs/artifacts.md).
 
 The partition-pruning lab evidence under `docs/pruning-lab/` (manifests, captures, standalone viewers, report, `SHA256SUMS.txt`) is produced by `uv run python scripts/pruning_lab.py`. Its Parquet files are regenerated each run and ignored by Git. Regenerate the evidence after changing capture behavior or the frontend, because the viewers embed the built UI; `tests/test_pruning_lab.py` checks the recorded checksums.
 

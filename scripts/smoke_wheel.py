@@ -23,7 +23,7 @@ root = Path(sys.argv[1])
 subprocess.run(
     [sys.executable, "-m", "parquetscope.cli", "demo", "--output", str(root)], check=True
 )
-# A real two-file Hive set through the installed wheel: v2 capture, validation and viewer.
+# A real two-file Hive set through the installed wheel: profiled v4 capture and viewer.
 for month in (1, 2):
     part = root / "set" / f"month={month}" / "data.parquet"
     part.parent.mkdir(parents=True)
@@ -47,13 +47,19 @@ subprocess.run(
         str(root / "set" / "manifest.json"),
         "--sql",
         "SELECT count(*) FROM input WHERE month = 2",
+        "--response-delay-ms",
+        "5",
+        "--body-bytes-per-second",
+        "1000000",
         "--output",
         str(root / "set.parquetscope.json"),
     ],
     check=True,
 )
 set_run = load_artifact((root / "set.parquetscope.json").read_bytes())
-assert set_run.schema_version == "3" and set_run.capture.complete
+assert set_run.schema_version == "4" and set_run.capture.complete
+assert set_run.http_profile.effective.response_delay_ms == 5
+assert set_run.http_profile.effective.body_bytes_per_second == 1000000
 assert set_run.metrics.files_without_observed_access >= 0 and len(set_run.file_set.files) == 2
 assert "file_set" in viewer_html(set_run)
 run = load_artifact((root / "sorted.parquetscope.json").read_bytes())

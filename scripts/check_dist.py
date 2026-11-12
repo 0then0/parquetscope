@@ -9,6 +9,8 @@ with zipfile.ZipFile(root / "dist/parquetscope-0.3.0-py3-none-any.whl") as wheel
     names = wheel.namelist()
     assert "parquetscope/static/index.html" in names
     assert "parquetscope/static/offline.html" in names
+    assert "parquetscope/http_profile.py" in names
+    assert "parquetscope/models_v4.py" in names
     assert any(n.startswith("parquetscope/static/assets/") and n.endswith(".js") for n in names)
     assert any(n.startswith("parquetscope/static/assets/") and n.endswith(".css") for n in names)
 with tarfile.open(root / "dist/parquetscope-0.3.0.tar.gz") as source:
@@ -39,6 +41,9 @@ with tarfile.open(root / "dist/parquetscope-0.3.0.tar.gz") as source:
         "docs/pruning-lab/README.md",
         "scripts/pruning_lab.py",
         "scripts/prefetch_lab.py",
+        "scripts/http_profile_lab.py",
+        "frontend/src/artifact-schema-v4.json",
+        "docs/http-profile-lab/README.md",
         "docs/prefetch-lab/README.md",
         "scripts/browser_fixture.py",
         "docs/releasing.md",

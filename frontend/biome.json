@@ -6,6 +6,7 @@
       "!src/artifact-schema.json",
       "!src/artifact-schema-v2.json",
       "!src/artifact-schema-v3.json",
+      "!src/artifact-schema-v4.json",
       "!test-results",
       "!playwright-report",
       "!node_modules",

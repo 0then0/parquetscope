@@ -2,6 +2,14 @@
 
 User-visible changes are recorded here. Dates use YYYY-MM-DD. Entries under Unreleased describe changes on `main` that are not part of a new package release.
 
+## Unreleased
+
+### Added
+
+- Capture HTTP profiles in CLI and UI: a fixed pre-header response delay and one shared body-write rate across parallel responses and all files, with bounded burst, interruptible waits and the existing execution deadline.
+- Artifact v4 records requested/effective profiles, limiter semantics, reservation and successful-write bytes, and bounded request timing components. Comparison and standalone offline viewers show profile differences; v1–v3 remain readable with the profile explicitly unrecorded.
+- A bounded [HTTP profile lab](docs/http-profile-lab/README.md) compares prefetch on/off on prepared DuckDB 1.5.6, three alternating repetitions per profile, with independent query and plain HTTP controls.
+
 ## [0.3.0] - 2026-11-07
 
 ### Added

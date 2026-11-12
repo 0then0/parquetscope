@@ -1,4 +1,4 @@
-import { type FileEntry, fileTitle, prefetchText, type Run } from "./model";
+import { type FileEntry, fileTitle, httpProfileText, prefetchText, type Run } from "./model";
 
 export type ContentRow = {
   sha256: string;
@@ -107,6 +107,31 @@ export function readDifferences(a: Run, b: Run): Difference[] {
     ],
     ["Parquet prefetch", prefetchText(a), prefetchText(b)],
     [
+      "HTTP profile (requested)",
+      httpProfileText(a.http_profile?.requested),
+      httpProfileText(b.http_profile?.requested),
+    ],
+    [
+      "HTTP profile (effective)",
+      httpProfileText(a.http_profile?.effective),
+      httpProfileText(b.http_profile?.effective),
+    ],
+    [
+      "HTTP limiter semantics",
+      a.http_profile?.semantics ?? "Not recorded",
+      b.http_profile?.semantics ?? "Not recorded",
+    ],
+    [
+      "HTTP body burst (bytes)",
+      a.http_profile?.burst_bytes ?? "Not recorded",
+      b.http_profile?.burst_bytes ?? "Not recorded",
+    ],
+    [
+      "HTTP write chunk (bytes)",
+      a.http_profile ? String(a.http_profile.write_chunk_bytes) : "Not recorded",
+      b.http_profile ? String(b.http_profile.write_chunk_bytes) : "Not recorded",
+    ],
+    [
       "Bound columns",
       a.engine?.bound_schema?.map((c) => `${c.name} ${c.type}`).join(", ") ?? NOT_RECORDED,
       b.engine?.bound_schema?.map((c) => `${c.name} ${c.type}`).join(", ") ?? NOT_RECORDED,
@@ -157,12 +182,32 @@ export function comparabilityNotes(a: Run, b: Run, composition: Composition): st
     );
   if (JSON.stringify(a.settings) !== JSON.stringify(b.settings))
     notes.push("Execution settings differ.");
+  if (!a.http_profile || !b.http_profile)
+    notes.push(
+      "The HTTP profile was not recorded in at least one artifact. Missing metadata does not confirm unrestricted HTTP.",
+    );
+  else if (
+    httpProfileText(a.http_profile.requested) !== httpProfileText(b.http_profile.requested) ||
+    httpProfileText(a.http_profile.effective) !== httpProfileText(b.http_profile.effective) ||
+    a.http_profile.semantics !== b.http_profile.semantics ||
+    a.http_profile.burst_bytes !== b.http_profile.burst_bytes ||
+    a.http_profile.write_chunk_bytes !== b.http_profile.write_chunk_bytes
+  )
+    notes.push(
+      "HTTP profiles differ. Timings describe each capture's configured server model, including its shared body budget and burst allowance.",
+    );
   if (a.schema_version !== b.schema_version)
     notes.push(
-      "One artifact is v1, which has no read options, engine details or per-request phases.",
+      a.schema_version === "1" || b.schema_version === "1"
+        ? "One artifact is v1, which has no read options, engine details or per-request phases."
+        : "Artifact versions differ; older versions may lack HTTP profiles or engine evidence.",
     );
   if (!a.capture.complete || !b.capture.complete)
     notes.push("At least one capture is partial; its metrics describe an observed subset.");
+  if (a.sql_status !== "succeeded" || b.sql_status !== "succeeded")
+    notes.push(
+      "At least one SQL execution did not succeed. A timeout or cancellation is not a successful benchmark result, even when observations were saved.",
+    );
   if (a.result_digest !== null && b.result_digest !== null)
     notes.push(
       a.result_digest === b.result_digest
@@ -171,6 +216,7 @@ export function comparabilityNotes(a: Run, b: Run, composition: Composition): st
     );
   notes.push(
     "Similar schemas or row counts do not make two file sets logically equivalent. Byte positions belong to their own file.",
+    "Server delay and body pacing model a local HTTP server, not transport RTT or S3 performance. Concurrent per-request waits are not query wall time.",
   );
   return notes;
 }

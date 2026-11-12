@@ -43,6 +43,31 @@ Default execution settings are four threads, a 512 MiB DuckDB engine memory limi
 
 Use **Cancel run** to stop a running query. A cancelled or timed-out run may retain partial HTTP evidence; its SQL status and capture completeness are shown separately.
 
+### HTTP profile
+
+In **SQL workspace → HTTP profile**, choose **Response delay (ms)** (integer 0–60,000, default 0)
+and **Shared body rate (B/s)** (integer 1–1,000,000,000, blank for unrestricted). These values
+are copied into the next capture; changing them does not alter an active run. CLI equivalents:
+
+```sh
+parquetscope capture events.parquet --sql 'SELECT sum(id) FROM input' \
+  --response-delay-ms 40 --body-bytes-per-second 2097152 \
+  --deadline 60 --output shaped.parquetscope.json
+```
+
+The fixed wait starts after the prepared route, file identity and range have been resolved,
+immediately before generating response headers. Every accepted HEAD/GET on a prepared route
+waits once, including 409 and 416 responses. Unmatched routes retain the normal 404 behavior.
+The rate limits aggregate GET body writes for the whole capture, including all manifest files;
+HEAD and headers consume no body budget. Burst is `max(1, min(16384, ceil(rate / 10)))` bytes.
+Cancel, shutdown and the original deadline interrupt delay and budget waits. A small rate can
+make a run time out; the profile never extends the deadline.
+
+The run inspector and comparison retain each profile and its differences, including offline.
+v1–v3 artifacts show **not recorded**, rather than assuming unrestricted HTTP. A timeout with
+surviving observations remains a timeout, not a successful benchmark. See the
+[HTTP profile lab](http-profile-lab/README.md) and [timing boundaries](measurements.md#http-profiles).
+
 ## Capture a file set
 
 A [manifest](manifest.md) lists up to 256 local files that share one schema. Their relative paths, including Hive directories such as `month=3/`, are the logical layout.
@@ -65,7 +90,7 @@ parquetscope capture --manifest hive.manifest.json \
   --sql 'SELECT count(*) FROM input WHERE month = 3' --output set.parquetscope.json
 ```
 
-This writes a [v2 artifact](artifacts.md#format-v2-file-sets). Relative paths and partition values are included, so review them before sharing. The output must not be the manifest or any listed file.
+This writes a [v4 artifact](artifacts.md#format-v4-http-profiles). Relative paths and partition values are included, so review them before sharing. The output must not be the manifest or any listed file.
 
 To compare two sets, run both or import their artifacts and open **Compare runs**. Files are paired by SHA-256, so identical bytes at different locations line up. The comparison also shows read parameters, versions, engine settings and a list of limits. It never calls two sets logically equivalent on the strength of similar schemas or equal ordered result digests, and it makes no estimate of speed or cost. The [partition-pruning lab](pruning-lab/README.md) walks through a recorded example.
 
@@ -158,7 +183,7 @@ Wait for the template to load and try again. If the server cannot provide it, us
 
 ### An artifact cannot be opened
 
-Use an artifact produced by ParquetScope 0.1 or later (schema versions 1 and 2). Unknown schema versions, invalid intervals, incomplete reconciliation claims, or metrics that disagree with observations are rejected. Keep the original file unchanged when investigating a validation error.
+Use a supported artifact (schema versions 1–4). Unknown schema versions, invalid intervals, incomplete reconciliation claims, or metrics that disagree with observations are rejected. Keep the original file unchanged when investigating a validation error.
 
 ### The default port is busy
 

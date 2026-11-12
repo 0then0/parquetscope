@@ -7,6 +7,7 @@ from pathlib import Path
 from parquetscope.models import Run
 from parquetscope.models_v2 import SetRun
 from parquetscope.models_v3 import SetRun3
+from parquetscope.models_v4 import SetRun4
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--check", action="store_true")
@@ -16,6 +17,7 @@ targets = {
     source / "artifact-schema.json": Run,
     source / "artifact-schema-v2.json": SetRun,
     source / "artifact-schema-v3.json": SetRun3,
+    source / "artifact-schema-v4.json": SetRun4,
 }
 stale = []
 for path, model in targets.items():

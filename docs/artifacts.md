@@ -65,3 +65,67 @@ A v2 file-set capture that also records which DuckDB ran and what it did with `d
 - `engine.request_correlation`: `response_header_id` when the engine echoed the server's `X-ParquetScope-Request-ID`, or `ordered_tuple_match` when it did not. DuckDB 2.0 replaces that header by `"redacted"` in its HTTP log, so each log row is paired with a server record by file, method, requested range, status, response interval and declared length, in start order within identical requests. Every group must match in size on both sides, otherwise the capture is not reconciled. The paired ID is written into the observation, and the original headers stay as logged.
 
 Server records stay separate from engine observations: `server_written_bytes` is what the loopback listener wrote, not what DuckDB received or used.
+
+## Format v4: HTTP profiles
+
+New CLI/UI captures and `capture_set` produce `schema_version: "4"`, extending v3 with
+required HTTP profile evidence and server timing fields. Single-file CLI/UI inputs use a
+one-file `file_set` with Hive partitioning off. If its basename cannot be a portable manifest
+path, the file uses the logical name `input.parquet`; the original basename stays in the
+set label. Directly selected local filenames need not satisfy manifest path restrictions.
+v1–v3 schemas and recorded evidence remain
+unchanged; the viewer reports their HTTP profile as **not recorded**. Absence is never
+converted into confirmed unrestricted service. The legacy Python `capture` helper without
+an explicit `http_profile` retains its v1 return contract; pass `HTTPProfile()` for v4.
+The schema is generated from `models_v4.py` into `frontend/src/artifact-schema-v4.json`.
+
+`http_profile` contains:
+
+- `requested`, `effective`: `{response_delay_ms, body_bytes_per_second}`. Delay is an integer
+  in 0–60,000 milliseconds, default 0. Rate is null (unrestricted) or an integer in
+  1–1,000,000,000 bytes/second. Booleans, fractional values and numeric strings are rejected.
+  Both fields are required in recorded evidence. The server currently applies the request
+  exactly, so requested and effective must agree.
+- `semantics`: `capture_shared_token_bucket_v1`, the server write-admission algorithm below.
+- `burst_bytes`: decimal string, `"0"` unrestricted; otherwise
+  `max(1, min(16384, ceil(rate / 10)))`. Each capture starts with its own full bucket.
+- `write_chunk_bytes`: 65,536 unrestricted, otherwise equal to burst. Headers and HEAD
+  consume no body tokens. The budget covers all concurrent GETs and all files in the capture.
+
+v4 `server_observations` add required bounded fields:
+
+- `profile_delay_started_ms`: nullable start of the wait immediately before generating
+  headers, after route/identity/range preparation. `profile_delay_ms`: actual monotonic
+  time spent there, including scheduling overhead, possibly shorter on interruption.
+- `headers_sent_ms`: timestamp after `end_headers` successfully returns, null otherwise.
+- `body_budget_wait_ms`: aggregate elapsed time in body admission, including contention
+  with other writes and token waits. No event list or queue of future reservations exists.
+- `body_write_started_ms`, `body_write_finished_ms`: nullable boundaries of first through
+  last attempted body writes, including a failed attempt. Their span can include budget
+  waits between writes. `body_write_ms` sums only time inside write calls.
+- `reserved_body_bytes`: bytes admitted before writes, including reservations whose write
+  fails or is cancelled. `written_body_bytes` retains successful response-stream acceptance,
+  including an explicitly reported short write. Bytes possibly accepted by a failing call
+  that reports no count cannot be reconstructed. Reservations are not refunded.
+- `termination`: `completed`, `cancelled`, `timeout`, `disconnect`, or `write_error`.
+
+All timestamps use the existing server monotonic origin; `start_ms` still begins at handling
+of a matched HEAD/GET and `duration_ms` still covers preparation, delay, budget, I/O and cleanup
+through observation construction. Engine timestamps have their own origin. Sequential
+delay, budget and write components lie within server duration; first-to-last write span
+overlaps budget waits. Concurrent requests overlap, so summing these durations does not
+produce query wall time. `query_duration_ms` still excludes view creation; `elapsed_ms`
+includes worker startup and cleanup. SQL outcome remains independent of capture completeness.
+
+The limiter serializes limited write admission and the actual write, releases its lock
+while waiting for tokens and suspends token accrual during an in-flight write. It never
+allocates future slots. The reservation envelope is bounded by burst plus rate times elapsed
+monotonic seconds, shared by the capture; there is at most one admitted in-flight chunk.
+Actual throughput can be lower because file reads, socket buffering, system calls and
+thread scheduling also take time. The exact restriction point is immediately before the
+server response-stream body write, not TCP delivery or acknowledgment. See the
+[measurement contract](measurements.md#http-profiles).
+
+Validation rejects inconsistent profile/burst/chunk evidence, timestamps outside the
+request or out of order, impossible duration components, written bytes exceeding reserved
+or declared bytes, and termination/completion contradictions, in addition to all v3 checks.

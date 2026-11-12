@@ -29,7 +29,50 @@ Every run owns its worker and its HTTP listener. Cancellation and deadline termi
 
 ## HTTP policy
 
-The endpoint is bound to `127.0.0.1`, has an unguessable per-run route and serves exactly one open file. HEAD sends no body and ignores Range. GET supports full 200, single-range 206 (inclusive Content-Range), and unsatisfiable 416 with `Content-Range: bytes */size`. Unsupported multi-range and unknown units are explicitly ignored with a full 200 response, a behavior allowed by RFC 9110. No multipart response is fabricated. Transfers stream in 64 KiB blocks. Aborted writes retain their declared response interval and unsuccessful stream status.
+The endpoint is bound to `127.0.0.1`, has unguessable per-run routes and serves only prepared files. HEAD sends no body and ignores Range. GET supports full 200, single-range 206 (inclusive Content-Range), and unsatisfiable 416 with `Content-Range: bytes */size`. Unsupported multi-range and unknown units are explicitly ignored with a full 200 response, a behavior allowed by RFC 9110. No multipart response is fabricated. Unrestricted transfers stream in 64 KiB blocks; limited transfers use the bounded chunks below. Aborted writes retain their declared response interval and unsuccessful stream status.
+
+## HTTP profiles
+
+The default server profile has zero response delay and no body-rate limit. For a matched
+HEAD or GET, the fixed delay begins after file identity, descriptor and range preparation,
+immediately before response headers are generated. It applies once, also to prepared-route
+409/416 responses; unrelated routes retain their existing 404 contract. `response_delay_ms`
+is the requested wait; each observation's `profile_delay_ms` measures the actual elapsed
+wait. File preparation time before the wait is part of request duration, not profile delay.
+
+For a configured rate R bytes/second, one capture-local token bucket has capacity
+`B = max(1, min(16384, ceil(R / 10)))` bytes and starts full. All parallel GETs across all
+manifest files share it; HEAD and headers consume nothing. Writes use at most B bytes per
+chunk. One admitted write runs at a time, with token accrual suspended during that write;
+budget waits release the admission lock and periodically recheck cancellation, disconnect
+and deadline. There is no queued future reservation. Reservations across a monotonic interval
+of length t cannot exceed `B + R*t`; scheduling and I/O can only reduce sustained throughput.
+Only one chunk can be in flight. A fresh capture gets independent state.
+
+The restriction point is immediately before body bytes are handed to the response-stream
+write. `reserved_body_bytes` records admission even when a later write fails; it is not
+refunded. `written_body_bytes` records successful writes and explicit short-write counts.
+A failing call may have accepted an unknown partial block. System-call frequency, socket
+buffers and thread scheduling affect observations; successful server writes do not confirm
+DuckDB receipt. This is a model of a local HTTP server, not transport RTT, TCP congestion,
+packet loss, S3 or any cloud provider.
+
+Waits poll at most every 50 ms and hold no common observation lock. TCP resets and write
+failures identify disconnects. A peer FIN only closes its sending side and cannot distinguish
+a client that is still reading from one that closed completely; it is not treated as failure.
+Cancellation and server
+stop wake them; the existing execution deadline is unchanged. A socket write can still take
+up to its existing two-second timeout before cleanup. Connection and observation limits
+remain in force. Low rates can therefore produce incomplete timeout artifacts, which are
+not successful benchmark results.
+
+Server `start_ms`/`duration_ms` retain their original boundaries. New timestamps distinguish
+delay start, headers completion and first/last attempted body write. `body_budget_wait_ms`
+aggregates admission contention and token wait; `body_write_ms` aggregates write calls.
+The span from first to last write includes intervening waits, so it overlaps those
+components. Parallel requests overlap each other: duration sums are not query wall time.
+No component is added to the existing byte metrics. The [v4 contract](artifacts.md#format-v4-http-profiles)
+specifies fields and validation. Older artifacts have no recorded HTTP profile.
 
 ## Interpretation
 

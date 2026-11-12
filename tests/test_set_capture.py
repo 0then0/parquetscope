@@ -196,7 +196,7 @@ def test_cli_capture_manifest_writes_a_v3_artifact_and_protects_inputs(hive_set,
     )
     assert ok.returncode == 0, ok.stderr
     run = load_artifact(out.read_bytes())
-    assert run.schema_version == "3" and run.capture.complete
+    assert run.schema_version == "4" and run.capture.complete
     before = (tmp_path / "month=1" / "data.parquet").read_bytes()
     for target in (hive_set, tmp_path / "month=1" / "data.parquet"):
         bad = subprocess.run(

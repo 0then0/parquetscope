@@ -259,7 +259,7 @@ def test_real_engine_records_version_setting_and_requests(version, prefetch, hiv
     )
     assert run.sql_status == "succeeded" and run.capture.complete, run.errors
     assert preview["rows"] == [["3000", "8994"]]
-    assert run.schema_version == "3" and run.duckdb_version == version
+    assert run.schema_version == "4" and run.duckdb_version == version
     assert run.engine.environment == "isolated" and run.engine.httpfs_version
     expected = {None: "false", False: "false", True: "true"}[prefetch]
     assert run.engine.prefetch.requested is prefetch

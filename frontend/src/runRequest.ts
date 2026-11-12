@@ -1,4 +1,4 @@
-import type { Settings } from "./model";
+import type { HTTPProfile, Settings } from "./model";
 
 export type PrefetchChoice = "default" | "on" | "off";
 const PREFETCH: Record<PrefetchChoice, boolean | null> = { default: null, on: false, off: true };
@@ -14,12 +14,15 @@ export function runRequest(
   settings: Settings,
   engine: string,
   prefetch: PrefetchChoice,
+  httpProfile: HTTPProfile = { response_delay_ms: 0, body_bytes_per_second: null },
 ) {
-  if (kind !== "set") return { input_id: inputId, sql, settings };
+  const http_profile = { ...httpProfile };
+  if (kind !== "set") return { input_id: inputId, sql, settings, http_profile };
   return {
     input_id: inputId,
     sql,
     engine: engine || null,
     settings: { ...settings, disable_parquet_prefetching: PREFETCH[prefetch] },
+    http_profile,
   };
 }

@@ -2,6 +2,7 @@ import Ajv from "ajv";
 import schema1 from "./artifact-schema.json";
 import schema2 from "./artifact-schema-v2.json";
 import schema3 from "./artifact-schema-v3.json";
+import schema4 from "./artifact-schema-v4.json";
 
 export type Span = { start: string; end: string };
 export type Structure = {
@@ -50,6 +51,27 @@ export type ServerObservation = {
   written_body_bytes: string;
   complete: boolean;
   error: string | null;
+  /** v4 server timings use the server's monotonic origin, independently of engine timings. */
+  profile_delay_started_ms?: number | null;
+  profile_delay_ms?: number;
+  headers_sent_ms?: number | null;
+  body_budget_wait_ms?: number;
+  body_write_started_ms?: number | null;
+  body_write_finished_ms?: number | null;
+  body_write_ms?: number;
+  reserved_body_bytes?: string;
+  termination?: "completed" | "cancelled" | "timeout" | "disconnect" | "write_error";
+};
+export type HTTPProfile = {
+  response_delay_ms: number;
+  body_bytes_per_second: number | null;
+};
+export type HTTPProfileEvidence = {
+  requested: HTTPProfile;
+  effective: HTTPProfile;
+  semantics: "capture_shared_token_bucket_v1";
+  burst_bytes: string;
+  write_chunk_bytes: number;
 };
 export type Settings = {
   threads: number;
@@ -131,7 +153,7 @@ export type Capture = {
 };
 /** One validated run of either artifact version, normalized to a file list. */
 export type Run = {
-  schema_version: "1" | "2" | "3";
+  schema_version: "1" | "2" | "3" | "4";
   /** The validated artifact exactly as imported; exports use this, never the normalized view. */
   artifact: unknown;
   app_version: string;
@@ -148,6 +170,8 @@ export type Run = {
   read: { hive_partitioning: boolean; union_by_name: boolean } | null;
   engine: Engine | null;
   settings: Settings;
+  /** Null means not recorded by this artifact, never a confirmed unrestricted profile. */
+  http_profile: HTTPProfileEvidence | null;
   sql_status: "succeeded" | "failed" | "cancelled" | "timeout";
   query_duration_ms: number | null;
   elapsed_ms: number;
@@ -174,6 +198,7 @@ type Raw1 = Omit<
   | "observations"
   | "server_observations"
   | "metrics"
+  | "http_profile"
 > & {
   input: Omit<FileEntry, "id" | "logical_path" | "partition">;
   observations: Omit<Observation, "file_id" | "phase">[];
@@ -199,6 +224,7 @@ const ajv = new Ajv({ strict: false, allErrors: false });
 const validate1 = ajv.compile(schema1);
 const validate2 = ajv.compile(schema2);
 const validate3 = ajv.compile(schema3);
+const validate4 = ajv.compile(schema4);
 /** v2 and v3 artifacts are file sets; v1 holds exactly one file. */
 export const isSetRun = (run: { schema_version: string }) => run.schema_version !== "1";
 export const intersects = (a: Span | null, b: Span | null) =>
@@ -404,6 +430,7 @@ function normalizeV1(value: Raw1): Run {
     files: [file],
     read: null,
     engine: null,
+    http_profile: null,
     observations,
     server_observations: server,
     metrics: {
@@ -453,7 +480,72 @@ function checkPrefetch(value: Raw2) {
       throw new Error("A requested prefetch setting is verified or unverified");
   } else if (value.capture.complete) throw new Error("Complete capture needs a verified prefetch");
 }
-function normalizeSet(value: Raw2, version: "2" | "3"): Run {
+/** Mirrors models_v4.ServerObservation4 and HTTPProfileEvidence refinements. */
+function checkHTTPProfile(value: Raw2) {
+  const profile = value.http_profile;
+  if (!profile) throw new Error("Missing HTTP profile evidence");
+  if (
+    profile.requested.response_delay_ms !== profile.effective.response_delay_ms ||
+    profile.requested.body_bytes_per_second !== profile.effective.body_bytes_per_second
+  )
+    throw new Error("Requested and effective HTTP profiles disagree");
+  const rate = profile.effective.body_bytes_per_second;
+  const burst = rate === null ? 0 : Math.max(1, Math.min(16384, Math.ceil(rate / 10)));
+  if (
+    BigInt(profile.burst_bytes) !== BigInt(burst) ||
+    profile.write_chunk_bytes !== (burst || 65536)
+  )
+    throw new Error("HTTP limiter evidence disagrees with its profile");
+  const epsilon = 0.001;
+  for (const s of value.server_observations) {
+    const end = s.start_ms + s.duration_ms;
+    const times = [
+      s.profile_delay_started_ms,
+      s.headers_sent_ms,
+      s.body_write_started_ms,
+      s.body_write_finished_ms,
+    ];
+    const recorded = times.filter((t): t is number => t !== null && t !== undefined);
+    if (recorded.some((t) => t < s.start_ms - epsilon || t > end + epsilon))
+      throw new Error("Server timing outside request duration");
+    if (recorded.some((t, i) => i > 0 && t < recorded[i - 1]))
+      throw new Error("Server timestamps are out of order");
+    if ((s.body_write_started_ms === null) !== (s.body_write_finished_ms === null))
+      throw new Error("Body write boundaries must both be recorded");
+    if (s.body_write_ms && s.body_write_started_ms === null)
+      throw new Error("Body write duration needs write boundaries");
+    if (
+      s.body_write_started_ms != null &&
+      s.body_write_finished_ms != null &&
+      (s.body_write_ms ?? 0) > s.body_write_finished_ms - s.body_write_started_ms + epsilon
+    )
+      throw new Error("Body write duration exceeds its boundaries");
+    if (s.profile_delay_ms && s.profile_delay_started_ms === null)
+      throw new Error("Profile delay needs its start timestamp");
+    if (
+      s.profile_delay_started_ms != null &&
+      s.profile_delay_started_ms + (s.profile_delay_ms ?? 0) > end + epsilon
+    )
+      throw new Error("Profile delay exceeds request duration");
+    if (
+      (s.profile_delay_ms ?? 0) + (s.body_budget_wait_ms ?? 0) + (s.body_write_ms ?? 0) >
+      s.duration_ms + epsilon
+    )
+      throw new Error("Sequential timing components exceed request duration");
+    const written = BigInt(s.written_body_bytes),
+      reserved = BigInt(s.reserved_body_bytes ?? "0"),
+      declared = BigInt(s.declared_body_bytes);
+    if (written > reserved || reserved > declared)
+      throw new Error("Expected written <= reserved <= declared body bytes");
+    if (s.method === "HEAD" && (declared !== 0n || reserved !== 0n || written !== 0n))
+      throw new Error("HEAD does not transfer body bytes");
+    if (s.complete !== (s.termination === "completed"))
+      throw new Error("Completion disagrees with server termination");
+    if (s.complete && (written !== declared || s.headers_sent_ms === null))
+      throw new Error("Completed response needs headers and all declared body writes");
+  }
+}
+function normalizeSet(value: Raw2, version: "2" | "3" | "4"): Run {
   const files = value.file_set.files;
   if (files.some((f, i) => f.id !== `f${String(i + 1).padStart(3, "0")}`))
     throw new Error("File IDs must be f001, f002, … in set order");
@@ -469,7 +561,8 @@ function normalizeSet(value: Raw2, version: "2" | "3"): Run {
   }
   const observations = value.observations;
   const server = value.server_observations;
-  if (version === "3") checkPrefetch(value);
+  if (version === "3" || version === "4") checkPrefetch(value);
+  if (version === "4") checkHTTPProfile(value);
   checkIntervals(files, observations, server);
   checkReconciled(value.capture, observations, server);
   const byFile = groupByFile(
@@ -496,6 +589,7 @@ function normalizeSet(value: Raw2, version: "2" | "3"): Run {
     ...value,
     artifact: value,
     schema_version: version,
+    http_profile: version === "4" ? value.http_profile : null,
     label: value.file_set.label ?? "File set",
     files,
     read: value.file_set.read,
@@ -508,7 +602,15 @@ function normalizeSet(value: Raw2, version: "2" | "3"): Run {
 export function parseArtifactValue(value: unknown): Run {
   const version = (value as { schema_version?: unknown } | null)?.schema_version;
   const check =
-    version === "3" ? validate3 : version === "2" ? validate2 : version === "1" ? validate1 : null;
+    version === "4"
+      ? validate4
+      : version === "3"
+        ? validate3
+        : version === "2"
+          ? validate2
+          : version === "1"
+            ? validate1
+            : null;
   if (!check)
     throw new Error(`Invalid or unsupported artifact: schema_version ${JSON.stringify(version)}`);
   if (!check(value))
@@ -517,7 +619,7 @@ export function parseArtifactValue(value: unknown): Run {
     );
   return version === "1"
     ? normalizeV1(value as Raw1)
-    : normalizeSet(value as unknown as Raw2, version as "2" | "3");
+    : normalizeSet(value as unknown as Raw2, version as "2" | "3" | "4");
 }
 export function parseArtifact(text: string): Run {
   if (new TextEncoder().encode(text).length > MAX_BYTES)
@@ -559,4 +661,11 @@ export function prefetchText(run: Run): string {
     p.requested === null ? "not set (engine default)" : `set to ${String(p.requested)}`;
   const applied = p.applied === null ? "could not be read back" : `engine reports ${p.applied}`;
   return `disable_parquet_prefetching ${requested}; ${applied}; ${p.status.replace("_", " ")}`;
+}
+
+export function httpProfileText(profile: HTTPProfile | null | undefined): string {
+  if (!profile) return "Not recorded (artifact before v4)";
+  const rate = profile.body_bytes_per_second;
+  if (profile.response_delay_ms === 0 && rate === null) return "Unrestricted (recorded)";
+  return `${profile.response_delay_ms} ms before headers; ${rate === null ? "unlimited body rate" : `${rate.toLocaleString("en-US")} B/s shared body rate`}`;
 }

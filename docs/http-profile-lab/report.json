@@ -1,0 +1,1465 @@
+{
+  "schema_version": "1",
+  "recorded_at": "2026-11-12T16:08:55.545378+00:00",
+  "seed": 20261112,
+  "versions": {
+    "parquetscope": "0.3.0",
+    "duckdb": "1.5.6",
+    "prepared_environment": {
+      "duckdb_version": "1.5.6",
+      "httpfs_version": "4bc690d",
+      "python_version": "3.13.18",
+      "prepared_at": "2026-11-07T09:12:28.208948+00:00"
+    },
+    "pyarrow": "26.0.0",
+    "platform": "macOS-15.7.9-arm64-arm-64bit-Mach-O"
+  },
+  "dataset": {
+    "columns": [
+      "id",
+      "category",
+      "amount_cents",
+      "note",
+      "padding_0",
+      "padding_1",
+      "padding_2",
+      "padding_3"
+    ],
+    "writer": {
+      "compression": "zstd",
+      "data_page_size": 32768,
+      "row_group_size": 5000
+    },
+    "files": [
+      {
+        "path": "part-00.parquet",
+        "size": "2227392",
+        "sha256": "4fa34c6676dd1bc14db735718a0dfbae1c3f05c73118a6eaf0db4f2f87f74149",
+        "rows": 20000,
+        "row_groups": 4
+      },
+      {
+        "path": "part-01.parquet",
+        "size": "2232062",
+        "sha256": "66ca250f1d9d5e4e17f3a2d68ad21645a909859a15f0c2a0c2a59a5b77fef9c5",
+        "rows": 20000,
+        "row_groups": 4
+      }
+    ]
+  },
+  "query": {
+    "sql": "SELECT count(*) AS n, sum(amount_cents) AS cents, sum(length(note)) AS note_chars FROM input WHERE category = 'keep' AND id % 7 = 0",
+    "independent_pyarrow_control": {
+      "result_rows": "1",
+      "values": [
+        [
+          "1386",
+          "71338679",
+          "55440"
+        ]
+      ],
+      "digest": "e63689a2105bb3210407911e1d3e6945d2f4f07c0878e4f9f99cf28cb1b58421"
+    }
+  },
+  "repetitions": 3,
+  "order": "Profiles rotate; adjacent prefetch on/off pairs reverse each round; fresh worker per capture.",
+  "deadline_seconds": 180,
+  "lab_elapsed_seconds": 36.849334625003394,
+  "run_deadline_seconds": 30,
+  "fixed_settings": {
+    "compared": [
+      "threads",
+      "memory_limit",
+      "enable_external_file_cache",
+      "enable_http_metadata_cache",
+      "http_keep_alive",
+      "http_retries",
+      "http_timeout",
+      "http_retry_wait_ms",
+      "http_retry_backoff"
+    ],
+    "effective": {
+      "threads": "4",
+      "memory_limit": "256.0 MiB",
+      "enable_external_file_cache": "False",
+      "enable_http_metadata_cache": "False",
+      "http_keep_alive": "True",
+      "http_retries": "3",
+      "http_timeout": "30",
+      "http_retry_wait_ms": "100",
+      "http_retry_backoff": "4.0"
+    }
+  },
+  "independent_http_control": {
+    "delay_ms": 60,
+    "delay_clients": [
+      {
+        "method": "HEAD",
+        "status": 200,
+        "bytes": 0,
+        "headers_after_ms": 62.14650000038091,
+        "elapsed_ms": 62.1655420109164,
+        "request_id": "10f9aee2419c49c39f80523fc5a99407"
+      },
+      {
+        "method": "GET",
+        "status": 206,
+        "bytes": 1024,
+        "headers_after_ms": 62.16083299659658,
+        "elapsed_ms": 62.20658299571369,
+        "request_id": "d9b2f91467a345db87a9e79850463df7"
+      }
+    ],
+    "delay_server": [
+      {
+        "id": "10f9aee2419c49c39f80523fc5a99407",
+        "method": "HEAD",
+        "requested_range": "bytes=0-1023",
+        "response_span": null,
+        "status": 200,
+        "start_ms": 3.136041996185668,
+        "duration_ms": 61.47058299393393,
+        "declared_body_bytes": "0",
+        "written_body_bytes": "0",
+        "complete": true,
+        "error": null,
+        "profile_delay_started_ms": 3.2177089888136834,
+        "profile_delay_ms": 61.27112499962095,
+        "headers_sent_ms": 64.59854199783877,
+        "body_budget_wait_ms": 0.0,
+        "body_write_started_ms": null,
+        "body_write_finished_ms": null,
+        "body_write_ms": 0.0,
+        "reserved_body_bytes": "0",
+        "termination": "completed"
+      },
+      {
+        "id": "d9b2f91467a345db87a9e79850463df7",
+        "method": "GET",
+        "requested_range": "bytes=0-1023",
+        "response_span": {
+          "start": "0",
+          "end": "1024"
+        },
+        "status": 206,
+        "start_ms": 65.31520899443422,
+        "duration_ms": 61.80737499380484,
+        "declared_body_bytes": "1024",
+        "written_body_bytes": "1024",
+        "complete": true,
+        "error": null,
+        "profile_delay_started_ms": 65.49962499411777,
+        "profile_delay_ms": 61.26733399287332,
+        "headers_sent_ms": 126.85358399176039,
+        "body_budget_wait_ms": 0.0,
+        "body_write_started_ms": 126.89808399591129,
+        "body_write_finished_ms": 127.06400000024587,
+        "body_write_ms": 0.16591600433457643,
+        "reserved_body_bytes": "1024",
+        "termination": "completed"
+      }
+    ],
+    "profile": {
+      "requested": {
+        "response_delay_ms": 60,
+        "body_bytes_per_second": 262144
+      },
+      "effective": {
+        "response_delay_ms": 60,
+        "body_bytes_per_second": 262144
+      },
+      "semantics": "capture_shared_token_bucket_v1",
+      "burst_bytes": "16384",
+      "write_chunk_bytes": 16384
+    },
+    "parallel_clients": [
+      {
+        "method": "GET",
+        "status": 206,
+        "bytes": 131072,
+        "headers_after_ms": 62.875915988115594,
+        "elapsed_ms": 770.2949160011485,
+        "request_id": "b74b49dbddca4ee2a0cd5dccf0b746d2"
+      },
+      {
+        "method": "GET",
+        "status": 206,
+        "bytes": 131072,
+        "headers_after_ms": 63.30583400267642,
+        "elapsed_ms": 1027.5728750129929,
+        "request_id": "7b18b0e084c145fa9f4edeb320dc48f6"
+      }
+    ],
+    "parallel_server": [
+      {
+        "id": "b74b49dbddca4ee2a0cd5dccf0b746d2",
+        "method": "GET",
+        "requested_range": "bytes=0-131071",
+        "response_span": {
+          "start": "0",
+          "end": "131072"
+        },
+        "status": 206,
+        "start_ms": 4.707708998466842,
+        "duration_ms": 769.0735829964979,
+        "declared_body_bytes": "131072",
+        "written_body_bytes": "131072",
+        "complete": true,
+        "error": null,
+        "profile_delay_started_ms": 5.102083989186212,
+        "profile_delay_ms": 60.460500011686236,
+        "headers_sent_ms": 65.96441699366551,
+        "body_budget_wait_ms": 705.0890820100904,
+        "body_write_started_ms": 66.89670900232159,
+        "body_write_finished_ms": 773.7662500003353,
+        "body_write_ms": 0.8444559935014695,
+        "reserved_body_bytes": "131072",
+        "termination": "completed"
+      },
+      {
+        "id": "7b18b0e084c145fa9f4edeb320dc48f6",
+        "method": "GET",
+        "requested_range": "bytes=0-131071",
+        "response_span": {
+          "start": "0",
+          "end": "131072"
+        },
+        "status": 206,
+        "start_ms": 5.230124996160157,
+        "duration_ms": 1025.6839590001618,
+        "declared_body_bytes": "131072",
+        "written_body_bytes": "131072",
+        "complete": true,
+        "error": null,
+        "profile_delay_started_ms": 5.412958998931572,
+        "profile_delay_ms": 60.40020799264312,
+        "headers_sent_ms": 66.01595898973756,
+        "body_budget_wait_ms": 962.5148340128362,
+        "body_write_started_ms": 195.31183400249574,
+        "body_write_finished_ms": 1030.9067920024972,
+        "body_write_ms": 0.5727060051867738,
+        "reserved_body_bytes": "131072",
+        "termination": "completed"
+      }
+    ],
+    "body_write_span_ms": 964.0100830001757,
+    "model_minimum_ms": 937.5,
+    "timing_allowance_ms": 30,
+    "checks": {
+      "head_and_get_receive_fixed_delay": true,
+      "head_has_zero_body": true,
+      "parallel_responses_share_rate": true,
+      "parallel_bytes_complete": true,
+      "budget_wait_was_observed": true,
+      "request_ids_correlate": true,
+      "all_responses_complete": true
+    }
+  },
+  "upstream_context": {
+    "url": "https://github.com/duckdb/duckdb/pull/28138",
+    "checked_at": "2026-11-12",
+    "state": "open",
+    "merged": false,
+    "head_sha": "434550f5b42ccbd5a6c7b6f1eb6cbe4dae596489",
+    "title": "Size remote read splits from the measured network throughput",
+    "scope": "Context only: the pinned released engine does not execute this unmerged patch."
+  },
+  "runs": [
+    {
+      "config": "unrestricted-prefetch-on",
+      "profile_name": "unrestricted",
+      "prefetch": "on",
+      "repetition": 1,
+      "position_in_round": 1,
+      "capture": "captures/unrestricted-prefetch-on-1.parquetscope.json",
+      "input_sha256": [
+        "4fa34c6676dd1bc14db735718a0dfbae1c3f05c73118a6eaf0db4f2f87f74149",
+        "66ca250f1d9d5e4e17f3a2d68ad21645a909859a15f0c2a0c2a59a5b77fef9c5"
+      ],
+      "sql": "SELECT count(*) AS n, sum(amount_cents) AS cents, sum(length(note)) AS note_chars FROM input WHERE category = 'keep' AND id % 7 = 0",
+      "effective_engine_settings": {
+        "disable_parquet_prefetching": "False",
+        "threads": "4",
+        "memory_limit": "256.0 MiB",
+        "enable_external_file_cache": "False",
+        "enable_http_metadata_cache": "False",
+        "http_keep_alive": "True",
+        "http_retries": "3",
+        "http_timeout": "30",
+        "http_retry_wait_ms": "100",
+        "http_retry_backoff": "4.0"
+      },
+      "prefetch_evidence": {
+        "requested": false,
+        "applied": "false",
+        "status": "verified"
+      },
+      "http_profile": {
+        "requested": {
+          "response_delay_ms": 0,
+          "body_bytes_per_second": null
+        },
+        "effective": {
+          "response_delay_ms": 0,
+          "body_bytes_per_second": null
+        },
+        "semantics": "capture_shared_token_bucket_v1",
+        "burst_bytes": "0",
+        "write_chunk_bytes": 65536
+      },
+      "result_rows": "1",
+      "result_digest": "e63689a2105bb3210407911e1d3e6945d2f4f07c0878e4f9f99cf28cb1b58421",
+      "sql_status": "succeeded",
+      "capture_complete": true,
+      "reconciled": true,
+      "query_duration_ms": 15.89754200540483,
+      "elapsed_ms": 156.34787500312086,
+      "get_count": 19,
+      "head_count": 3,
+      "server_get_count": 19,
+      "server_written_bytes": "1074034",
+      "reserved_body_bytes": "1074034",
+      "profile_delay_ms_sum": 0.046250977902673185,
+      "body_budget_wait_ms_sum": 0.0,
+      "files_with_get": 2
+    },
+    {
+      "config": "unrestricted-prefetch-off",
+      "profile_name": "unrestricted",
+      "prefetch": "off",
+      "repetition": 1,
+      "position_in_round": 2,
+      "capture": "captures/unrestricted-prefetch-off-1.parquetscope.json",
+      "input_sha256": [
+        "4fa34c6676dd1bc14db735718a0dfbae1c3f05c73118a6eaf0db4f2f87f74149",
+        "66ca250f1d9d5e4e17f3a2d68ad21645a909859a15f0c2a0c2a59a5b77fef9c5"
+      ],
+      "sql": "SELECT count(*) AS n, sum(amount_cents) AS cents, sum(length(note)) AS note_chars FROM input WHERE category = 'keep' AND id % 7 = 0",
+      "effective_engine_settings": {
+        "disable_parquet_prefetching": "True",
+        "threads": "4",
+        "memory_limit": "256.0 MiB",
+        "enable_external_file_cache": "False",
+        "enable_http_metadata_cache": "False",
+        "http_keep_alive": "True",
+        "http_retries": "3",
+        "http_timeout": "30",
+        "http_retry_wait_ms": "100",
+        "http_retry_backoff": "4.0"
+      },
+      "prefetch_evidence": {
+        "requested": true,
+        "applied": "true",
+        "status": "verified"
+      },
+      "http_profile": {
+        "requested": {
+          "response_delay_ms": 0,
+          "body_bytes_per_second": null
+        },
+        "effective": {
+          "response_delay_ms": 0,
+          "body_bytes_per_second": null
+        },
+        "semantics": "capture_shared_token_bucket_v1",
+        "burst_bytes": "0",
+        "write_chunk_bytes": 65536
+      },
+      "result_rows": "1",
+      "result_digest": "e63689a2105bb3210407911e1d3e6945d2f4f07c0878e4f9f99cf28cb1b58421",
+      "sql_status": "succeeded",
+      "capture_complete": true,
+      "reconciled": true,
+      "query_duration_ms": 53.12179200700484,
+      "elapsed_ms": 199.96745900425594,
+      "get_count": 22,
+      "head_count": 3,
+      "server_get_count": 22,
+      "server_written_bytes": "14836481",
+      "reserved_body_bytes": "14836481",
+      "profile_delay_ms_sum": 0.48258704191539437,
+      "body_budget_wait_ms_sum": 0.0,
+      "files_with_get": 2
+    },
+    {
+      "config": "delay-prefetch-on",
+      "profile_name": "delay",
+      "prefetch": "on",
+      "repetition": 1,
+      "position_in_round": 3,
+      "capture": "captures/delay-prefetch-on-1.parquetscope.json",
+      "input_sha256": [
+        "4fa34c6676dd1bc14db735718a0dfbae1c3f05c73118a6eaf0db4f2f87f74149",
+        "66ca250f1d9d5e4e17f3a2d68ad21645a909859a15f0c2a0c2a59a5b77fef9c5"
+      ],
+      "sql": "SELECT count(*) AS n, sum(amount_cents) AS cents, sum(length(note)) AS note_chars FROM input WHERE category = 'keep' AND id % 7 = 0",
+      "effective_engine_settings": {
+        "disable_parquet_prefetching": "False",
+        "threads": "4",
+        "memory_limit": "256.0 MiB",
+        "enable_external_file_cache": "False",
+        "enable_http_metadata_cache": "False",
+        "http_keep_alive": "True",
+        "http_retries": "3",
+        "http_timeout": "30",
+        "http_retry_wait_ms": "100",
+        "http_retry_backoff": "4.0"
+      },
+      "prefetch_evidence": {
+        "requested": false,
+        "applied": "false",
+        "status": "verified"
+      },
+      "http_profile": {
+        "requested": {
+          "response_delay_ms": 40,
+          "body_bytes_per_second": null
+        },
+        "effective": {
+          "response_delay_ms": 40,
+          "body_bytes_per_second": null
+        },
+        "semantics": "capture_shared_token_bucket_v1",
+        "burst_bytes": "0",
+        "write_chunk_bytes": 65536
+      },
+      "result_rows": "1",
+      "result_digest": "e63689a2105bb3210407911e1d3e6945d2f4f07c0878e4f9f99cf28cb1b58421",
+      "sql_status": "succeeded",
+      "capture_complete": true,
+      "reconciled": true,
+      "query_duration_ms": 398.3344589942135,
+      "elapsed_ms": 660.969708012999,
+      "get_count": 19,
+      "head_count": 3,
+      "server_get_count": 19,
+      "server_written_bytes": "1074034",
+      "reserved_body_bytes": "1074034",
+      "profile_delay_ms_sum": 974.7118759696605,
+      "body_budget_wait_ms_sum": 0.0,
+      "files_with_get": 2
+    },
+    {
+      "config": "delay-prefetch-off",
+      "profile_name": "delay",
+      "prefetch": "off",
+      "repetition": 1,
+      "position_in_round": 4,
+      "capture": "captures/delay-prefetch-off-1.parquetscope.json",
+      "input_sha256": [
+        "4fa34c6676dd1bc14db735718a0dfbae1c3f05c73118a6eaf0db4f2f87f74149",
+        "66ca250f1d9d5e4e17f3a2d68ad21645a909859a15f0c2a0c2a59a5b77fef9c5"
+      ],
+      "sql": "SELECT count(*) AS n, sum(amount_cents) AS cents, sum(length(note)) AS note_chars FROM input WHERE category = 'keep' AND id % 7 = 0",
+      "effective_engine_settings": {
+        "disable_parquet_prefetching": "True",
+        "threads": "4",
+        "memory_limit": "256.0 MiB",
+        "enable_external_file_cache": "False",
+        "enable_http_metadata_cache": "False",
+        "http_keep_alive": "True",
+        "http_retries": "3",
+        "http_timeout": "30",
+        "http_retry_wait_ms": "100",
+        "http_retry_backoff": "4.0"
+      },
+      "prefetch_evidence": {
+        "requested": true,
+        "applied": "true",
+        "status": "verified"
+      },
+      "http_profile": {
+        "requested": {
+          "response_delay_ms": 40,
+          "body_bytes_per_second": null
+        },
+        "effective": {
+          "response_delay_ms": 40,
+          "body_bytes_per_second": null
+        },
+        "semantics": "capture_shared_token_bucket_v1",
+        "burst_bytes": "0",
+        "write_chunk_bytes": 65536
+      },
+      "result_rows": "1",
+      "result_digest": "e63689a2105bb3210407911e1d3e6945d2f4f07c0878e4f9f99cf28cb1b58421",
+      "sql_status": "succeeded",
+      "capture_complete": true,
+      "reconciled": true,
+      "query_duration_ms": 505.9234170039417,
+      "elapsed_ms": 766.5165830112528,
+      "get_count": 22,
+      "head_count": 3,
+      "server_get_count": 22,
+      "server_written_bytes": "14836481",
+      "reserved_body_bytes": "14836481",
+      "profile_delay_ms_sum": 1120.5235860106768,
+      "body_budget_wait_ms_sum": 0.0,
+      "files_with_get": 2
+    },
+    {
+      "config": "delay-rate-prefetch-on",
+      "profile_name": "delay-rate",
+      "prefetch": "on",
+      "repetition": 1,
+      "position_in_round": 5,
+      "capture": "captures/delay-rate-prefetch-on-1.parquetscope.json",
+      "input_sha256": [
+        "4fa34c6676dd1bc14db735718a0dfbae1c3f05c73118a6eaf0db4f2f87f74149",
+        "66ca250f1d9d5e4e17f3a2d68ad21645a909859a15f0c2a0c2a59a5b77fef9c5"
+      ],
+      "sql": "SELECT count(*) AS n, sum(amount_cents) AS cents, sum(length(note)) AS note_chars FROM input WHERE category = 'keep' AND id % 7 = 0",
+      "effective_engine_settings": {
+        "disable_parquet_prefetching": "False",
+        "threads": "4",
+        "memory_limit": "256.0 MiB",
+        "enable_external_file_cache": "False",
+        "enable_http_metadata_cache": "False",
+        "http_keep_alive": "True",
+        "http_retries": "3",
+        "http_timeout": "30",
+        "http_retry_wait_ms": "100",
+        "http_retry_backoff": "4.0"
+      },
+      "prefetch_evidence": {
+        "requested": false,
+        "applied": "false",
+        "status": "verified"
+      },
+      "http_profile": {
+        "requested": {
+          "response_delay_ms": 40,
+          "body_bytes_per_second": 2097152
+        },
+        "effective": {
+          "response_delay_ms": 40,
+          "body_bytes_per_second": 2097152
+        },
+        "semantics": "capture_shared_token_bucket_v1",
+        "burst_bytes": "16384",
+        "write_chunk_bytes": 16384
+      },
+      "result_rows": "1",
+      "result_digest": "e63689a2105bb3210407911e1d3e6945d2f4f07c0878e4f9f99cf28cb1b58421",
+      "sql_status": "succeeded",
+      "capture_complete": true,
+      "reconciled": true,
+      "query_duration_ms": 768.349208010477,
+      "elapsed_ms": 1025.524333002977,
+      "get_count": 19,
+      "head_count": 3,
+      "server_get_count": 19,
+      "server_written_bytes": "1074034",
+      "reserved_body_bytes": "1074034",
+      "profile_delay_ms_sum": 964.3041259841993,
+      "body_budget_wait_ms_sum": 1473.8324139761971,
+      "files_with_get": 2
+    },
+    {
+      "config": "delay-rate-prefetch-off",
+      "profile_name": "delay-rate",
+      "prefetch": "off",
+      "repetition": 1,
+      "position_in_round": 6,
+      "capture": "captures/delay-rate-prefetch-off-1.parquetscope.json",
+      "input_sha256": [
+        "4fa34c6676dd1bc14db735718a0dfbae1c3f05c73118a6eaf0db4f2f87f74149",
+        "66ca250f1d9d5e4e17f3a2d68ad21645a909859a15f0c2a0c2a59a5b77fef9c5"
+      ],
+      "sql": "SELECT count(*) AS n, sum(amount_cents) AS cents, sum(length(note)) AS note_chars FROM input WHERE category = 'keep' AND id % 7 = 0",
+      "effective_engine_settings": {
+        "disable_parquet_prefetching": "True",
+        "threads": "4",
+        "memory_limit": "256.0 MiB",
+        "enable_external_file_cache": "False",
+        "enable_http_metadata_cache": "False",
+        "http_keep_alive": "True",
+        "http_retries": "3",
+        "http_timeout": "30",
+        "http_retry_wait_ms": "100",
+        "http_retry_backoff": "4.0"
+      },
+      "prefetch_evidence": {
+        "requested": true,
+        "applied": "true",
+        "status": "verified"
+      },
+      "http_profile": {
+        "requested": {
+          "response_delay_ms": 40,
+          "body_bytes_per_second": 2097152
+        },
+        "effective": {
+          "response_delay_ms": 40,
+          "body_bytes_per_second": 2097152
+        },
+        "semantics": "capture_shared_token_bucket_v1",
+        "burst_bytes": "16384",
+        "write_chunk_bytes": 16384
+      },
+      "result_rows": "1",
+      "result_digest": "e63689a2105bb3210407911e1d3e6945d2f4f07c0878e4f9f99cf28cb1b58421",
+      "sql_status": "succeeded",
+      "capture_complete": true,
+      "reconciled": true,
+      "query_duration_ms": 8726.619458000641,
+      "elapsed_ms": 9023.798875001376,
+      "get_count": 22,
+      "head_count": 3,
+      "server_get_count": 22,
+      "server_written_bytes": "14836481",
+      "reserved_body_bytes": "14836481",
+      "profile_delay_ms_sum": 1096.3997100334382,
+      "body_budget_wait_ms_sum": 31405.900089943316,
+      "files_with_get": 2
+    },
+    {
+      "config": "delay-prefetch-off",
+      "profile_name": "delay",
+      "prefetch": "off",
+      "repetition": 2,
+      "position_in_round": 1,
+      "capture": "captures/delay-prefetch-off-2.parquetscope.json",
+      "input_sha256": [
+        "4fa34c6676dd1bc14db735718a0dfbae1c3f05c73118a6eaf0db4f2f87f74149",
+        "66ca250f1d9d5e4e17f3a2d68ad21645a909859a15f0c2a0c2a59a5b77fef9c5"
+      ],
+      "sql": "SELECT count(*) AS n, sum(amount_cents) AS cents, sum(length(note)) AS note_chars FROM input WHERE category = 'keep' AND id % 7 = 0",
+      "effective_engine_settings": {
+        "disable_parquet_prefetching": "True",
+        "threads": "4",
+        "memory_limit": "256.0 MiB",
+        "enable_external_file_cache": "False",
+        "enable_http_metadata_cache": "False",
+        "http_keep_alive": "True",
+        "http_retries": "3",
+        "http_timeout": "30",
+        "http_retry_wait_ms": "100",
+        "http_retry_backoff": "4.0"
+      },
+      "prefetch_evidence": {
+        "requested": true,
+        "applied": "true",
+        "status": "verified"
+      },
+      "http_profile": {
+        "requested": {
+          "response_delay_ms": 40,
+          "body_bytes_per_second": null
+        },
+        "effective": {
+          "response_delay_ms": 40,
+          "body_bytes_per_second": null
+        },
+        "semantics": "capture_shared_token_bucket_v1",
+        "burst_bytes": "0",
+        "write_chunk_bytes": 65536
+      },
+      "result_rows": "1",
+      "result_digest": "e63689a2105bb3210407911e1d3e6945d2f4f07c0878e4f9f99cf28cb1b58421",
+      "sql_status": "succeeded",
+      "capture_complete": true,
+      "reconciled": true,
+      "query_duration_ms": 519.6244999970077,
+      "elapsed_ms": 846.0682910081232,
+      "get_count": 22,
+      "head_count": 3,
+      "server_get_count": 22,
+      "server_written_bytes": "14836481",
+      "reserved_body_bytes": "14836481",
+      "profile_delay_ms_sum": 1115.3552079777,
+      "body_budget_wait_ms_sum": 0.0,
+      "files_with_get": 2
+    },
+    {
+      "config": "delay-prefetch-on",
+      "profile_name": "delay",
+      "prefetch": "on",
+      "repetition": 2,
+      "position_in_round": 2,
+      "capture": "captures/delay-prefetch-on-2.parquetscope.json",
+      "input_sha256": [
+        "4fa34c6676dd1bc14db735718a0dfbae1c3f05c73118a6eaf0db4f2f87f74149",
+        "66ca250f1d9d5e4e17f3a2d68ad21645a909859a15f0c2a0c2a59a5b77fef9c5"
+      ],
+      "sql": "SELECT count(*) AS n, sum(amount_cents) AS cents, sum(length(note)) AS note_chars FROM input WHERE category = 'keep' AND id % 7 = 0",
+      "effective_engine_settings": {
+        "disable_parquet_prefetching": "False",
+        "threads": "4",
+        "memory_limit": "256.0 MiB",
+        "enable_external_file_cache": "False",
+        "enable_http_metadata_cache": "False",
+        "http_keep_alive": "True",
+        "http_retries": "3",
+        "http_timeout": "30",
+        "http_retry_wait_ms": "100",
+        "http_retry_backoff": "4.0"
+      },
+      "prefetch_evidence": {
+        "requested": false,
+        "applied": "false",
+        "status": "verified"
+      },
+      "http_profile": {
+        "requested": {
+          "response_delay_ms": 40,
+          "body_bytes_per_second": null
+        },
+        "effective": {
+          "response_delay_ms": 40,
+          "body_bytes_per_second": null
+        },
+        "semantics": "capture_shared_token_bucket_v1",
+        "burst_bytes": "0",
+        "write_chunk_bytes": 65536
+      },
+      "result_rows": "1",
+      "result_digest": "e63689a2105bb3210407911e1d3e6945d2f4f07c0878e4f9f99cf28cb1b58421",
+      "sql_status": "succeeded",
+      "capture_complete": true,
+      "reconciled": true,
+      "query_duration_ms": 383.46229199669324,
+      "elapsed_ms": 625.300250001601,
+      "get_count": 19,
+      "head_count": 3,
+      "server_get_count": 19,
+      "server_written_bytes": "1074034",
+      "reserved_body_bytes": "1074034",
+      "profile_delay_ms_sum": 985.5342500086408,
+      "body_budget_wait_ms_sum": 0.0,
+      "files_with_get": 2
+    },
+    {
+      "config": "delay-rate-prefetch-off",
+      "profile_name": "delay-rate",
+      "prefetch": "off",
+      "repetition": 2,
+      "position_in_round": 3,
+      "capture": "captures/delay-rate-prefetch-off-2.parquetscope.json",
+      "input_sha256": [
+        "4fa34c6676dd1bc14db735718a0dfbae1c3f05c73118a6eaf0db4f2f87f74149",
+        "66ca250f1d9d5e4e17f3a2d68ad21645a909859a15f0c2a0c2a59a5b77fef9c5"
+      ],
+      "sql": "SELECT count(*) AS n, sum(amount_cents) AS cents, sum(length(note)) AS note_chars FROM input WHERE category = 'keep' AND id % 7 = 0",
+      "effective_engine_settings": {
+        "disable_parquet_prefetching": "True",
+        "threads": "4",
+        "memory_limit": "256.0 MiB",
+        "enable_external_file_cache": "False",
+        "enable_http_metadata_cache": "False",
+        "http_keep_alive": "True",
+        "http_retries": "3",
+        "http_timeout": "30",
+        "http_retry_wait_ms": "100",
+        "http_retry_backoff": "4.0"
+      },
+      "prefetch_evidence": {
+        "requested": true,
+        "applied": "true",
+        "status": "verified"
+      },
+      "http_profile": {
+        "requested": {
+          "response_delay_ms": 40,
+          "body_bytes_per_second": 2097152
+        },
+        "effective": {
+          "response_delay_ms": 40,
+          "body_bytes_per_second": 2097152
+        },
+        "semantics": "capture_shared_token_bucket_v1",
+        "burst_bytes": "16384",
+        "write_chunk_bytes": 16384
+      },
+      "result_rows": "1",
+      "result_digest": "e63689a2105bb3210407911e1d3e6945d2f4f07c0878e4f9f99cf28cb1b58421",
+      "sql_status": "succeeded",
+      "capture_complete": true,
+      "reconciled": true,
+      "query_duration_ms": 8683.577458999935,
+      "elapsed_ms": 8989.380166996852,
+      "get_count": 22,
+      "head_count": 3,
+      "server_get_count": 22,
+      "server_written_bytes": "14836481",
+      "reserved_body_bytes": "14836481",
+      "profile_delay_ms_sum": 1098.6365829885472,
+      "body_budget_wait_ms_sum": 31635.381635962403,
+      "files_with_get": 2
+    },
+    {
+      "config": "delay-rate-prefetch-on",
+      "profile_name": "delay-rate",
+      "prefetch": "on",
+      "repetition": 2,
+      "position_in_round": 4,
+      "capture": "captures/delay-rate-prefetch-on-2.parquetscope.json",
+      "input_sha256": [
+        "4fa34c6676dd1bc14db735718a0dfbae1c3f05c73118a6eaf0db4f2f87f74149",
+        "66ca250f1d9d5e4e17f3a2d68ad21645a909859a15f0c2a0c2a59a5b77fef9c5"
+      ],
+      "sql": "SELECT count(*) AS n, sum(amount_cents) AS cents, sum(length(note)) AS note_chars FROM input WHERE category = 'keep' AND id % 7 = 0",
+      "effective_engine_settings": {
+        "disable_parquet_prefetching": "False",
+        "threads": "4",
+        "memory_limit": "256.0 MiB",
+        "enable_external_file_cache": "False",
+        "enable_http_metadata_cache": "False",
+        "http_keep_alive": "True",
+        "http_retries": "3",
+        "http_timeout": "30",
+        "http_retry_wait_ms": "100",
+        "http_retry_backoff": "4.0"
+      },
+      "prefetch_evidence": {
+        "requested": false,
+        "applied": "false",
+        "status": "verified"
+      },
+      "http_profile": {
+        "requested": {
+          "response_delay_ms": 40,
+          "body_bytes_per_second": 2097152
+        },
+        "effective": {
+          "response_delay_ms": 40,
+          "body_bytes_per_second": 2097152
+        },
+        "semantics": "capture_shared_token_bucket_v1",
+        "burst_bytes": "16384",
+        "write_chunk_bytes": 16384
+      },
+      "result_rows": "1",
+      "result_digest": "e63689a2105bb3210407911e1d3e6945d2f4f07c0878e4f9f99cf28cb1b58421",
+      "sql_status": "succeeded",
+      "capture_complete": true,
+      "reconciled": true,
+      "query_duration_ms": 777.8655830043135,
+      "elapsed_ms": 1027.0982919901144,
+      "get_count": 19,
+      "head_count": 3,
+      "server_get_count": 19,
+      "server_written_bytes": "1074034",
+      "reserved_body_bytes": "1074034",
+      "profile_delay_ms_sum": 965.2067509741755,
+      "body_budget_wait_ms_sum": 1534.3781339179259,
+      "files_with_get": 2
+    },
+    {
+      "config": "unrestricted-prefetch-off",
+      "profile_name": "unrestricted",
+      "prefetch": "off",
+      "repetition": 2,
+      "position_in_round": 5,
+      "capture": "captures/unrestricted-prefetch-off-2.parquetscope.json",
+      "input_sha256": [
+        "4fa34c6676dd1bc14db735718a0dfbae1c3f05c73118a6eaf0db4f2f87f74149",
+        "66ca250f1d9d5e4e17f3a2d68ad21645a909859a15f0c2a0c2a59a5b77fef9c5"
+      ],
+      "sql": "SELECT count(*) AS n, sum(amount_cents) AS cents, sum(length(note)) AS note_chars FROM input WHERE category = 'keep' AND id % 7 = 0",
+      "effective_engine_settings": {
+        "disable_parquet_prefetching": "True",
+        "threads": "4",
+        "memory_limit": "256.0 MiB",
+        "enable_external_file_cache": "False",
+        "enable_http_metadata_cache": "False",
+        "http_keep_alive": "True",
+        "http_retries": "3",
+        "http_timeout": "30",
+        "http_retry_wait_ms": "100",
+        "http_retry_backoff": "4.0"
+      },
+      "prefetch_evidence": {
+        "requested": true,
+        "applied": "true",
+        "status": "verified"
+      },
+      "http_profile": {
+        "requested": {
+          "response_delay_ms": 0,
+          "body_bytes_per_second": null
+        },
+        "effective": {
+          "response_delay_ms": 0,
+          "body_bytes_per_second": null
+        },
+        "semantics": "capture_shared_token_bucket_v1",
+        "burst_bytes": "0",
+        "write_chunk_bytes": 65536
+      },
+      "result_rows": "1",
+      "result_digest": "e63689a2105bb3210407911e1d3e6945d2f4f07c0878e4f9f99cf28cb1b58421",
+      "sql_status": "succeeded",
+      "capture_complete": true,
+      "reconciled": true,
+      "query_duration_ms": 21.968374989228323,
+      "elapsed_ms": 161.4262079965556,
+      "get_count": 22,
+      "head_count": 3,
+      "server_get_count": 22,
+      "server_written_bytes": "14836481",
+      "reserved_body_bytes": "14836481",
+      "profile_delay_ms_sum": 0.22007900406606495,
+      "body_budget_wait_ms_sum": 0.0,
+      "files_with_get": 2
+    },
+    {
+      "config": "unrestricted-prefetch-on",
+      "profile_name": "unrestricted",
+      "prefetch": "on",
+      "repetition": 2,
+      "position_in_round": 6,
+      "capture": "captures/unrestricted-prefetch-on-2.parquetscope.json",
+      "input_sha256": [
+        "4fa34c6676dd1bc14db735718a0dfbae1c3f05c73118a6eaf0db4f2f87f74149",
+        "66ca250f1d9d5e4e17f3a2d68ad21645a909859a15f0c2a0c2a59a5b77fef9c5"
+      ],
+      "sql": "SELECT count(*) AS n, sum(amount_cents) AS cents, sum(length(note)) AS note_chars FROM input WHERE category = 'keep' AND id % 7 = 0",
+      "effective_engine_settings": {
+        "disable_parquet_prefetching": "False",
+        "threads": "4",
+        "memory_limit": "256.0 MiB",
+        "enable_external_file_cache": "False",
+        "enable_http_metadata_cache": "False",
+        "http_keep_alive": "True",
+        "http_retries": "3",
+        "http_timeout": "30",
+        "http_retry_wait_ms": "100",
+        "http_retry_backoff": "4.0"
+      },
+      "prefetch_evidence": {
+        "requested": false,
+        "applied": "false",
+        "status": "verified"
+      },
+      "http_profile": {
+        "requested": {
+          "response_delay_ms": 0,
+          "body_bytes_per_second": null
+        },
+        "effective": {
+          "response_delay_ms": 0,
+          "body_bytes_per_second": null
+        },
+        "semantics": "capture_shared_token_bucket_v1",
+        "burst_bytes": "0",
+        "write_chunk_bytes": 65536
+      },
+      "result_rows": "1",
+      "result_digest": "e63689a2105bb3210407911e1d3e6945d2f4f07c0878e4f9f99cf28cb1b58421",
+      "sql_status": "succeeded",
+      "capture_complete": true,
+      "reconciled": true,
+      "query_duration_ms": 15.8222080062842,
+      "elapsed_ms": 161.70929100189824,
+      "get_count": 19,
+      "head_count": 3,
+      "server_get_count": 19,
+      "server_written_bytes": "1074034",
+      "reserved_body_bytes": "1074034",
+      "profile_delay_ms_sum": 0.05974901432637125,
+      "body_budget_wait_ms_sum": 0.0,
+      "files_with_get": 2
+    },
+    {
+      "config": "delay-rate-prefetch-on",
+      "profile_name": "delay-rate",
+      "prefetch": "on",
+      "repetition": 3,
+      "position_in_round": 1,
+      "capture": "captures/delay-rate-prefetch-on-3.parquetscope.json",
+      "input_sha256": [
+        "4fa34c6676dd1bc14db735718a0dfbae1c3f05c73118a6eaf0db4f2f87f74149",
+        "66ca250f1d9d5e4e17f3a2d68ad21645a909859a15f0c2a0c2a59a5b77fef9c5"
+      ],
+      "sql": "SELECT count(*) AS n, sum(amount_cents) AS cents, sum(length(note)) AS note_chars FROM input WHERE category = 'keep' AND id % 7 = 0",
+      "effective_engine_settings": {
+        "disable_parquet_prefetching": "False",
+        "threads": "4",
+        "memory_limit": "256.0 MiB",
+        "enable_external_file_cache": "False",
+        "enable_http_metadata_cache": "False",
+        "http_keep_alive": "True",
+        "http_retries": "3",
+        "http_timeout": "30",
+        "http_retry_wait_ms": "100",
+        "http_retry_backoff": "4.0"
+      },
+      "prefetch_evidence": {
+        "requested": false,
+        "applied": "false",
+        "status": "verified"
+      },
+      "http_profile": {
+        "requested": {
+          "response_delay_ms": 40,
+          "body_bytes_per_second": 2097152
+        },
+        "effective": {
+          "response_delay_ms": 40,
+          "body_bytes_per_second": 2097152
+        },
+        "semantics": "capture_shared_token_bucket_v1",
+        "burst_bytes": "16384",
+        "write_chunk_bytes": 16384
+      },
+      "result_rows": "1",
+      "result_digest": "e63689a2105bb3210407911e1d3e6945d2f4f07c0878e4f9f99cf28cb1b58421",
+      "sql_status": "succeeded",
+      "capture_complete": true,
+      "reconciled": true,
+      "query_duration_ms": 821.1351250065491,
+      "elapsed_ms": 1049.5709999959217,
+      "get_count": 19,
+      "head_count": 3,
+      "server_get_count": 19,
+      "server_written_bytes": "1074034",
+      "reserved_body_bytes": "1074034",
+      "profile_delay_ms_sum": 977.6095009874552,
+      "body_budget_wait_ms_sum": 1576.6430430376204,
+      "files_with_get": 2
+    },
+    {
+      "config": "delay-rate-prefetch-off",
+      "profile_name": "delay-rate",
+      "prefetch": "off",
+      "repetition": 3,
+      "position_in_round": 2,
+      "capture": "captures/delay-rate-prefetch-off-3.parquetscope.json",
+      "input_sha256": [
+        "4fa34c6676dd1bc14db735718a0dfbae1c3f05c73118a6eaf0db4f2f87f74149",
+        "66ca250f1d9d5e4e17f3a2d68ad21645a909859a15f0c2a0c2a59a5b77fef9c5"
+      ],
+      "sql": "SELECT count(*) AS n, sum(amount_cents) AS cents, sum(length(note)) AS note_chars FROM input WHERE category = 'keep' AND id % 7 = 0",
+      "effective_engine_settings": {
+        "disable_parquet_prefetching": "True",
+        "threads": "4",
+        "memory_limit": "256.0 MiB",
+        "enable_external_file_cache": "False",
+        "enable_http_metadata_cache": "False",
+        "http_keep_alive": "True",
+        "http_retries": "3",
+        "http_timeout": "30",
+        "http_retry_wait_ms": "100",
+        "http_retry_backoff": "4.0"
+      },
+      "prefetch_evidence": {
+        "requested": true,
+        "applied": "true",
+        "status": "verified"
+      },
+      "http_profile": {
+        "requested": {
+          "response_delay_ms": 40,
+          "body_bytes_per_second": 2097152
+        },
+        "effective": {
+          "response_delay_ms": 40,
+          "body_bytes_per_second": 2097152
+        },
+        "semantics": "capture_shared_token_bucket_v1",
+        "burst_bytes": "16384",
+        "write_chunk_bytes": 16384
+      },
+      "result_rows": "1",
+      "result_digest": "e63689a2105bb3210407911e1d3e6945d2f4f07c0878e4f9f99cf28cb1b58421",
+      "sql_status": "succeeded",
+      "capture_complete": true,
+      "reconciled": true,
+      "query_duration_ms": 8635.395083998446,
+      "elapsed_ms": 8896.314666999388,
+      "get_count": 22,
+      "head_count": 3,
+      "server_get_count": 22,
+      "server_written_bytes": "14836481",
+      "reserved_body_bytes": "14836481",
+      "profile_delay_ms_sum": 1095.8012920600595,
+      "body_budget_wait_ms_sum": 31509.37216289458,
+      "files_with_get": 2
+    },
+    {
+      "config": "unrestricted-prefetch-on",
+      "profile_name": "unrestricted",
+      "prefetch": "on",
+      "repetition": 3,
+      "position_in_round": 3,
+      "capture": "captures/unrestricted-prefetch-on-3.parquetscope.json",
+      "input_sha256": [
+        "4fa34c6676dd1bc14db735718a0dfbae1c3f05c73118a6eaf0db4f2f87f74149",
+        "66ca250f1d9d5e4e17f3a2d68ad21645a909859a15f0c2a0c2a59a5b77fef9c5"
+      ],
+      "sql": "SELECT count(*) AS n, sum(amount_cents) AS cents, sum(length(note)) AS note_chars FROM input WHERE category = 'keep' AND id % 7 = 0",
+      "effective_engine_settings": {
+        "disable_parquet_prefetching": "False",
+        "threads": "4",
+        "memory_limit": "256.0 MiB",
+        "enable_external_file_cache": "False",
+        "enable_http_metadata_cache": "False",
+        "http_keep_alive": "True",
+        "http_retries": "3",
+        "http_timeout": "30",
+        "http_retry_wait_ms": "100",
+        "http_retry_backoff": "4.0"
+      },
+      "prefetch_evidence": {
+        "requested": false,
+        "applied": "false",
+        "status": "verified"
+      },
+      "http_profile": {
+        "requested": {
+          "response_delay_ms": 0,
+          "body_bytes_per_second": null
+        },
+        "effective": {
+          "response_delay_ms": 0,
+          "body_bytes_per_second": null
+        },
+        "semantics": "capture_shared_token_bucket_v1",
+        "burst_bytes": "0",
+        "write_chunk_bytes": 65536
+      },
+      "result_rows": "1",
+      "result_digest": "e63689a2105bb3210407911e1d3e6945d2f4f07c0878e4f9f99cf28cb1b58421",
+      "sql_status": "succeeded",
+      "capture_complete": true,
+      "reconciled": true,
+      "query_duration_ms": 14.505041996017098,
+      "elapsed_ms": 150.5405839998275,
+      "get_count": 19,
+      "head_count": 3,
+      "server_get_count": 19,
+      "server_written_bytes": "1074034",
+      "reserved_body_bytes": "1074034",
+      "profile_delay_ms_sum": 0.2042079868260771,
+      "body_budget_wait_ms_sum": 0.0,
+      "files_with_get": 2
+    },
+    {
+      "config": "unrestricted-prefetch-off",
+      "profile_name": "unrestricted",
+      "prefetch": "off",
+      "repetition": 3,
+      "position_in_round": 4,
+      "capture": "captures/unrestricted-prefetch-off-3.parquetscope.json",
+      "input_sha256": [
+        "4fa34c6676dd1bc14db735718a0dfbae1c3f05c73118a6eaf0db4f2f87f74149",
+        "66ca250f1d9d5e4e17f3a2d68ad21645a909859a15f0c2a0c2a59a5b77fef9c5"
+      ],
+      "sql": "SELECT count(*) AS n, sum(amount_cents) AS cents, sum(length(note)) AS note_chars FROM input WHERE category = 'keep' AND id % 7 = 0",
+      "effective_engine_settings": {
+        "disable_parquet_prefetching": "True",
+        "threads": "4",
+        "memory_limit": "256.0 MiB",
+        "enable_external_file_cache": "False",
+        "enable_http_metadata_cache": "False",
+        "http_keep_alive": "True",
+        "http_retries": "3",
+        "http_timeout": "30",
+        "http_retry_wait_ms": "100",
+        "http_retry_backoff": "4.0"
+      },
+      "prefetch_evidence": {
+        "requested": true,
+        "applied": "true",
+        "status": "verified"
+      },
+      "http_profile": {
+        "requested": {
+          "response_delay_ms": 0,
+          "body_bytes_per_second": null
+        },
+        "effective": {
+          "response_delay_ms": 0,
+          "body_bytes_per_second": null
+        },
+        "semantics": "capture_shared_token_bucket_v1",
+        "burst_bytes": "0",
+        "write_chunk_bytes": 65536
+      },
+      "result_rows": "1",
+      "result_digest": "e63689a2105bb3210407911e1d3e6945d2f4f07c0878e4f9f99cf28cb1b58421",
+      "sql_status": "succeeded",
+      "capture_complete": true,
+      "reconciled": true,
+      "query_duration_ms": 22.17745900270529,
+      "elapsed_ms": 156.6603329993086,
+      "get_count": 22,
+      "head_count": 3,
+      "server_get_count": 22,
+      "server_written_bytes": "14836481",
+      "reserved_body_bytes": "14836481",
+      "profile_delay_ms_sum": 0.047502966481260955,
+      "body_budget_wait_ms_sum": 0.0,
+      "files_with_get": 2
+    },
+    {
+      "config": "delay-prefetch-on",
+      "profile_name": "delay",
+      "prefetch": "on",
+      "repetition": 3,
+      "position_in_round": 5,
+      "capture": "captures/delay-prefetch-on-3.parquetscope.json",
+      "input_sha256": [
+        "4fa34c6676dd1bc14db735718a0dfbae1c3f05c73118a6eaf0db4f2f87f74149",
+        "66ca250f1d9d5e4e17f3a2d68ad21645a909859a15f0c2a0c2a59a5b77fef9c5"
+      ],
+      "sql": "SELECT count(*) AS n, sum(amount_cents) AS cents, sum(length(note)) AS note_chars FROM input WHERE category = 'keep' AND id % 7 = 0",
+      "effective_engine_settings": {
+        "disable_parquet_prefetching": "False",
+        "threads": "4",
+        "memory_limit": "256.0 MiB",
+        "enable_external_file_cache": "False",
+        "enable_http_metadata_cache": "False",
+        "http_keep_alive": "True",
+        "http_retries": "3",
+        "http_timeout": "30",
+        "http_retry_wait_ms": "100",
+        "http_retry_backoff": "4.0"
+      },
+      "prefetch_evidence": {
+        "requested": false,
+        "applied": "false",
+        "status": "verified"
+      },
+      "http_profile": {
+        "requested": {
+          "response_delay_ms": 40,
+          "body_bytes_per_second": null
+        },
+        "effective": {
+          "response_delay_ms": 40,
+          "body_bytes_per_second": null
+        },
+        "semantics": "capture_shared_token_bucket_v1",
+        "burst_bytes": "0",
+        "write_chunk_bytes": 65536
+      },
+      "result_rows": "1",
+      "result_digest": "e63689a2105bb3210407911e1d3e6945d2f4f07c0878e4f9f99cf28cb1b58421",
+      "sql_status": "succeeded",
+      "capture_complete": true,
+      "reconciled": true,
+      "query_duration_ms": 405.9920410072664,
+      "elapsed_ms": 623.4409579919884,
+      "get_count": 19,
+      "head_count": 3,
+      "server_get_count": 19,
+      "server_written_bytes": "1074034",
+      "reserved_body_bytes": "1074034",
+      "profile_delay_ms_sum": 977.1100020006998,
+      "body_budget_wait_ms_sum": 0.0,
+      "files_with_get": 2
+    },
+    {
+      "config": "delay-prefetch-off",
+      "profile_name": "delay",
+      "prefetch": "off",
+      "repetition": 3,
+      "position_in_round": 6,
+      "capture": "captures/delay-prefetch-off-3.parquetscope.json",
+      "input_sha256": [
+        "4fa34c6676dd1bc14db735718a0dfbae1c3f05c73118a6eaf0db4f2f87f74149",
+        "66ca250f1d9d5e4e17f3a2d68ad21645a909859a15f0c2a0c2a59a5b77fef9c5"
+      ],
+      "sql": "SELECT count(*) AS n, sum(amount_cents) AS cents, sum(length(note)) AS note_chars FROM input WHERE category = 'keep' AND id % 7 = 0",
+      "effective_engine_settings": {
+        "disable_parquet_prefetching": "True",
+        "threads": "4",
+        "memory_limit": "256.0 MiB",
+        "enable_external_file_cache": "False",
+        "enable_http_metadata_cache": "False",
+        "http_keep_alive": "True",
+        "http_retries": "3",
+        "http_timeout": "30",
+        "http_retry_wait_ms": "100",
+        "http_retry_backoff": "4.0"
+      },
+      "prefetch_evidence": {
+        "requested": true,
+        "applied": "true",
+        "status": "verified"
+      },
+      "http_profile": {
+        "requested": {
+          "response_delay_ms": 40,
+          "body_bytes_per_second": null
+        },
+        "effective": {
+          "response_delay_ms": 40,
+          "body_bytes_per_second": null
+        },
+        "semantics": "capture_shared_token_bucket_v1",
+        "burst_bytes": "0",
+        "write_chunk_bytes": 65536
+      },
+      "result_rows": "1",
+      "result_digest": "e63689a2105bb3210407911e1d3e6945d2f4f07c0878e4f9f99cf28cb1b58421",
+      "sql_status": "succeeded",
+      "capture_complete": true,
+      "reconciled": true,
+      "query_duration_ms": 495.231958993827,
+      "elapsed_ms": 761.3835000083782,
+      "get_count": 22,
+      "head_count": 3,
+      "server_get_count": 22,
+      "server_written_bytes": "14836481",
+      "reserved_body_bytes": "14836481",
+      "profile_delay_ms_sum": 1105.6421249813866,
+      "body_budget_wait_ms_sum": 0.0,
+      "files_with_get": 2
+    }
+  ],
+  "summary": {
+    "unrestricted-prefetch-on": {
+      "query_duration_ms": {
+        "min": 14.505041996017098,
+        "median": 15.8222080062842,
+        "max": 15.89754200540483
+      },
+      "get_count": {
+        "min": 19.0,
+        "median": 19.0,
+        "max": 19.0
+      },
+      "head_count": {
+        "min": 3.0,
+        "median": 3.0,
+        "max": 3.0
+      },
+      "server_written_bytes": {
+        "min": 1074034.0,
+        "median": 1074034.0,
+        "max": 1074034.0
+      }
+    },
+    "unrestricted-prefetch-off": {
+      "query_duration_ms": {
+        "min": 21.968374989228323,
+        "median": 22.17745900270529,
+        "max": 53.12179200700484
+      },
+      "get_count": {
+        "min": 22.0,
+        "median": 22.0,
+        "max": 22.0
+      },
+      "head_count": {
+        "min": 3.0,
+        "median": 3.0,
+        "max": 3.0
+      },
+      "server_written_bytes": {
+        "min": 14836481.0,
+        "median": 14836481.0,
+        "max": 14836481.0
+      }
+    },
+    "delay-prefetch-on": {
+      "query_duration_ms": {
+        "min": 383.46229199669324,
+        "median": 398.3344589942135,
+        "max": 405.9920410072664
+      },
+      "get_count": {
+        "min": 19.0,
+        "median": 19.0,
+        "max": 19.0
+      },
+      "head_count": {
+        "min": 3.0,
+        "median": 3.0,
+        "max": 3.0
+      },
+      "server_written_bytes": {
+        "min": 1074034.0,
+        "median": 1074034.0,
+        "max": 1074034.0
+      }
+    },
+    "delay-prefetch-off": {
+      "query_duration_ms": {
+        "min": 495.231958993827,
+        "median": 505.9234170039417,
+        "max": 519.6244999970077
+      },
+      "get_count": {
+        "min": 22.0,
+        "median": 22.0,
+        "max": 22.0
+      },
+      "head_count": {
+        "min": 3.0,
+        "median": 3.0,
+        "max": 3.0
+      },
+      "server_written_bytes": {
+        "min": 14836481.0,
+        "median": 14836481.0,
+        "max": 14836481.0
+      }
+    },
+    "delay-rate-prefetch-on": {
+      "query_duration_ms": {
+        "min": 768.349208010477,
+        "median": 777.8655830043135,
+        "max": 821.1351250065491
+      },
+      "get_count": {
+        "min": 19.0,
+        "median": 19.0,
+        "max": 19.0
+      },
+      "head_count": {
+        "min": 3.0,
+        "median": 3.0,
+        "max": 3.0
+      },
+      "server_written_bytes": {
+        "min": 1074034.0,
+        "median": 1074034.0,
+        "max": 1074034.0
+      }
+    },
+    "delay-rate-prefetch-off": {
+      "query_duration_ms": {
+        "min": 8635.395083998446,
+        "median": 8683.577458999935,
+        "max": 8726.619458000641
+      },
+      "get_count": {
+        "min": 22.0,
+        "median": 22.0,
+        "max": 22.0
+      },
+      "head_count": {
+        "min": 3.0,
+        "median": 3.0,
+        "max": 3.0
+      },
+      "server_written_bytes": {
+        "min": 14836481.0,
+        "median": 14836481.0,
+        "max": 14836481.0
+      }
+    }
+  },
+  "checks": {
+    "results_match_independent_control": true,
+    "all_sql_succeeded": true,
+    "all_captures_complete_and_reconciled": true,
+    "prefetch_verified": true,
+    "all_files_have_http_gets": true,
+    "fixed_engine_settings_identical": true,
+    "independent_http_control_passed": true,
+    "whole_lab_finished_before_deadline": true
+  },
+  "limitations": [
+    "A loopback HTTP server model, not S3 or any cloud provider's performance.",
+    "Fixed wait before response headers is not transport RTT; body pacing is at server stream writes.",
+    "Server writes do not prove DuckDB receipt, decoding or use; reserved bytes may exceed writes after errors.",
+    "Concurrent request wait sums overlap and are not query wall time; SELECT excludes view binding.",
+    "Fresh workers disable client caches; OS, disk cache, socket buffering and scheduling remain uncontrolled.",
+    "One released engine, one deterministic dataset, one SQL and three repetitions; no expected winner."
+  ]
+}
