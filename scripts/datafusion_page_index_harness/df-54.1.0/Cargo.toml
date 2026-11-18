@@ -1,0 +1,19 @@
+# Harness for docs/datafusion-page-index-lab, pinned to DataFusion 54.1.0.
+# Cargo.lock pins every datafusion-* crate to exactly 54.1.0; build with --locked.
+[package]
+name = "df-page-index-harness-54-1-0"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[[bin]]
+name = "harness"
+path = "../main.rs"
+
+[dependencies]
+datafusion = { version = "=54.1.0", default-features = false, features = ["parquet"] }
+object_store = { version = "0.13.2", default-features = false, features = ["http"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
+
+# Keep this crate outside any parent workspace.
+[workspace]

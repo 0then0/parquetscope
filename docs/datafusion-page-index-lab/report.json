@@ -1,0 +1,1104 @@
+{
+ "issue": "https://github.com/apache/datafusion/issues/23978",
+ "environment": {
+  "parquetscope": "0.4.0",
+  "pyarrow": "26.0.0",
+  "python": "3.13.18",
+  "platform": "Darwin arm64",
+  "rustc": "rustc 1.100.0 (0ef1bc386 2026-11-09)",
+  "locked": {
+   "54.0.0": {
+    "datafusion_crates": 29,
+    "arrow": "58.4.2",
+    "object_store": "0.13.2",
+    "parquet": "58.4.2",
+    "tokio": "1.54.1"
+   },
+   "54.1.0": {
+    "datafusion_crates": 29,
+    "arrow": "58.4.2",
+    "object_store": "0.13.2",
+    "parquet": "58.4.2",
+    "tokio": "1.54.1"
+   }
+  }
+ },
+ "fixture": {
+  "file": "fixture.parquet",
+  "sha256": "d4ca1bf33a5599a61f706fcf0ae009be01b12843361a982704be2a24bf23f25b",
+  "size": 2405972,
+  "rows": 100000,
+  "row_groups": 4,
+  "row_group_size": 25000,
+  "data_page_size": 32768,
+  "statistics_columns": [
+   "id",
+   "val"
+  ],
+  "footer_span": [
+   2404299,
+   2405972
+  ],
+  "checks": {
+   "multiple_row_groups": true,
+   "every_chunk_has_offset_index": true,
+   "statistics_columns_have_column_index": true,
+   "fk_has_no_column_index": true,
+   "multiple_pages_per_chunk": true,
+   "fk_null_count_absent": true,
+   "id_null_count_zero": true,
+   "fk_contains_nulls": true,
+   "pyarrow_agrees": true
+  },
+  "layout": {
+   "column_index": [
+    [
+     2401886,
+     2403278
+    ]
+   ],
+   "offset_index": [
+    [
+     2403278,
+     2404299
+    ]
+   ],
+   "page_index": [
+    [
+     2401886,
+     2404299
+    ]
+   ]
+  },
+  "regions": [
+   {
+    "id": "column_index:rg0:id",
+    "start": 2401886,
+    "end": 2402060,
+    "bytes": 174
+   },
+   {
+    "id": "offset_index:rg0:id",
+    "start": 2403278,
+    "end": 2403366,
+    "bytes": 88
+   },
+   {
+    "id": "offset_index:rg0:fk",
+    "start": 2403366,
+    "end": 2403431,
+    "bytes": 65
+   },
+   {
+    "id": "column_index:rg0:val",
+    "start": 2402060,
+    "end": 2402234,
+    "bytes": 174
+   },
+   {
+    "id": "offset_index:rg0:val",
+    "start": 2403431,
+    "end": 2403521,
+    "bytes": 90
+   },
+   {
+    "id": "column_index:rg1:id",
+    "start": 2402234,
+    "end": 2402408,
+    "bytes": 174
+   },
+   {
+    "id": "offset_index:rg1:id",
+    "start": 2403521,
+    "end": 2403611,
+    "bytes": 90
+   },
+   {
+    "id": "offset_index:rg1:fk",
+    "start": 2403611,
+    "end": 2403676,
+    "bytes": 65
+   },
+   {
+    "id": "column_index:rg1:val",
+    "start": 2402408,
+    "end": 2402582,
+    "bytes": 174
+   },
+   {
+    "id": "offset_index:rg1:val",
+    "start": 2403676,
+    "end": 2403771,
+    "bytes": 95
+   },
+   {
+    "id": "column_index:rg2:id",
+    "start": 2402582,
+    "end": 2402756,
+    "bytes": 174
+   },
+   {
+    "id": "offset_index:rg2:id",
+    "start": 2403771,
+    "end": 2403868,
+    "bytes": 97
+   },
+   {
+    "id": "offset_index:rg2:fk",
+    "start": 2403868,
+    "end": 2403938,
+    "bytes": 70
+   },
+   {
+    "id": "column_index:rg2:val",
+    "start": 2402756,
+    "end": 2402930,
+    "bytes": 174
+   },
+   {
+    "id": "offset_index:rg2:val",
+    "start": 2403938,
+    "end": 2404035,
+    "bytes": 97
+   },
+   {
+    "id": "column_index:rg3:id",
+    "start": 2402930,
+    "end": 2403104,
+    "bytes": 174
+   },
+   {
+    "id": "offset_index:rg3:id",
+    "start": 2404035,
+    "end": 2404132,
+    "bytes": 97
+   },
+   {
+    "id": "offset_index:rg3:fk",
+    "start": 2404132,
+    "end": 2404202,
+    "bytes": 70
+   },
+   {
+    "id": "column_index:rg3:val",
+    "start": 2403104,
+    "end": 2403278,
+    "bytes": 174
+   },
+   {
+    "id": "offset_index:rg3:val",
+    "start": 2404202,
+    "end": 2404299,
+    "bytes": 97
+   }
+  ],
+  "chunks": [
+   {
+    "row_group": 0,
+    "column": "id",
+    "rows": 25000,
+    "data_span": [
+     4,
+     200205
+    ],
+    "statistics_present": true,
+    "null_count": 0,
+    "min_max_present": true,
+    "column_index_pages": 7,
+    "column_index_null_counts": true,
+    "offset_index_pages": 7
+   },
+   {
+    "row_group": 0,
+    "column": "fk",
+    "rows": 25000,
+    "data_span": [
+     200205,
+     400269
+    ],
+    "statistics_present": false,
+    "null_count": null,
+    "min_max_present": false,
+    "offset_index_pages": 5
+   },
+   {
+    "row_group": 0,
+    "column": "val",
+    "rows": 25000,
+    "data_span": [
+     400269,
+     600470
+    ],
+    "statistics_present": true,
+    "null_count": 0,
+    "min_max_present": true,
+    "column_index_pages": 7,
+    "column_index_null_counts": true,
+    "offset_index_pages": 7
+   },
+   {
+    "row_group": 1,
+    "column": "id",
+    "rows": 25000,
+    "data_span": [
+     600470,
+     800671
+    ],
+    "statistics_present": true,
+    "null_count": 0,
+    "min_max_present": true,
+    "column_index_pages": 7,
+    "column_index_null_counts": true,
+    "offset_index_pages": 7
+   },
+   {
+    "row_group": 1,
+    "column": "fk",
+    "rows": 25000,
+    "data_span": [
+     800671,
+     1000741
+    ],
+    "statistics_present": false,
+    "null_count": null,
+    "min_max_present": false,
+    "offset_index_pages": 5
+   },
+   {
+    "row_group": 1,
+    "column": "val",
+    "rows": 25000,
+    "data_span": [
+     1000741,
+     1200942
+    ],
+    "statistics_present": true,
+    "null_count": 0,
+    "min_max_present": true,
+    "column_index_pages": 7,
+    "column_index_null_counts": true,
+    "offset_index_pages": 7
+   },
+   {
+    "row_group": 2,
+    "column": "id",
+    "rows": 25000,
+    "data_span": [
+     1200942,
+     1401143
+    ],
+    "statistics_present": true,
+    "null_count": 0,
+    "min_max_present": true,
+    "column_index_pages": 7,
+    "column_index_null_counts": true,
+    "offset_index_pages": 7
+   },
+   {
+    "row_group": 2,
+    "column": "fk",
+    "rows": 25000,
+    "data_span": [
+     1401143,
+     1601213
+    ],
+    "statistics_present": false,
+    "null_count": null,
+    "min_max_present": false,
+    "offset_index_pages": 5
+   },
+   {
+    "row_group": 2,
+    "column": "val",
+    "rows": 25000,
+    "data_span": [
+     1601213,
+     1801414
+    ],
+    "statistics_present": true,
+    "null_count": 0,
+    "min_max_present": true,
+    "column_index_pages": 7,
+    "column_index_null_counts": true,
+    "offset_index_pages": 7
+   },
+   {
+    "row_group": 3,
+    "column": "id",
+    "rows": 25000,
+    "data_span": [
+     1801414,
+     2001615
+    ],
+    "statistics_present": true,
+    "null_count": 0,
+    "min_max_present": true,
+    "column_index_pages": 7,
+    "column_index_null_counts": true,
+    "offset_index_pages": 7
+   },
+   {
+    "row_group": 3,
+    "column": "fk",
+    "rows": 25000,
+    "data_span": [
+     2001615,
+     2201685
+    ],
+    "statistics_present": false,
+    "null_count": null,
+    "min_max_present": false,
+    "offset_index_pages": 5
+   },
+   {
+    "row_group": 3,
+    "column": "val",
+    "rows": 25000,
+    "data_span": [
+     2201685,
+     2401886
+    ],
+    "statistics_present": true,
+    "null_count": 0,
+    "min_max_present": true,
+    "column_index_pages": 7,
+    "column_index_null_counts": true,
+    "offset_index_pages": 7
+   }
+  ]
+ },
+ "scenarios": {
+  "main": {
+   "predicate": "fk >= 0",
+   "meaning": "fk has no row-group statistics (no min/max, no null_count), so no row group can be proved fully matched and 54.1.0 has to load the page index.",
+   "expected": {
+    "rows": 99899,
+    "sum_id": "4994915150",
+    "sum_val": "49944129637",
+    "mix": "49892034605"
+   }
+  },
+  "control": {
+   "predicate": "id >= 0",
+   "meaning": "id has min >= 0 and null_count = 0 in every row group, so every row group is proved fully matched and the 54.1.0 skip heuristic applies.",
+   "expected": {
+    "rows": 100000,
+    "sum_id": "4999950000",
+    "sum_val": "49993350552",
+    "mix": "49942335405"
+   }
+  },
+  "is_not_null": {
+   "predicate": "id IS NOT NULL",
+   "meaning": "Supplementary: the predicate shape of the issue on a column with null_count = 0. Recorded to show whether the skip heuristic applies to it.",
+   "expected": {
+    "rows": 100000,
+    "sum_id": "4999950000",
+    "sum_val": "49993350552",
+    "mix": "49942335405"
+   }
+  }
+ },
+ "repetitions": 3,
+ "summary": {
+  "54.0.0/main": {
+   "opens": [
+    {
+     "1": {
+      "requests": 5,
+      "server_written_bytes": 2926170,
+      "index_requests": 1,
+      "index_only_requests": 0,
+      "incidental_index_requests": 1,
+      "delivered_index_bytes": 2413,
+      "open_wall_ms": 33.872,
+      "index_spans": [
+       [
+        1881684,
+        2405972
+       ]
+      ],
+      "cache_after": {
+       "page_index": "true"
+      }
+     },
+     "2": {
+      "requests": 4,
+      "server_written_bytes": 2401882,
+      "index_requests": 0,
+      "index_only_requests": 0,
+      "incidental_index_requests": 0,
+      "delivered_index_bytes": 0,
+      "open_wall_ms": 4.564,
+      "index_spans": [],
+      "cache_after": {
+       "page_index": "true"
+      }
+     }
+    },
+    {
+     "1": {
+      "requests": 5,
+      "server_written_bytes": 2926170,
+      "index_requests": 1,
+      "index_only_requests": 0,
+      "incidental_index_requests": 1,
+      "delivered_index_bytes": 2413,
+      "open_wall_ms": 6.978,
+      "index_spans": [
+       [
+        1881684,
+        2405972
+       ]
+      ],
+      "cache_after": {
+       "page_index": "true"
+      }
+     },
+     "2": {
+      "requests": 4,
+      "server_written_bytes": 2401882,
+      "index_requests": 0,
+      "index_only_requests": 0,
+      "incidental_index_requests": 0,
+      "delivered_index_bytes": 0,
+      "open_wall_ms": 5.253,
+      "index_spans": [],
+      "cache_after": {
+       "page_index": "true"
+      }
+     }
+    },
+    {
+     "1": {
+      "requests": 5,
+      "server_written_bytes": 2926170,
+      "index_requests": 1,
+      "index_only_requests": 0,
+      "incidental_index_requests": 1,
+      "delivered_index_bytes": 2413,
+      "open_wall_ms": 6.216,
+      "index_spans": [
+       [
+        1881684,
+        2405972
+       ]
+      ],
+      "cache_after": {
+       "page_index": "true"
+      }
+     },
+     "2": {
+      "requests": 4,
+      "server_written_bytes": 2401882,
+      "index_requests": 0,
+      "index_only_requests": 0,
+      "incidental_index_requests": 0,
+      "delivered_index_bytes": 0,
+      "open_wall_ms": 4.074,
+      "index_spans": [],
+      "cache_after": {
+       "page_index": "true"
+      }
+     }
+    }
+   ]
+  },
+  "54.0.0/control": {
+   "opens": [
+    {
+     "1": {
+      "requests": 5,
+      "server_written_bytes": 2926170,
+      "index_requests": 1,
+      "index_only_requests": 0,
+      "incidental_index_requests": 1,
+      "delivered_index_bytes": 2413,
+      "open_wall_ms": 6.916,
+      "index_spans": [
+       [
+        1881684,
+        2405972
+       ]
+      ],
+      "cache_after": {
+       "page_index": "true"
+      }
+     },
+     "2": {
+      "requests": 4,
+      "server_written_bytes": 2401882,
+      "index_requests": 0,
+      "index_only_requests": 0,
+      "incidental_index_requests": 0,
+      "delivered_index_bytes": 0,
+      "open_wall_ms": 4.806,
+      "index_spans": [],
+      "cache_after": {
+       "page_index": "true"
+      }
+     }
+    },
+    {
+     "1": {
+      "requests": 5,
+      "server_written_bytes": 2926170,
+      "index_requests": 1,
+      "index_only_requests": 0,
+      "incidental_index_requests": 1,
+      "delivered_index_bytes": 2413,
+      "open_wall_ms": 6.789,
+      "index_spans": [
+       [
+        1881684,
+        2405972
+       ]
+      ],
+      "cache_after": {
+       "page_index": "true"
+      }
+     },
+     "2": {
+      "requests": 4,
+      "server_written_bytes": 2401882,
+      "index_requests": 0,
+      "index_only_requests": 0,
+      "incidental_index_requests": 0,
+      "delivered_index_bytes": 0,
+      "open_wall_ms": 4.189,
+      "index_spans": [],
+      "cache_after": {
+       "page_index": "true"
+      }
+     }
+    },
+    {
+     "1": {
+      "requests": 5,
+      "server_written_bytes": 2926170,
+      "index_requests": 1,
+      "index_only_requests": 0,
+      "incidental_index_requests": 1,
+      "delivered_index_bytes": 2413,
+      "open_wall_ms": 6.597,
+      "index_spans": [
+       [
+        1881684,
+        2405972
+       ]
+      ],
+      "cache_after": {
+       "page_index": "true"
+      }
+     },
+     "2": {
+      "requests": 4,
+      "server_written_bytes": 2401882,
+      "index_requests": 0,
+      "index_only_requests": 0,
+      "incidental_index_requests": 0,
+      "delivered_index_bytes": 0,
+      "open_wall_ms": 4.072,
+      "index_spans": [],
+      "cache_after": {
+       "page_index": "true"
+      }
+     }
+    }
+   ]
+  },
+  "54.0.0/is_not_null": {
+   "opens": [
+    {
+     "1": {
+      "requests": 5,
+      "server_written_bytes": 2926170,
+      "index_requests": 1,
+      "index_only_requests": 0,
+      "incidental_index_requests": 1,
+      "delivered_index_bytes": 2413,
+      "open_wall_ms": 6.908,
+      "index_spans": [
+       [
+        1881684,
+        2405972
+       ]
+      ],
+      "cache_after": {
+       "page_index": "true"
+      }
+     },
+     "2": {
+      "requests": 4,
+      "server_written_bytes": 2401882,
+      "index_requests": 0,
+      "index_only_requests": 0,
+      "incidental_index_requests": 0,
+      "delivered_index_bytes": 0,
+      "open_wall_ms": 4.692,
+      "index_spans": [],
+      "cache_after": {
+       "page_index": "true"
+      }
+     }
+    },
+    {
+     "1": {
+      "requests": 5,
+      "server_written_bytes": 2926170,
+      "index_requests": 1,
+      "index_only_requests": 0,
+      "incidental_index_requests": 1,
+      "delivered_index_bytes": 2413,
+      "open_wall_ms": 6.492,
+      "index_spans": [
+       [
+        1881684,
+        2405972
+       ]
+      ],
+      "cache_after": {
+       "page_index": "true"
+      }
+     },
+     "2": {
+      "requests": 4,
+      "server_written_bytes": 2401882,
+      "index_requests": 0,
+      "index_only_requests": 0,
+      "incidental_index_requests": 0,
+      "delivered_index_bytes": 0,
+      "open_wall_ms": 4.351,
+      "index_spans": [],
+      "cache_after": {
+       "page_index": "true"
+      }
+     }
+    },
+    {
+     "1": {
+      "requests": 5,
+      "server_written_bytes": 2926170,
+      "index_requests": 1,
+      "index_only_requests": 0,
+      "incidental_index_requests": 1,
+      "delivered_index_bytes": 2413,
+      "open_wall_ms": 6.184,
+      "index_spans": [
+       [
+        1881684,
+        2405972
+       ]
+      ],
+      "cache_after": {
+       "page_index": "true"
+      }
+     },
+     "2": {
+      "requests": 4,
+      "server_written_bytes": 2401882,
+      "index_requests": 0,
+      "index_only_requests": 0,
+      "incidental_index_requests": 0,
+      "delivered_index_bytes": 0,
+      "open_wall_ms": 4.03,
+      "index_spans": [],
+      "cache_after": {
+       "page_index": "true"
+      }
+     }
+    }
+   ]
+  },
+  "54.1.0/main": {
+   "opens": [
+    {
+     "1": {
+      "requests": 6,
+      "server_written_bytes": 2928583,
+      "index_requests": 2,
+      "index_only_requests": 1,
+      "incidental_index_requests": 1,
+      "delivered_index_bytes": 4826,
+      "open_wall_ms": 34.492,
+      "index_spans": [
+       [
+        1881684,
+        2405972
+       ],
+       [
+        2401886,
+        2404299
+       ]
+      ],
+      "cache_after": {
+       "page_index": "false"
+      }
+     },
+     "2": {
+      "requests": 5,
+      "server_written_bytes": 2404295,
+      "index_requests": 1,
+      "index_only_requests": 1,
+      "incidental_index_requests": 0,
+      "delivered_index_bytes": 2413,
+      "open_wall_ms": 5.401,
+      "index_spans": [
+       [
+        2401886,
+        2404299
+       ]
+      ],
+      "cache_after": {
+       "page_index": "false"
+      }
+     }
+    },
+    {
+     "1": {
+      "requests": 6,
+      "server_written_bytes": 2928583,
+      "index_requests": 2,
+      "index_only_requests": 1,
+      "incidental_index_requests": 1,
+      "delivered_index_bytes": 4826,
+      "open_wall_ms": 6.522,
+      "index_spans": [
+       [
+        1881684,
+        2405972
+       ],
+       [
+        2401886,
+        2404299
+       ]
+      ],
+      "cache_after": {
+       "page_index": "false"
+      }
+     },
+     "2": {
+      "requests": 5,
+      "server_written_bytes": 2404295,
+      "index_requests": 1,
+      "index_only_requests": 1,
+      "incidental_index_requests": 0,
+      "delivered_index_bytes": 2413,
+      "open_wall_ms": 4.694,
+      "index_spans": [
+       [
+        2401886,
+        2404299
+       ]
+      ],
+      "cache_after": {
+       "page_index": "false"
+      }
+     }
+    },
+    {
+     "1": {
+      "requests": 6,
+      "server_written_bytes": 2928583,
+      "index_requests": 2,
+      "index_only_requests": 1,
+      "incidental_index_requests": 1,
+      "delivered_index_bytes": 4826,
+      "open_wall_ms": 7.613,
+      "index_spans": [
+       [
+        1881684,
+        2405972
+       ],
+       [
+        2401886,
+        2404299
+       ]
+      ],
+      "cache_after": {
+       "page_index": "false"
+      }
+     },
+     "2": {
+      "requests": 5,
+      "server_written_bytes": 2404295,
+      "index_requests": 1,
+      "index_only_requests": 1,
+      "incidental_index_requests": 0,
+      "delivered_index_bytes": 2413,
+      "open_wall_ms": 5.355,
+      "index_spans": [
+       [
+        2401886,
+        2404299
+       ]
+      ],
+      "cache_after": {
+       "page_index": "false"
+      }
+     }
+    }
+   ]
+  },
+  "54.1.0/control": {
+   "opens": [
+    {
+     "1": {
+      "requests": 5,
+      "server_written_bytes": 2926170,
+      "index_requests": 1,
+      "index_only_requests": 0,
+      "incidental_index_requests": 1,
+      "delivered_index_bytes": 2413,
+      "open_wall_ms": 6.792,
+      "index_spans": [
+       [
+        1881684,
+        2405972
+       ]
+      ],
+      "cache_after": {
+       "page_index": "false"
+      }
+     },
+     "2": {
+      "requests": 4,
+      "server_written_bytes": 2401882,
+      "index_requests": 0,
+      "index_only_requests": 0,
+      "incidental_index_requests": 0,
+      "delivered_index_bytes": 0,
+      "open_wall_ms": 4.948,
+      "index_spans": [],
+      "cache_after": {
+       "page_index": "false"
+      }
+     }
+    },
+    {
+     "1": {
+      "requests": 5,
+      "server_written_bytes": 2926170,
+      "index_requests": 1,
+      "index_only_requests": 0,
+      "incidental_index_requests": 1,
+      "delivered_index_bytes": 2413,
+      "open_wall_ms": 6.83,
+      "index_spans": [
+       [
+        1881684,
+        2405972
+       ]
+      ],
+      "cache_after": {
+       "page_index": "false"
+      }
+     },
+     "2": {
+      "requests": 4,
+      "server_written_bytes": 2401882,
+      "index_requests": 0,
+      "index_only_requests": 0,
+      "incidental_index_requests": 0,
+      "delivered_index_bytes": 0,
+      "open_wall_ms": 5.008,
+      "index_spans": [],
+      "cache_after": {
+       "page_index": "false"
+      }
+     }
+    },
+    {
+     "1": {
+      "requests": 5,
+      "server_written_bytes": 2926170,
+      "index_requests": 1,
+      "index_only_requests": 0,
+      "incidental_index_requests": 1,
+      "delivered_index_bytes": 2413,
+      "open_wall_ms": 6.952,
+      "index_spans": [
+       [
+        1881684,
+        2405972
+       ]
+      ],
+      "cache_after": {
+       "page_index": "false"
+      }
+     },
+     "2": {
+      "requests": 4,
+      "server_written_bytes": 2401882,
+      "index_requests": 0,
+      "index_only_requests": 0,
+      "incidental_index_requests": 0,
+      "delivered_index_bytes": 0,
+      "open_wall_ms": 4.213,
+      "index_spans": [],
+      "cache_after": {
+       "page_index": "false"
+      }
+     }
+    }
+   ]
+  },
+  "54.1.0/is_not_null": {
+   "opens": [
+    {
+     "1": {
+      "requests": 6,
+      "server_written_bytes": 2928583,
+      "index_requests": 2,
+      "index_only_requests": 1,
+      "incidental_index_requests": 1,
+      "delivered_index_bytes": 4826,
+      "open_wall_ms": 7.544,
+      "index_spans": [
+       [
+        1881684,
+        2405972
+       ],
+       [
+        2401886,
+        2404299
+       ]
+      ],
+      "cache_after": {
+       "page_index": "false"
+      }
+     },
+     "2": {
+      "requests": 5,
+      "server_written_bytes": 2404295,
+      "index_requests": 1,
+      "index_only_requests": 1,
+      "incidental_index_requests": 0,
+      "delivered_index_bytes": 2413,
+      "open_wall_ms": 5.417,
+      "index_spans": [
+       [
+        2401886,
+        2404299
+       ]
+      ],
+      "cache_after": {
+       "page_index": "false"
+      }
+     }
+    },
+    {
+     "1": {
+      "requests": 6,
+      "server_written_bytes": 2928583,
+      "index_requests": 2,
+      "index_only_requests": 1,
+      "incidental_index_requests": 1,
+      "delivered_index_bytes": 4826,
+      "open_wall_ms": 7.366,
+      "index_spans": [
+       [
+        1881684,
+        2405972
+       ],
+       [
+        2401886,
+        2404299
+       ]
+      ],
+      "cache_after": {
+       "page_index": "false"
+      }
+     },
+     "2": {
+      "requests": 5,
+      "server_written_bytes": 2404295,
+      "index_requests": 1,
+      "index_only_requests": 1,
+      "incidental_index_requests": 0,
+      "delivered_index_bytes": 2413,
+      "open_wall_ms": 4.658,
+      "index_spans": [
+       [
+        2401886,
+        2404299
+       ]
+      ],
+      "cache_after": {
+       "page_index": "false"
+      }
+     }
+    },
+    {
+     "1": {
+      "requests": 6,
+      "server_written_bytes": 2928583,
+      "index_requests": 2,
+      "index_only_requests": 1,
+      "incidental_index_requests": 1,
+      "delivered_index_bytes": 4826,
+      "open_wall_ms": 6.62,
+      "index_spans": [
+       [
+        1881684,
+        2405972
+       ],
+       [
+        2401886,
+        2404299
+       ]
+      ],
+      "cache_after": {
+       "page_index": "false"
+      }
+     },
+     "2": {
+      "requests": 5,
+      "server_written_bytes": 2404295,
+      "index_requests": 1,
+      "index_only_requests": 1,
+      "incidental_index_requests": 0,
+      "delivered_index_bytes": 2413,
+      "open_wall_ms": 5.384,
+      "index_spans": [
+       [
+        2401886,
+        2404299
+       ]
+      ],
+      "cache_after": {
+       "page_index": "false"
+      }
+     }
+    }
+   ]
+  }
+ },
+ "observations_vs_hypothesis": {
+  "54.1.0_main_second_open_refetches_index": true,
+  "54.0.0_main_second_open_has_no_index_request": true,
+  "54.1.0_control_has_no_separate_index_request": true,
+  "54.1.0_control_first_open_reads_index_incidentally": true,
+  "54.1.0_is_not_null_second_open_refetches_index": true
+ },
+ "runs": [
+  "runs/54.0.0-main-1.json",
+  "runs/54.0.0-main-2.json",
+  "runs/54.0.0-main-3.json",
+  "runs/54.0.0-control-1.json",
+  "runs/54.0.0-control-2.json",
+  "runs/54.0.0-control-3.json",
+  "runs/54.0.0-is_not_null-1.json",
+  "runs/54.0.0-is_not_null-2.json",
+  "runs/54.0.0-is_not_null-3.json",
+  "runs/54.1.0-main-1.json",
+  "runs/54.1.0-main-2.json",
+  "runs/54.1.0-main-3.json",
+  "runs/54.1.0-control-1.json",
+  "runs/54.1.0-control-2.json",
+  "runs/54.1.0-control-3.json",
+  "runs/54.1.0-is_not_null-1.json",
+  "runs/54.1.0-is_not_null-2.json",
+  "runs/54.1.0-is_not_null-3.json"
+ ]
+}

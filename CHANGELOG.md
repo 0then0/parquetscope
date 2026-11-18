@@ -2,6 +2,12 @@
 
 User-visible changes are recorded here. Dates use YYYY-MM-DD. Entries under Unreleased describe changes on `main` that are not part of a new package release.
 
+## [Unreleased]
+
+### Added
+
+- [DataFusion page-index cache lab](docs/datafusion-page-index-lab/README.md): a local reproduction of apache/datafusion#23978 with standalone Rust harnesses pinned to DataFusion 54.0.0 and 54.1.0, two opens of one file through a shared metadata cache, and HTTP reads matched to the page-index regions of the footer. The CLI and UI are unchanged.
+
 ## [0.4.0] - 2026-11-12
 
 ### Fixed
