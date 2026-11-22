@@ -4,6 +4,8 @@ User-visible changes are recorded here. Dates use YYYY-MM-DD. Entries under Unre
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-11-22
+
 ### Added
 
 - The [DuckDB page-index HTTP lab](docs/duckdb-page-index-lab/README.md) measures point lookups with DuckDB 2.0.0 and 2.0.1 on one indexed file, with wide-scan and index-disabled controls.
@@ -77,4 +79,5 @@ Initial release.
 [0.2.0]: https://github.com/0then0/parquetscope/releases/tag/v0.2.0
 [0.1.0]: https://github.com/0then0/parquetscope/releases/tag/v0.1.0
 
+[0.5.0]: https://github.com/0then0/parquetscope/releases/tag/v0.5.0
 [0.4.0]: https://github.com/0then0/parquetscope/releases/tag/v0.4.0
