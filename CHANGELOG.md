@@ -6,6 +6,7 @@ User-visible changes are recorded here. Dates use YYYY-MM-DD. Entries under Unre
 
 ### Added
 
+- The [DuckDB page-index HTTP lab](docs/duckdb-page-index-lab/README.md) measures point lookups with DuckDB 2.0.0 and 2.0.1 on one indexed file, with wide-scan and index-disabled controls.
 - [DataFusion page-index cache lab](docs/datafusion-page-index-lab/README.md): a local reproduction of apache/datafusion#23978 with standalone Rust harnesses pinned to DataFusion 54.0.0 and 54.1.0, two opens of one file through a shared metadata cache, and HTTP reads matched to the page-index regions of the footer. The CLI and UI are unchanged.
 
 ## [0.4.0] - 2026-11-12

@@ -17,6 +17,7 @@ ParquetScope connects a SQL query to the HTTP requests and Parquet structures it
 - [Prefetch lab](prefetch-lab/README.md): DuckDB 1.5.6 and 2.0.0 with `disable_parquet_prefetching` off and on over one file set, four configurations with captures and viewers.
 - [HTTP profile lab](http-profile-lab/README.md): one pinned engine, prefetch on/off under unrestricted, delayed and shared-rate server models, with 18 captures and independent controls.
 - [DataFusion page-index cache lab](datafusion-page-index-lab/README.md): a local reproduction of apache/datafusion#23978, comparing DataFusion 54.0.0 and 54.1.0 on two opens of one file through a shared metadata cache.
+- The [DuckDB page-index HTTP lab](duckdb-page-index-lab/README.md) compares point lookup traffic in DuckDB 2.0.0 and 2.0.1, with response ranges mapped to data pages and both indexes.
 - [Synthetic demo](usage.md#run-the-synthetic-demo): a small, deterministic example you can run locally.
 - [Synthetic demo report](demo-report.json): recorded metrics and conditions.
 - [Testing and compatibility](validation.md): supported environments, test coverage, and published verification records.
